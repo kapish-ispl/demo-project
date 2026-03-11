@@ -1,1 +1,273 @@
-{}
+{
+  "..\\node_modules\\next\\dist\\client\\dev\\hot-reloader\\app\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts": {
+    "id": "..\\node_modules\\next\\dist\\client\\dev\\hot-reloader\\app\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_next_dist_client_dev_noop-turbopack-hmr_js.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../AnimatedCountUp": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../AnimatedCountUp",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_AnimatedCountUp_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../BlurText": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../BlurText",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_BlurText_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../CardStackSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../CardStackSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_CardStackSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../CustomContentSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../CustomContentSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_CustomContentSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../FrammerSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../FrammerSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_FrammerSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../ScrollAnimation": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../ScrollAnimation",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_ScrollAnimation_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> ../SplitText": {
+    "id": "components\\Layout\\PageTemplate.tsx -> ../SplitText",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_SplitText_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/BackgroundImageSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/BackgroundImageSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_BackgroundImageSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CardStack": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CardStack",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CardStack_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CardSwipeSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CardSwipeSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CardSwipeSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CategorySlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CategorySlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CategorySlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CementSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CementSlider",
+    "files": [
+      "static/css/_app-pages-browser_src_utils_CementSlider_tsx.css",
+      "static/chunks/_app-pages-browser_src_utils_CementSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomCarouselSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomCarouselSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomCarouselSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomForm": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomForm",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomForm_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomHorizontalScroll": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomHorizontalScroll",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomHorizontalScroll_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomLogoScroll": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomLogoScroll",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomLogoScroll_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomMap": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomMap",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomMap_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomMapIndia": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomMapIndia",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomMapIndia_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSectorLinkSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSectorLinkSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomSectorLinkSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSectorScroll": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSectorScroll",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomSectorScroll_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSectorScrollAnimate": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSectorScrollAnimate",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomSectorScrollAnimate_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSilder": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomSilder",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomSilder_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomStickyCard": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomStickyCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomStickyCard_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomZoomEffect": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomZoomEffect",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomZoomEffect_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/CustomZoomScrollEffect": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/CustomZoomScrollEffect",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CustomZoomScrollEffect_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/MilestoneSection": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/MilestoneSection",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_MilestoneSection_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/PostList": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/PostList",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_PostList_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/ReadMore": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/ReadMore",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_ReadMore_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/ReadMoreModal": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/ReadMoreModal",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_ReadMoreModal_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/StackProjects": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/StackProjects",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_StackProjects_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/StackSlider": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/StackSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_StackSlider_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/SustainabilitySection": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/SustainabilitySection",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_SustainabilitySection_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/Tabs": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/Tabs",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_Tabs_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/TextScrollAnimation": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/TextScrollAnimation",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_TextScrollAnimation_tsx.js"
+    ]
+  },
+  "components\\Layout\\PageTemplate.tsx -> @/utils/VerticalCarousel": {
+    "id": "components\\Layout\\PageTemplate.tsx -> @/utils/VerticalCarousel",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_VerticalCarousel_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./AwardsCard": {
+    "id": "utils\\PostList.tsx -> ./AwardsCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_AwardsCard_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./CenterModeSlider": {
+    "id": "utils\\PostList.tsx -> ./CenterModeSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_CenterModeSlider_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./FinancialCard": {
+    "id": "utils\\PostList.tsx -> ./FinancialCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_FinancialCard_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./LeadershipCard": {
+    "id": "utils\\PostList.tsx -> ./LeadershipCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_LeadershipCard_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./OurOfficesCard": {
+    "id": "utils\\PostList.tsx -> ./OurOfficesCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_OurOfficesCard_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./OurOfficesLisitng": {
+    "id": "utils\\PostList.tsx -> ./OurOfficesLisitng",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_OurOfficesLisitng_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./ProductCard": {
+    "id": "utils\\PostList.tsx -> ./ProductCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_ProductCard_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> ./ProductSlider": {
+    "id": "utils\\PostList.tsx -> ./ProductSlider",
+    "files": [
+      "static/chunks/_app-pages-browser_src_utils_ProductSlider_tsx.js"
+    ]
+  },
+  "utils\\PostList.tsx -> @/app/not-found": {
+    "id": "utils\\PostList.tsx -> @/app/not-found",
+    "files": [
+      "static/chunks/_app-pages-browser_src_app_not-found_tsx.js"
+    ]
+  }
+}

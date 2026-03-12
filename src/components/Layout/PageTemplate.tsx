@@ -41,9 +41,6 @@ const StackSlider = dynamic(() => import("@/utils/StackSlider"), { ssr: false })
 const StackProjects = dynamic(() => import("@/utils/StackProjects"), { ssr: false });
 const VerticalCarousel = dynamic(() => import("@/utils/VerticalCarousel"), { ssr: false });
 const TextScrollAnimation = dynamic(() => import("@/utils/TextScrollAnimation"), { ssr: false });
-const MilestoneSection = dynamic(() => import("@/utils/MilestoneSection"), { ssr: false });
-const CementSlider = dynamic(() => import("@/utils/CementSlider"), { ssr: false });
-const SustainabilityScroll = dynamic(() => import("@/utils/SustainabilitySection"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -75,12 +72,6 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 if (domNode.name === "cardswipeslider") {
                     return <CardSwipeSlider />
                 }
-                if (domNode.name === "cementslider") {
-                    return <CementSlider />
-                }
-                if (domNode.name === "sustainabilityscroll") {
-                    return <SustainabilityScroll />
-                }
                 if (domNode.name === "customcarouselslider") {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <CustomCarouselSlider data={Array.isArray(children) ? children : [children]} />
@@ -96,10 +87,6 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 if (domNode.name === "stackprojects") {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <StackProjects data={Array.isArray(children) ? children : [children]} />
-                }
-                if (domNode.name === "milestonesection") {
-                    const children = domToReact(domNode.children as DOMNode[]);
-                    return <MilestoneSection data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "customzoomscrolleffect") {
                     const props = attributesToProps(domNode.attribs);

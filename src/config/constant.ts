@@ -3,7 +3,7 @@ export const CONSTANTS = {
   REQUEST_POST: 'POST',
   REQUEST_GET: 'GET',
   LANGUAGE_ENGLISH: 'en',
-  LANDING_SLUG: 'cement-home-v2',
+  LANDING_SLUG: 'projects-home',
   HEADER_MENU_SLUG: 'header-menu',
   FOOTER_QUICK_MENU_SLUG: 'quick-links-menu',
   FOOTER_OTHER_MENU_SLUG: 'other-links-menu',
@@ -17,6 +17,6 @@ export const CONSTANTS = {
 };
 
 export const IMAGE_PATH = {
-  LOGO: '/images/logo/jindal-cement-logo-black.svg',
-  LOGO_LIGHT: '/images/logo/jindal-cement-logo-white.svg',
+  LOGO: '/images/logo/logo-dark.svg',
+  LOGO_LIGHT: '/images/logo/logo-light.svg',
 };

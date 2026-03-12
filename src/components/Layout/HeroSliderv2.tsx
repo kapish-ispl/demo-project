@@ -49,14 +49,14 @@ interface BannerMedia {
     caption?: string;
 }
 
-const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
+const HeroSlider: React.FC<{ slides: BannerMedia[] }> = ({ slides }) => {
     const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
     const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
     const [thumbnailQueue, setThumbnailQueue] = useState<number[]>([1, 2, 3]); // Initially show next 3 slides
     const [navigationDisabled, setNavigationDisabled] = useState<boolean>(true); // Disable for first 2s
     const progressFillRef = useRef<HTMLSpanElement>(null);
     const thumbWrapperRef = useRef<HTMLDivElement>(null);
-
+    console.log(slides)
     // Update thumbnail queue when slide changes
     useEffect(() => {
         // Create queue with all slides except the current one (show next 3)
@@ -138,7 +138,7 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
         if (activeImage) {
             gsap.to(activeImage, {
                 scale: 1.25,
-                duration: 8,
+                duration: 13,
                 ease: 'none',
             });
         }
@@ -149,7 +149,7 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
                 opacity: 1,
                 duration: 1,
                 ease: 'power3.out',
-                delay: 0.6
+                delay: 1.3
             });
         }
 
@@ -159,7 +159,7 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
                 opacity: 1,
                 duration: 1,
                 ease: 'power3.out',
-                delay: 0.8,
+                delay: 1.5,
             });
         }
     };
@@ -178,7 +178,7 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
         if (thumbWrapperRef.current) {
             const hiddenClass = 'hero-slider__thumbs--hidden';
 
-            if (time <= 6000 && time >= 2000) {
+            if (time <= 13000 && time >= 2000) {
                 if (!thumbWrapperRef.current.classList.contains(hiddenClass)) {
                     thumbWrapperRef.current.classList.add(hiddenClass);
                 }
@@ -190,7 +190,7 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
         }
 
         // 3. Disable Navigation for first 2 seconds (time > 6000ms)
-        const shouldDisableNav = time > 6000;
+        const shouldDisableNav = time > 13000;
         if (navigationDisabled !== shouldDisableNav) {
             setNavigationDisabled(shouldDisableNav);
         }
@@ -236,7 +236,7 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
                 loop={true}
                 allowTouchMove={false}
                 autoplay={{
-                    delay: 8000,
+                    delay: 15000,
                     disableOnInteraction: false,
                 }}
                 navigation={{
@@ -254,18 +254,21 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
             >
                 {slides.map((slide, index) => (
                     <SwiperSlide key={index}>
-                        <img
-                            src={slide.cdnPath}
-                            alt={slide.caption}
-                            className="hero-slider__bg-image"
-                        />
+                        {
+                            slide.type === 'video' && slide.cdnPath ? <><video src={slide.cdnPath} autoPlay loop muted playsInline className=''></video></> : <> <img
+                                src={slide.cdnPath}
+                                alt={slide.caption}
+                                className="hero-slider__bg-image"
+                            /></>
+
+                        }
                         <div className="hero-slider__content">
                             <div className="hero-slider__title-wrapper">
                                 <h1 className="hero-slider__title">{slide.caption}</h1>
                             </div>
                             {/* <p className="hero-slider__subtitle">{slide.subtitle}</p> */}
                         </div>
-                        <div className="hero-slider__counter">0{index+1}</div>
+                        <div className="hero-slider__counter">0{index + 1}</div>
                     </SwiperSlide>
                 ))}
             </Swiper>
@@ -280,11 +283,21 @@ const HeroSlider: React.FC<{slides: BannerMedia[]}> = ({slides}) => {
                             onClick={() => handleThumbnailClick(slideIndex)}
                             style={{ transitionDelay: `${index * 0.1}s` }}
                         >
-                            <img
+
+                            {/* <img
                                 src={slides[slideIndex].cdnPath}
                                 alt={slides[slideIndex].caption}
                                 className="hero-slider__thumb-image"
-                            />
+                            /> */}
+                            {
+                                slides[slideIndex].type === 'video' && slides[slideIndex].cdnPath ? <><video src={slides[slideIndex].cdnPath} autoPlay loop muted playsInline className=''></video></> : <> <img
+                                    src={slides[slideIndex].cdnPath}
+                                    alt={slides[slideIndex].caption}
+                                    className="hero-slider__bg-image"
+                                /></>
+
+                            }
+
                             <div className="hero-slider__thumb-text">
                                 {slides[slideIndex].caption}
                             </div>

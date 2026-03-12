@@ -6,6 +6,7 @@ import { AppContext } from '@/context/AppContext';
 import AccessibilityDrawer from '../accessibility/AccessibilityDrawer';
 import AccessibilityPanel from '../accessibility/AccessibilityPanel';
 import Link from 'next/link';
+import { IMAGE_PATH } from '@/config/constant';
 
 const Footer = () => {
     const contextInfo = useContext(AppContext);
@@ -23,7 +24,7 @@ const Footer = () => {
                                     <div className="c-footer__info-logo me-4">
                                         <Link href="/" className="footer-link d-block" target="_blank">
                                             <img
-                                                src='/images/logo/jindal-cement-logo-black.svg'
+                                                src={IMAGE_PATH.LOGO}
                                                 alt="jindal steel logo"
                                                 width={200}
                                                 height={76}

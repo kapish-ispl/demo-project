@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FC } from "react";
 import Slider from "react-slick";
+import HeroSlider from "./HeroSliderv2";
 
 interface BannerMedia {
     type: string;
@@ -10,10 +11,11 @@ interface BannerMedia {
 }
 
 interface Props {
-    bannerMedia: BannerMedia[];
-    tagline: string;
-    pageTitle: string;
+    bannerMedia?: BannerMedia[];
+    tagline?: string;
+    pageTitle?: string;
 }
+
 const HomeBanner: FC<Props> = ({ bannerMedia, tagline, pageTitle }) => {
     const settings = {
         dots: false,
@@ -29,11 +31,10 @@ const HomeBanner: FC<Props> = ({ bannerMedia, tagline, pageTitle }) => {
 
     return (
         <>
-            <div className={`c-banner ${bannerMedia.length > 0 ? "" : "without-banner"}`}>
-                {bannerMedia && bannerMedia.length > 0 &&
-
+            {bannerMedia && bannerMedia.length > 0 &&
+                <div className="c-banner">
                     <div className="c-banner__media">
-                        <Slider {...settings} >
+                        {/* <Slider {...settings} >
                             {bannerMedia.map((data: BannerMedia, index: number) => {
                                 return (
                                     data.type === "video" ? (
@@ -61,30 +62,31 @@ const HomeBanner: FC<Props> = ({ bannerMedia, tagline, pageTitle }) => {
                             }
 
                             )}
-                        </Slider>
+                        </Slider> */}
+                        <HeroSlider slides={bannerMedia} />
                     </div>
-                }
-                <div className="c-banner__content">
-                    <div className="container cus-container">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="c-banner__content_box">
-                                    <h1 className="banner__title">
-                                        {tagline != undefined ?
-                                            <div
-                                                dangerouslySetInnerHTML={{ __html: tagline }}
-                                            />
-                                            :
-                                            pageTitle
-                                        }
-                                    </h1>
+                    {/* <div className="c-banner__content">
+                        <div className="container cus-container">
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="c-banner__content_box">
+                                        <h1 className="banner__title">
+                                            {tagline != undefined ?
+                                                <div
+                                                    dangerouslySetInnerHTML={{ __html: tagline }}
+                                                />
+                                                :
+                                                pageTitle
+                                            }
+                                        </h1>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> */}
 
-            </div>
+                </div>
+            }
         </>
     )
 }

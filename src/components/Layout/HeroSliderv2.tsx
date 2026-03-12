@@ -56,7 +56,6 @@ const HeroSlider: React.FC<{ slides: BannerMedia[] }> = ({ slides }) => {
     const [navigationDisabled, setNavigationDisabled] = useState<boolean>(true); // Disable for first 2s
     const progressFillRef = useRef<HTMLSpanElement>(null);
     const thumbWrapperRef = useRef<HTMLDivElement>(null);
-    console.log(slides)
     // Update thumbnail queue when slide changes
     useEffect(() => {
         // Create queue with all slides except the current one (show next 3)
@@ -283,12 +282,6 @@ const HeroSlider: React.FC<{ slides: BannerMedia[] }> = ({ slides }) => {
                             onClick={() => handleThumbnailClick(slideIndex)}
                             style={{ transitionDelay: `${index * 0.1}s` }}
                         >
-
-                            {/* <img
-                                src={slides[slideIndex].cdnPath}
-                                alt={slides[slideIndex].caption}
-                                className="hero-slider__thumb-image"
-                            /> */}
                             {
                                 slides[slideIndex].type === 'video' && slides[slideIndex].cdnPath ? <><video src={slides[slideIndex].cdnPath} autoPlay loop muted playsInline className=''></video></> : <> <img
                                     src={slides[slideIndex].cdnPath}

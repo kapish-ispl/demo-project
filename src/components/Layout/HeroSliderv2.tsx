@@ -1,47 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+"use client";
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCreative, Navigation } from 'swiper/modules';
-import { Swiper as SwiperType } from 'swiper';
-import gsap from 'gsap';
+import { EffectCreative, Navigation } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-creative';
-
-
-// --- DATA ---
-// const sliderData = [
-//     {
-//         id: '01',
-//         title: 'Steel',
-//         subtitle: 'Mine-to-metal steel solutions powering infrastructure.',
-//         image: 'https://picsum.photos/id/101/1920/1080',
-//     },
-//     {
-//         id: '02',
-//         title: 'Energy',
-//         subtitle: 'Delivering thermal and solar power to support industry.',
-//         image: 'https://picsum.photos/id/102/1920/1080',
-//     },
-//     {
-//         id: '03',
-//         title: 'Resources',
-//         subtitle: 'Responsible mining operations that anchor our strategy.',
-//         image: 'https://picsum.photos/id/103/1920/1080',
-//     },
-//     {
-//         id: '04',
-//         title: 'Ports',
-//         subtitle: 'Port-led logistics enabling connectivity.',
-//         image: 'https://picsum.photos/id/104/1920/1080',
-//     },
-//     {
-//         id: '05',
-//         title: 'Logistics',
-//         subtitle: 'Integrated rail networks and cargo services.',
-//         image: 'https://picsum.photos/id/106/1920/1080',
-//     },
-// ];
+import 'swiper/css/navigation';
 
 interface BannerMedia {
     type: string;
@@ -50,267 +15,98 @@ interface BannerMedia {
 }
 
 const HeroSlider: React.FC<{ slides: BannerMedia[] }> = ({ slides }) => {
-    const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
-    const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
-    const [thumbnailQueue, setThumbnailQueue] = useState<number[]>([1, 2, 3]); // Initially show next 3 slides
-    const [navigationDisabled, setNavigationDisabled] = useState<boolean>(true); // Disable for first 2s
-    const progressFillRef = useRef<HTMLSpanElement>(null);
-    const thumbWrapperRef = useRef<HTMLDivElement>(null);
-    // Update thumbnail queue when slide changes
-    useEffect(() => {
-        // Create queue with all slides except the current one (show next 3)
-        const queue: number[] = [];
-        for (let i = 1; i < slides.length; i++) {
-            queue.push((currentSlideIndex + i) % slides.length);
-        }
-        setThumbnailQueue(queue);
-    }, [currentSlideIndex]);
-
-    /**
-     * Handle Exit Animations (on the leaving slide)
-     */
-    const handleExitAnimations = (swiper: SwiperType) => {
-        // Get the current active slide (the one that's about to leave)
-        const leavingSlide = swiper.slides[swiper.activeIndex];
-        if (!leavingSlide) return;
-
-        const leavingTitle = leavingSlide.querySelector('.hero-slider__title');
-        const leavingSubtitle = leavingSlide.querySelector('.hero-slider__subtitle');
-
-        // Exit animation: Move up and fade out
-        if (leavingTitle) {
-            gsap.to(leavingTitle, {
-                y: -100,
-                opacity: 0,
-                duration: 0.6,
-                ease: 'power3.in',
-            });
-        }
-
-        if (leavingSubtitle) {
-            gsap.to(leavingSubtitle, {
-                y: -50,
-                opacity: 0,
-                duration: 0.6,
-                ease: 'power3.in',
-                delay: 0.1,
-            });
-        }
-    };
-
-    /**
-     * Handle Enter Animations (on the new active slide)
-     */
-    const handleEnterAnimations = (swiper: SwiperType) => {
-        // 1. SELECT ACTIVE SLIDE FIRST
-        const activeSlide = swiper.slides[swiper.activeIndex];
-        if (!activeSlide) return;
-
-        // Query elements within the active slide
-        const activeImage = activeSlide.querySelector('.hero-slider__bg-image');
-        const activeTitle = activeSlide.querySelector('.hero-slider__title');
-        const activeSubtitle = activeSlide.querySelector('.hero-slider__subtitle');
-
-        // 2. SMART CLEANUP: Only reset slides that aren't currently active
-        // This prevents killing the zoom animation on the leaving slide
-        const allImages = document.querySelectorAll('.hero-slider__bg-image');
-        const allTitles = document.querySelectorAll('.hero-slider__title');
-        const allSubtitles = document.querySelectorAll('.hero-slider__subtitle');
-
-        allImages.forEach((img) => {
-            // Don't reset the active slide's image during transition
-            if (img !== activeImage) {
-                gsap.killTweensOf(img);
-                gsap.set(img, { scale: 1 });
-            }
-        });
-
-        [...allTitles, ...allSubtitles].forEach((el) => {
-            // Don't reset the active slide's text during transition
-            if (el !== activeTitle && el !== activeSubtitle) {
-                gsap.killTweensOf(el);
-                gsap.set(el, { y: 100, opacity: 0 });
-            }
-        });
-
-        // 3. ENTER ANIMATIONS
-        if (activeImage) {
-            gsap.to(activeImage, {
-                scale: 1.25,
-                duration: 13,
-                ease: 'none',
-            });
-        }
-
-        if (activeTitle) {
-            gsap.to(activeTitle, {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                ease: 'power3.out',
-                delay: 1.3
-            });
-        }
-
-        if (activeSubtitle) {
-            gsap.to(activeSubtitle, {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                ease: 'power3.out',
-                delay: 1.5,
-            });
-        }
-    };
-
-    /**
-     * Autoplay Time Left Handler
-     */
-    const onAutoplayTimeLeft = (s: SwiperType, time: number, progress: number) => {
-        // 1. Update Progress Bar
-        if (progressFillRef.current) {
-            progressFillRef.current.style.width = `${(1 - progress) * 100}%`;
-        }
-
-        // 2. Toggle Thumbnail Visibility (Hide between 6000ms and 2000ms remaining)
-        // 8000ms total -> visible (2s) -> hidden (4s) -> visible (2s)
-        if (thumbWrapperRef.current) {
-            const hiddenClass = 'hero-slider__thumbs--hidden';
-
-            if (time <= 13000 && time >= 2000) {
-                if (!thumbWrapperRef.current.classList.contains(hiddenClass)) {
-                    thumbWrapperRef.current.classList.add(hiddenClass);
-                }
-            } else {
-                if (thumbWrapperRef.current.classList.contains(hiddenClass)) {
-                    thumbWrapperRef.current.classList.remove(hiddenClass);
-                }
-            }
-        }
-
-        // 3. Disable Navigation for first 2 seconds (time > 6000ms)
-        const shouldDisableNav = time > 13000;
-        if (navigationDisabled !== shouldDisableNav) {
-            setNavigationDisabled(shouldDisableNav);
-        }
-
-        // 4. Trigger exit animation 1 second before slide change (time <= 1000ms)
-        if (time <= 1000 && time > 900) {
-            handleExitAnimations(s);
-        }
-    };
-
-    const handleSlideChange = (swiper: SwiperType) => {
-        setCurrentSlideIndex(swiper.realIndex);
-    };
-
-    const handleThumbnailClick = (slideIndex: number) => {
-        if (mainSwiper && !mainSwiper.destroyed) {
-            mainSwiper.slideToLoop(slideIndex);
-        }
-    };
+    const staticBackground = slides[0];
 
     return (
         <div className="hero-slider">
 
-            {/* --- MAIN SLIDER --- */}
-            <Swiper
-                modules={[Autoplay, EffectCreative, Navigation]}
-                effect="creative"
-                creativeEffect={{
-                    prev: {
-                        shadow: true,
-                        translate: ['-20%', 0, -1],
-                        opacity: 0,
-                    },
-                    next: {
-                        // Scale up from thumbnail position
-                        translate: ['0%', '0%', 1],
-                        scale: 0.1,
-                        opacity: 0,
-                    },
-                    limitProgress: 2,
-                }}
-                speed={1000}
-                loop={true}
-                allowTouchMove={false}
-                autoplay={{
-                    delay: 15000,
-                    disableOnInteraction: false,
-                }}
-                navigation={{
-                    nextEl: '.hero-slider__nav-btn--next',
-                    prevEl: '.hero-slider__nav-btn--prev',
-                }}
-                className="hero-slider__main"
-                onAutoplayTimeLeft={onAutoplayTimeLeft}
-                onSlideChange={handleSlideChange}
-                onSlideChangeTransitionStart={(swiper) => handleEnterAnimations(swiper)}
-                onSwiper={(swiper) => {
-                    setMainSwiper(swiper);
-                    setTimeout(() => handleEnterAnimations(swiper), 100);
-                }}
-            >
-                {slides.map((slide, index) => (
-                    <SwiperSlide key={index}>
-                        {
-                            slide.type === 'video' && slide.cdnPath ? <><video src={slide.cdnPath} autoPlay loop muted playsInline className=''></video></> : <> <img
-                                src={slide.cdnPath}
-                                alt={slide.caption}
-                                className="hero-slider__bg-image"
-                            /></>
+            {/* --- STATIC BACKGROUND --- */}
+            <div className="hero-slider__static-bg" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                {staticBackground.type === 'video' ? (
+                    <video src={staticBackground.cdnPath} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }} />
+                ) : (
+                    <img src={staticBackground.cdnPath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }} />
+                )}
+            </div>
 
-                        }
-                        <div className="hero-slider__content">
-                            <div className="hero-slider__title-wrapper">
-                                <h1 className="hero-slider__title">{slide.caption}</h1>
-                            </div>
-                            {/* <p className="hero-slider__subtitle">{slide.subtitle}</p> */}
-                        </div>
-                        <div className="hero-slider__counter">0{index + 1}</div>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-
-            {/* --- THUMBS SLIDER (Queue-based) --- */}
-            <div className="hero-slider__thumbs" ref={thumbWrapperRef}>
-                <div className="hero-slider__thumb-container">
-                    {thumbnailQueue.map((slideIndex, index) => (
-                        <div
-                            key={`thumb-${slideIndex}-${index}`}
-                            className="hero-slider__thumb-item"
-                            onClick={() => handleThumbnailClick(slideIndex)}
-                            style={{ transitionDelay: `${index * 0.1}s` }}
+            {/* --- THUMBNAIL UI (Aligned to Right) --- */}
+            <div className="hero-slider__ui-right" style={{
+                position: 'absolute',
+                right: '2%',
+                bottom: '10%',
+                width: '25%',
+                zIndex: 10
+            }}>
+                {/* --- NAVIGATION & COUNTER --- */}
+                <div className="slider-controls" style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    marginBottom: '20px',
+                    gap: '20px'
+                }}>
+                    {/* Navigation Arrows */}
+                    <div style={{ display: 'flex', gap: '15px' }}>
+                        <span
+                            className="custom-prev cursor-pointer"
+                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                         >
-                            {
-                                slides[slideIndex].type === 'video' && slides[slideIndex].cdnPath ? <><video src={slides[slideIndex].cdnPath} autoPlay loop muted playsInline className=''></video></> : <> <img
-                                    src={slides[slideIndex].cdnPath}
-                                    alt={slides[slideIndex].caption}
-                                    className="hero-slider__bg-image"
-                                /></>
-
-                            }
-
-                            <div className="hero-slider__thumb-text">
-                                {slides[slideIndex].caption}
-                            </div>
-                        </div>
-                    ))}
+                            <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.167857 9.54646C-0.0535717 9.32504 -0.0535717 8.96075 0.167857 8.73932L6.45357 2.45361C6.675 2.23218 7.03929 2.23218 7.26071 2.45361C7.48214 2.67504 7.48214 3.03932 7.26071 3.26075L1.95 8.57146H15.4286C15.7429 8.57146 16 8.82861 16 9.14289C16 9.45718 15.7429 9.71432 15.4286 9.71432H1.95L7.26071 15.025C7.48214 15.2465 7.48214 15.6108 7.26071 15.8322C7.03929 16.0536 6.675 16.0536 6.45357 15.8322L0.167857 9.54646Z" fill="white" />
+                            </svg>
+                        </span>
+                        <span
+                            className="custom-next cursor-pointer"
+                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.8321 7.25893C16.0536 7.0375 16.0536 6.67321 15.8321 6.45179L9.54643 0.166071C9.325 -0.0553571 8.96071 -0.0553571 8.73929 0.166071C8.51786 0.3875 8.51786 0.751786 8.73929 0.973214L14.05 6.28393H0.571429C0.257143 6.28393 0 6.54107 0 6.85536C0 7.16964 0.257143 7.42678 0.571429 7.42678H14.05L8.73929 12.7375C8.51786 12.9589 8.51786 13.3232 8.73929 13.5446C8.96071 13.7661 9.325 13.7661 9.54643 13.5446L15.8321 7.25893Z" fill="white" />
+                            </svg>
+                        </span>
+                    </div>
                 </div>
-            </div>
-
-            {/* --- PROGRESS BAR --- */}
-            <div className="hero-slider__progress-track">
-                <span
-                    ref={progressFillRef}
-                    className="hero-slider__progress-bar"
-                ></span>
-            </div>
-
-            {/* --- NAVIGATION ARROWS --- */}
-            <div className="hero-slider__nav">
-                <div className={`hero-slider__nav-btn hero-slider__nav-btn--prev ${navigationDisabled ? 'hero-slider__nav-btn--disabled' : ''}`}></div>
-                <div className={`hero-slider__nav-btn hero-slider__nav-btn--next ${navigationDisabled ? 'hero-slider__nav-btn--disabled' : ''}`}></div>
+                {/* THUMBNAIL SLIDER */}
+                <Swiper
+                    modules={[Navigation]}
+                    effect="creative"
+                    speed={1000}
+                    spaceBetween={20}
+                    loop={true}
+                    slidesPerView={2}
+                    navigation={{
+                        nextEl: '.custom-next',
+                        prevEl: '.custom-prev',
+                    }}
+                    className="thumb-swiper"
+                >
+                    {slides.map((slide, index) => (
+                        <SwiperSlide key={index}>
+                            <div className="thumb-card" style={{
+                                borderRadius: '5px',
+                                overflow: 'hidden',
+                                aspectRatio: '218/148',
+                            }}>
+                                {slide.type === 'video' ? (
+                                    <video src={slide.cdnPath} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                ) : (
+                                    <img src={slide.cdnPath} alt={slide.caption} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                )}
+                                <div style={{
+                                    position: 'absolute',
+                                    bottom: '20px',
+                                    left: '20px',
+                                    color: '#fff',
+                                    fontSize: '1.25rem',
+                                    fontWeight: '600',
+                                    zIndex: 2
+                                }}>
+                                    {slide.caption}
+                                </div>
+                                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 40%)' }}></div>
+                            </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
         </div>
     );

@@ -591,3 +591,77 @@
     }
   }
 }
+
+///
+.bento-comparator {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  .slide-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 0.75fr 0.75fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 15px;
+  width: 100%;
+  height: 85vh;
+  max-width: 1600px;
+
+  .grid-item {
+    position: relative;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    /* This is the key for the comparator effect */
+    clip-path: inset(0% 0% 0% 0%);
+
+    &.feature {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+
+      .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 50px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        color: white;
+
+        h3 {
+          font-size: 2.5rem;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    &.stat-box {
+      background: #d68a5d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+
+      h4 {
+        font-size: 3rem;
+        margin: 0;
+      }
+    }
+  }
+}

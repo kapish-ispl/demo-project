@@ -43,6 +43,7 @@ const VerticalCarousel = dynamic(() => import("@/utils/VerticalCarousel"), { ssr
 const TextScrollAnimation = dynamic(() => import("@/utils/TextScrollAnimation"), { ssr: false });
 const RotatingSlider = dynamic(() => import("@/utils/RotatingSlider"), { ssr: false });
 const ProjectSlider = dynamic(() => import("@/utils/ProjectSlider"), { ssr: false });
+const BentoSyncReveal = dynamic(() => import("@/utils/BentoSyncReveal"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -118,6 +119,10 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <StackSlider {...props} data={Array.isArray(children) ? children : [children]} />;
                 }
+                // if (domNode.name === "bentosyncreveal") {
+                //     const children = domToReact(domNode.children as DOMNode[]);
+                //     return <BentoSyncReveal data={Array.isArray(children) ? children : [children]} />;
+                // }
                 if (domNode.name === "customzoomeffect") {
                     const props = attributesToProps(domNode.attribs);
                     const children = domToReact(domNode.children as DOMNode[]);

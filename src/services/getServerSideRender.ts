@@ -34,7 +34,7 @@ export async function serverRequest(request: any, url: string, methodName: strin
       console.warn('API Error:', json.errors[0].message);
     }
     if (json && json.code == 'SUC200') {
-      const data = decryptResponse(json.data);
+      // const data = decryptResponse(json.data);
       // const res = await fetch(`${baseUrl}/api/decrypt`, {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
@@ -45,7 +45,7 @@ export async function serverRequest(request: any, url: string, methodName: strin
       //const data = await res.json();
       return {
         ...json,
-        data: data
+        data: json.data
       };
     }
     //return json;

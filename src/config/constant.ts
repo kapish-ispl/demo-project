@@ -3,7 +3,7 @@ export const CONSTANTS = {
   REQUEST_POST: 'POST',
   REQUEST_GET: 'GET',
   LANGUAGE_ENGLISH: 'en',
-  LANDING_SLUG: 'projects-home',
+  LANDING_SLUG: 'home',
   HEADER_MENU_SLUG: 'header-menu',
   FOOTER_QUICK_MENU_SLUG: 'quick-links-menu',
   FOOTER_OTHER_MENU_SLUG: 'other-links-menu',

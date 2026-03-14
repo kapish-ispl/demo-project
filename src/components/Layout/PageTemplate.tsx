@@ -41,6 +41,7 @@ const StackSlider = dynamic(() => import("@/utils/StackSlider"), { ssr: false })
 const StackProjects = dynamic(() => import("@/utils/StackProjects"), { ssr: false });
 const VerticalCarousel = dynamic(() => import("@/utils/VerticalCarousel"), { ssr: false });
 const TextScrollAnimation = dynamic(() => import("@/utils/TextScrollAnimation"), { ssr: false });
+const RotatingSlider = dynamic(() => import("@/utils/RotatingSlider"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -87,6 +88,10 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 if (domNode.name === "stackprojects") {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <StackProjects data={Array.isArray(children) ? children : [children]} />
+                }
+                if (domNode.name === "rotatingslider") {
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <RotatingSlider data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "customzoomscrolleffect") {
                     const props = attributesToProps(domNode.attribs);

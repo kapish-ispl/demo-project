@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,14 +10,24 @@ gsap.registerPlugin(ScrollTrigger)
 const TimeLineSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null)
     const timelineRef = useRef<HTMLDivElement>(null)
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+    const [tWidth, setTWidth] = useState<number>(0)
+    const progressBarRef = useRef<HTMLDivElement>(null)
+    const [totalItems, setTotalItems] = useState([0]) // This will be dynamically updated
 
     useGSAP(() => {
         const section = sectionRef.current
         const timeline = timelineRef.current
+        const progressBar = progressBarRef.current
         if (!section || !timeline) return
 
         const items = gsap.utils.toArray<HTMLElement>('.c-timeline__item', timeline)
         const images = gsap.utils.toArray<HTMLElement>('.c-timeline__item-img img', timeline)
+
+        // Update dots count to match timeline items
+        if (items.length !== totalItems.length) {
+            setTotalItems(new Array(items.length).fill(0))
+        }
 
         // Separate odd (1st, 3rd, …) and even (2nd, 4th, …) items
         const oddItems = items.filter((_, i) => i % 2 === 0)   // index 0, 2, 4 → odd cards
@@ -31,6 +41,8 @@ const TimeLineSection = () => {
             return -(timelineWidth - windowWidth + 200)
         }
 
+        setTWidth(timeline.scrollWidth)
+
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
@@ -41,6 +53,10 @@ const TimeLineSection = () => {
                 pin: true,
                 anticipatePin: 1,
                 invalidateOnRefresh: true, // recalculate on resize
+                onUpdate: (self) => {
+                    // Update a css variable on the section for how much we have scrolled
+                    section.style.setProperty('--scroll-progress', self.progress.toString())
+                }
             }
         })
 
@@ -67,6 +83,18 @@ const TimeLineSection = () => {
             { y: -30 },
             { y: 30, ease: "none" },
             0)
+
+        // 5. Scrollbar sync
+        if (progressBar) {
+            tl.to(progressBar, {
+                width: '100%',
+                ease: "none"
+            }, 0)
+        }
+
+        // 6. Dot sync
+        // Using CSS variables via onUpdate is much more accurate than a linear staggered animation 
+        // to sync the dots directly with the progress bar's exact location.
 
     }, { scope: sectionRef })
 
@@ -129,6 +157,32 @@ const TimeLineSection = () => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                {/* Visual Native Scrollbar */}
+                {/* <div
+                    ref={scrollContainerRef}
+                    style={{
+                        width: '100%',
+                        overflowX: 'auto',
+                        position: 'absolute',
+                        bottom: '0px',
+                        left: '0px',
+                    }}
+                >
+                    <div style={{ width: tWidth, height: '1px' }}></div>
+                </div> */}
+                <div className="timeline-scrollbar-wrapper">
+                    <div className="timeline-track-bg">
+                        <div ref={progressBarRef} className="timeline-progress-fill"></div>
+
+                        <div className="timeline-nodes-container d-flex justify-content-between">
+                            {totalItems.map((_, i) => (
+                                <div key={i} className="dot-wrapper" style={{ zIndex: 2, '--threshold': (i / (totalItems.length - 1)) } as React.CSSProperties}>
+                                    <div className="timeline-dot-inner"></div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

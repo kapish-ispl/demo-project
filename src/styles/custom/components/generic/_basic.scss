@@ -2635,6 +2635,10 @@ ul {
             display: flex;
             gap: 15px;
 
+            @include mq(desktop) {
+                right: 15%;
+            }
+
             button {
                 width: 45px;
                 height: 45px;

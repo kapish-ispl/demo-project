@@ -1,4 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, EffectCreative } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-creative';
 
 const slideData = [
     {
@@ -32,66 +40,74 @@ const slideData = [
 ];
 
 export default function ProjectSlider() {
-    const [active, setActive] = useState(0);
-
-    const getPositionClass = (index: number) => {
-        if (index === active) return ""; // Selected slide
-
-        const total = slideData.length;
-        const diff = (index - active + total) % total;
-
-        // Mapping based on the reference code's class naming convention
-        if (diff === 1) return "off-slide slide-transform-first-right";
-        if (diff === 2) return "off-slide slide-transform-second-right";
-        if (diff === total - 1) return "off-slide slide-transform-first-left";
-
-        return "off-slide slide-hidden";
-    };
-
     return (
         <div className="customerCarousel">
-            <div className="cmp-customer-carousel" data-selected={active}>
-                {slideData.map((slide, i) => (
-                    <div
-                        key={slide.id}
-                        className={`cmp-customer-carousel__item ${getPositionClass(i)}`}
-                        aria-selected={i === active}
-                    >
-                        <img className="cmp-customer-carousel__item-bg" src={slide.bg} alt="Background" />
+            <Swiper
+                modules={[Navigation, Pagination, EffectCreative]}
+                effect={'creative'}
+                grabCursor={true}
+                centeredSlides={true}
+                slidesPerView={'auto'}
+                loop={true}
+                speed={800}
+                navigation={{
+                    nextEl: '.next-slide',
+                    prevEl: '.prev-slide',
+                }}
+                pagination={{
+                    clickable: true,
+                    el: '.cmp-customer-carousel__wayfinding',
+                    bulletClass: 'cmp-customer-carousel__wayfinding-button',
+                    bulletActiveClass: 'active',
+                }}
+                creativeEffect={{
+                    prev: {
+                        shadow: false,
+                        translate: ['-15%', 0, -100],
+                        scale: 0.9,
+                        opacity: 0.8,
+                    },
+                    next: {
+                        translate: ['15%', 0, -100],
+                        scale: 0.9,
+                        opacity: 0.8,
+                    },
+                }}
+                className="cmp-customer-carousel"
+            >
+                {slideData.map((slide) => (
+                    <SwiperSlide key={slide.id} className="cmp-customer-carousel__item">
+                        {({ isActive }) => (
+                            <>
+                                <img className="cmp-customer-carousel__item-bg" src={slide.bg} alt="Project" />
 
-                        <div className="cmp-customer-carousel__item-content">
-                            <div className="cmp-customer-carousel__item-quote">
-                                <p className='c-content-18 lh_1-6 clr-gray ft_medium mb-2'>{slide.quote}</p>
-                            </div>
-                            <p className="cmp-customer-carousel__item-job ft_light lh_1_2 clr-gray mb-2">{slide.location}</p>
-                            <p className="cmp-customer-carousel__item-name c-content-16 clr-gray ft_medium lh_1_2 mb-0 d-flex"><span className='icon-map-pin px-1'></span>{slide.name}</p>
-                        </div>
-                    </div>
+                                <div className={`cmp-customer-carousel__item-content ${isActive ? 'opacity-100' : 'opacity-0'}`} style={{ transition: 'opacity 0.4s ease' }}>
+                                    <div className="cmp-customer-carousel__item-quote">
+                                        <p className='c-content-18 lh_1-6 clr-gray ft_medium mb-2'>{slide.quote}</p>
+                                    </div>
+                                    <p className="cmp-customer-carousel__item-job ft_light lh_1_2 clr-gray mb-2">{slide.location}</p>
+                                    <p className="cmp-customer-carousel__item-name c-content-16 clr-gray ft_medium lh_1_2 mb-0 d-flex">
+                                        <span className='icon-map-pin px-1'></span>{slide.name}
+                                    </p>
+                                </div>
+                            </>
+                        )}
+                    </SwiperSlide>
                 ))}
 
+                {/* Custom Navigation */}
                 <div className="cmp-customer-carousel__arrows">
-                    <button className="prev-slide" onClick={() => setActive((prev) => (prev - 1 + slideData.length) % slideData.length)}><svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.29407 11.6474L3.29384 6.64718L8.29407 1.64694L6.64712 0L-5.02381e-05 6.64718L6.64712 13.2944L8.29407 11.6474Z" fill="#636466" />
-                    </svg>
+                    <button className="prev-slide">
+                        <svg width="9" height="14" viewBox="0 0 9 14" fill="none"><path d="M8.29407 11.6474L3.29384 6.64718L8.29407 1.64694L6.64712 0L-5.02381e-05 6.64718L6.64712 13.2944L8.29407 11.6474Z" fill="#636466" /></svg>
                     </button>
-                    <button className="next-slide" onClick={() => setActive((prev) => (prev + 1) % slideData.length)}><svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.29407 11.6474L3.29384 6.64718L8.29407 1.64694L6.64712 0L-5.02381e-05 6.64718L6.64712 13.2944L8.29407 11.6474Z" fill="#636466" />
-                    </svg>
-
+                    <button className="next-slide">
+                        <svg width="9" height="14" viewBox="0 0 9 14" fill="none"><path d="M8.29407 11.6474L3.29384 6.64718L8.29407 1.64694L6.64712 0L-5.02381e-05 6.64718L6.64712 13.2944L8.29407 11.6474Z" fill="#636466" /></svg>
                     </button>
                 </div>
 
-                {/* <nav className="cmp-customer-carousel__wayfinding">
-                    {slideData.map((_, i) => (
-                        <button
-                            key={i}
-                            className="cmp-customer-carousel__wayfinding-button"
-                            aria-selected={i === active}
-                            onClick={() => setActive(i)}
-                        />
-                    ))}
-                </nav> */}
-            </div>
+                {/* Pagination Container */}
+                <div className="cmp-customer-carousel__wayfinding"></div>
+            </Swiper>
         </div>
     );
 }

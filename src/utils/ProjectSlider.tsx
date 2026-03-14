@@ -77,21 +77,17 @@ export default function ProjectSlider() {
             >
                 {slideData.map((slide) => (
                     <SwiperSlide key={slide.id} className="cmp-customer-carousel__item">
-                        {({ isActive }) => (
-                            <>
-                                <img className="cmp-customer-carousel__item-bg" src={slide.bg} alt="Project" />
+                        <img className="cmp-customer-carousel__item-bg" src={slide.bg} alt="Project" />
 
-                                <div className={`cmp-customer-carousel__item-content ${isActive ? 'opacity-100' : 'opacity-0'}`} style={{ transition: 'opacity 0.4s ease' }}>
-                                    <div className="cmp-customer-carousel__item-quote">
-                                        <p className='c-content-18 lh_1-6 clr-gray ft_medium mb-2'>{slide.quote}</p>
-                                    </div>
-                                    <p className="cmp-customer-carousel__item-job ft_light lh_1_2 clr-gray mb-2">{slide.location}</p>
-                                    <p className="cmp-customer-carousel__item-name c-content-16 clr-gray ft_medium lh_1_2 mb-0 d-flex">
-                                        <span className='icon-map-pin px-1'></span>{slide.name}
-                                    </p>
-                                </div>
-                            </>
-                        )}
+                        <div className="cmp-customer-carousel__item-content">
+                            <div className="cmp-customer-carousel__item-quote">
+                                <p className='c-content-18 lh_1-6 clr-gray ft_medium mb-2'>{slide.quote}</p>
+                            </div>
+                            <p className="cmp-customer-carousel__item-job ft_light lh_1_2 clr-gray mb-2">{slide.location}</p>
+                            <p className="cmp-customer-carousel__item-name c-content-16 clr-gray ft_medium lh_1_2 mb-0 d-flex">
+                                <span className='icon-map-pin px-1'></span>{slide.name}
+                            </p>
+                        </div>
                     </SwiperSlide>
                 ))}
 

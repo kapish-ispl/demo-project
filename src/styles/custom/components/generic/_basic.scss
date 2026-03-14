@@ -2577,105 +2577,59 @@ ul {
 
 .customerCarousel {
     width: 100%;
-    overflow: hidden;
 
     .cmp-customer-carousel {
-        position: relative;
         width: 100%;
         height: 550px;
+        overflow: visible; // Critical for seeing the side slides
 
         @include mq(desktop) {
             height: 610px;
         }
 
         &__item {
-            position: absolute;
-            top: 0;
-            left: 5%;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
+            width: 85%; // Adjust width to show side slides
+            max-width: 1100px;
+            border-radius: 12px;
             overflow: hidden;
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: 10;
-            opacity: 1;
-            max-width: 1200px;
+            position: relative;
+            transition: filter 0.3s ease;
+
+            // When not active, dim the slide like your reference
+            &:not(.swiper-slide-active) {
+                filter: brightness(0.7) blur(1px);
+            }
 
             &-bg {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                position: relative;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(0deg, rgba(38, 38, 38, 0.2) 35%, rgba(71, 70, 70, 0.1) 100%);
-
-                }
             }
 
             &-content {
                 position: absolute;
                 top: 40px;
                 left: 40px;
-                background: var(--color-white);
-                padding: 16px;
+                background: #fff;
+                padding: 24px;
                 border-radius: 8px;
-                max-width: 460px;
+                max-width: 400px;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
                 z-index: 20;
-            }
-
-            // SIDE SLIDES LOGIC (The Stacking)
-            &.off-slide {
-                filter: brightness(0.7) blur(1px);
-                pointer-events: none;
-            }
-
-            // First Right (Peeking out immediately behind center)
-            &.slide-transform-first-right {
-                z-index: 8;
-                transform: translateX(12%) scale(0.92);
-                opacity: 0.8;
-            }
-
-            // Second Right (Peeking out behind the first right)
-            &.slide-transform-second-right {
-                z-index: 6;
-                transform: translateX(20%) scale(0.85);
-                opacity: 0.4;
-            }
-
-            // First Left (Peeking out on the left)
-            &.slide-transform-first-left {
-                z-index: 8;
-                transform: translateX(-7%) scale(0.92);
-                opacity: 0.8;
-            }
-
-            &.slide-hidden {
-                opacity: 0;
-                z-index: 1;
-                transform: scale(0.8);
             }
         }
 
         &__arrows {
             position: absolute;
             bottom: 40px;
-            right: 13%;
+            right: 10%;
             z-index: 30;
             display: flex;
             gap: 15px;
 
             button {
-                width: 43px;
-                height: 43px;
+                width: 45px;
+                height: 45px;
                 border-radius: 50%;
                 border: none;
                 background: white;
@@ -2683,6 +2637,7 @@ ul {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
                 &.next-slide {
                     transform: rotate(180deg);
@@ -2692,26 +2647,24 @@ ul {
 
         &__wayfinding {
             position: absolute;
-            bottom: -40px;
-            left: 50%;
+            bottom: 30px !important;
+            left: 50% !important;
             transform: translateX(-50%);
             display: flex;
             gap: 10px;
+            width: auto !important;
+            z-index: 30;
 
             &-button {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                border: 1px solid #ccc;
-                background: transparent;
+                width: 45px;
+                height: 2px;
+                border-radius: 2px;
+                background-color: #b5b1b1;
                 cursor: pointer;
                 transition: all 0.3s;
 
-                &[aria-selected="true"] {
-                    background: #000;
-                    border-color: #000;
-                    width: 30px;
-                    border-radius: 5px;
+                &.active {
+                    background: var(--color-primary);
                 }
             }
         }

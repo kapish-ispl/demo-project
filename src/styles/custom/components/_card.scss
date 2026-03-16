@@ -1663,3 +1663,34 @@
         }
     }
 }
+
+.c-logoloop {
+    &__list {
+        @include flexbox;
+        @include align-items(center);
+        @include justify-content(space-between);
+
+        &-item {
+            &:hover {
+                .c-logoloop__link {
+                    .c-logoloop__node {
+                        img {
+                            filter: grayscale(0);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    &__link {
+        .c-logoloop__node {
+            img {
+                transition: all 0.3s ease-in-out;
+                filter: grayscale(1);
+            }
+        }
+    }
+}

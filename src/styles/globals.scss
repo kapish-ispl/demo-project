@@ -39,6 +39,7 @@
 @use 'custom/components/effectslider';
 @use 'custom/components/stackSlider';
 @use 'custom/components/milestones';
+@use 'custom/components/leadership';
 /* End component files */
 
 .ratio-9x16 {
@@ -474,7 +475,7 @@
   }
 
   .withBoder {
-    border-bottom: 2px solid #446183 !important;
+    border-bottom: 1px solid #446183 !important;
   }
 }
 

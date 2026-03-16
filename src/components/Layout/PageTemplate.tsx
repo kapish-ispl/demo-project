@@ -44,6 +44,7 @@ const TextScrollAnimation = dynamic(() => import("@/utils/TextScrollAnimation"),
 const RotatingSlider = dynamic(() => import("@/utils/RotatingSlider"), { ssr: false });
 const ProjectSlider = dynamic(() => import("@/utils/ProjectSlider"), { ssr: false });
 const BentoSyncReveal = dynamic(() => import("@/utils/BentoSyncReveal"), { ssr: false });
+const TimeLineSection = dynamic(() => import("@/utils/TimeLineSection"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -77,6 +78,9 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 }
                 if (domNode.name === "projectslider") {
                     return <ProjectSlider />
+                }
+                if (domNode.name === "timelinesection") {
+                    return <TimeLineSection />
                 }
                 if (domNode.name === "customcarouselslider") {
                     const children = domToReact(domNode.children as DOMNode[]);

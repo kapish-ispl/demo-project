@@ -121,9 +121,39 @@ const TimeLineSection = () => {
                                         <img src="https://d2lptvt2jijg6f.cloudfront.net/document/137/1773481247_construction-tall-concrete-pylon-bridge-using-tower-crane2.png" className="img-fluid u-img" alt="timelime images" style={{ height: '120%', objectFit: 'cover' }} />
                                     </div>
                                     <div className="c-timeline__item-text">
+                                        <div className="c-heading-48 lh_1-1 clr-peach ft_regular mb-1">2024</div>
+                                        <div className="c-content-24 lh_1-2 clr-gray ft_medium mb-1">Transition to Full-Scale EPC</div>
+                                        <div className="c-content-20 clr-gray ft_light lh_1-6">Expanded into complete engineering, procurement and construction (EPC) project delivery across steel, cement, ports and mining sectors.</div>
+                                    </div>
+                                </div>
+                                <div className="c-timeline__item" style={{ flex: '0 0 auto' }}>
+                                    <div className="c-timeline__item-text">
+                                        <div className="c-heading-48 lh_1-1 clr-peach ft_regular mb-1">2025</div>
+                                        <div className="c-content-24 lh_1-2 clr-gray ft_medium mb-1">Digital Transformation & Integrated ERP</div>
+                                        <div className="c-content-20 clr-gray ft_light lh_1-6">Implemented Oracle Fusion ERP, establishing an integrated platform for finance, procurement and project management.</div>
+                                    </div>
+                                    <div className="c-timeline__item-img" style={{ overflow: 'hidden' }}>
+                                        <img src="https://d2lptvt2jijg6f.cloudfront.net/document/137/1773481247_construction-tall-concrete-pylon-bridge-using-tower-crane2.png" className="img-fluid u-img" alt="timelime images" style={{ height: '120%', objectFit: 'cover' }} />
+                                    </div>
+                                </div>
+                                <div className="c-timeline__item" style={{ flex: '0 0 auto' }}>
+                                    <div className="c-timeline__item-text">
                                         <div className="c-heading-48 lh_1-1 clr-peach ft_regular mb-1">2023</div>
                                         <div className="c-content-24 lh_1-2 clr-gray ft_medium mb-1">Entry into Construction Projects</div>
                                         <div className="c-content-20 clr-gray ft_light lh_1-6">Strategic entry into construction projects with successful completion of multiple infrastructure assignments across locations.</div>
+                                    </div>
+                                    <div className="c-timeline__item-img" style={{ overflow: 'hidden' }}>
+                                        <img src="https://d2lptvt2jijg6f.cloudfront.net/document/137/1773481247_construction-tall-concrete-pylon-bridge-using-tower-crane2.png" className="img-fluid u-img" alt="timelime images" style={{ height: '120%', objectFit: 'cover' }} />
+                                    </div>
+                                </div>
+                                <div className="c-timeline__item" style={{ flex: '0 0 auto' }}>
+                                    <div className="c-timeline__item-text">
+                                        <div className="c-heading-48 lh_1-1 clr-peach ft_regular mb-1">2023</div>
+                                        <div className="c-content-24 lh_1-2 clr-gray ft_medium mb-1">Entry into Construction Projects</div>
+                                        <div className="c-content-20 clr-gray ft_light lh_1-6">Strategic entry into construction projects with successful completion of multiple infrastructure assignments across locations.</div>
+                                    </div>
+                                    <div className="c-timeline__item-img" style={{ overflow: 'hidden' }}>
+                                        <img src="https://d2lptvt2jijg6f.cloudfront.net/document/137/1773481247_construction-tall-concrete-pylon-bridge-using-tower-crane2.png" className="img-fluid u-img" alt="timelime images" style={{ height: '120%', objectFit: 'cover' }} />
                                     </div>
                                 </div>
                                 <div className="c-timeline__item" style={{ flex: '0 0 auto' }}>

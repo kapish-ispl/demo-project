@@ -1,0 +1,50 @@
+@use '../core/variables' as *;
+@use '../core/mixins' as *;
+@use '../components/generic/sizes' as *;
+
+.c-leadership {
+    .read_more_btn {
+        margin: 0px;
+    }
+
+    .c-twoColumnContainer__image {
+        img {
+            @include mq(tablet-max) {
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    // .withBoder {
+    //     border-bottom: 1px solid var(--color-accent-green) !important;
+    // }
+    .divider {
+        width: 100%;
+        height: 1px;
+        background: var(--color-accent-green);
+    }
+}
+
+.holographic-card {
+
+    transition: transform 0.3s ease-in-out;
+    -webkit-transition: transform 0.3s ease-in-out;
+    -ms-transition: transform 0.3s ease-in-out;
+    -o-transition: transform 0.3s ease-in-out;
+}
+
+.holographic-card:hover {
+
+    transform: scale(1.03);
+    @include box-shadow(0 0 20px rgba(15, 15, 15, 0.5));
+
+}
+
+.leaderNewCard {
+    .c-card {
+        &__media {
+            background-color: #2A2A2A;
+        }
+    }
+}

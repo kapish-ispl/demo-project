@@ -80,7 +80,9 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     return <ProjectSlider />
                 }
                 if (domNode.name === "timelinesection") {
-                    return <TimeLineSection />
+                    const props = attributesToProps(domNode.attribs);
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <TimeLineSection {...props} data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "customcarouselslider") {
                     const children = domToReact(domNode.children as DOMNode[]);
@@ -123,10 +125,10 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <StackSlider {...props} data={Array.isArray(children) ? children : [children]} />;
                 }
-                // if (domNode.name === "bentosyncreveal") {
-                //     const children = domToReact(domNode.children as DOMNode[]);
-                //     return <BentoSyncReveal data={Array.isArray(children) ? children : [children]} />;
-                // }
+                if (domNode.name === "bentosyncreveal") {
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <BentoSyncReveal data={Array.isArray(children) ? children : [children]} />;
+                }
                 if (domNode.name === "customzoomeffect") {
                     const props = attributesToProps(domNode.attribs);
                     const children = domToReact(domNode.children as DOMNode[]);

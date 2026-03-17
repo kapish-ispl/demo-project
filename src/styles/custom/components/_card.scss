@@ -1694,3 +1694,111 @@
         }
     }
 }
+
+.masonry-grid {
+    margin-top: 30px;
+
+    @include mq(tablet-max) {
+        padding: 0px 60px;
+        margin-top: 0px
+    }
+
+    .masonry-item {
+        @include flexbox;
+        @include flex-direction(column, vertical);
+
+        &:nth-child(odd) {
+            @include align-items(flex-end);
+        }
+
+        &:nth-child(even) {
+            @include align-items(flex-start);
+        }
+
+        &:nth-child(1) {
+            @include mq(tablet-max) {
+                margin-top: 0px;
+            }
+        }
+
+        @include mq(tablet-max) {
+            margin-top: -230px;
+        }
+
+        .img-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+
+            &::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(360deg, rgba(38, 38, 38, 0.4) 35%, rgba(71, 70, 70, 0) 100%);
+                left: 0;
+                top: 0;
+                z-index: 1;
+                @include border-radius(8px);
+            }
+
+            @include mq(tablet-max) {
+                margin-bottom: 40px;
+            }
+
+            img {
+                width: 100%;
+                height: 300px;
+                max-width: 575px;
+                object-fit: cover;
+                @include border-radius(8px);
+                display: block;
+                position: relative;
+
+
+
+                @include mq(tablet-max) {
+                    height: 420px;
+                }
+            }
+
+            .overlapping-content {
+                position: relative;
+                z-index: 10;
+                margin-top: 20px;
+
+                @include mq(tablet-max) {
+                    position: absolute;
+                    bottom: 40px;
+                    left: -50px;
+                }
+
+                .count {
+                    display: block;
+                    margin-bottom: 8px;
+                }
+
+                .card-heading {
+                    margin: 0;
+
+                    @include mq(tablet-max) {
+                        max-width: 460px;
+                    }
+                }
+            }
+        }
+
+
+
+        .description {
+            @include mq(tablet-max) {
+                padding-left: 15px;
+            }
+
+
+            p {
+                max-width: 565px;
+            }
+        }
+
+    }
+}

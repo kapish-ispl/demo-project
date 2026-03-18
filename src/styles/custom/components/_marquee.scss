@@ -1,0 +1,96 @@
+@use '../core/variables' as *;
+@use '../core/mixins' as *;
+@use '../components/generic/sizes' as *;
+
+.gallery-marquee {
+    .marquee-content {
+        gap: 20px;
+    }
+
+    .c-bento__card__wrapper {
+        &::before {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.6) 100%);
+            @include border-radius(16px);
+
+        }
+
+        &_media {
+            @include mq(tablet-max) {
+                height: 520px;
+            }
+        }
+
+        &.v3 {
+            .c-bento__card__wrapper_item {
+                @include box-shadow(inherit);
+                flex: inherit;
+
+                &:nth-child(2) {
+                    flex: inherit;
+                }
+
+                &::before {
+                    @include border-radius(16px);
+                }
+
+            }
+
+            .c-bento__card__wrapper_media {
+                height: 250px;
+
+            }
+
+        }
+
+        .c-bento__card__wrapper_media {
+            @include border-radius(8px);
+        }
+    }
+
+    .c-bento {
+        @include flexbox;
+        gap: 20px;
+    }
+}
+
+.marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .marquee-content {
+        display: flex;
+        width: max-content;
+        will-change: transform;
+        /* REMOVED: gap: 1.5rem; - This is usually the culprit */
+    }
+
+    .marquee-item {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Use padding or margin on the item instead of 'gap' on the parent
+        padding: 0 20px;
+
+        // Your actual content box
+        .bento-box {
+            width: 300px;
+            height: 150px;
+            background: #252525;
+            border-radius: 12px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+    }
+}
+
+.c-logo__marquee {
+    .marquee-content {
+        gap: 40px;
+    }
+}

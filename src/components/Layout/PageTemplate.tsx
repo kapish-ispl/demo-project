@@ -45,6 +45,7 @@ const RotatingSlider = dynamic(() => import("@/utils/RotatingSlider"), { ssr: fa
 const ProjectSlider = dynamic(() => import("@/utils/ProjectSlider"), { ssr: false });
 const BentoSyncReveal = dynamic(() => import("@/utils/BentoSyncReveal"), { ssr: false });
 const TimeLineSection = dynamic(() => import("@/utils/TimeLineSection"), { ssr: false });
+const BentoMarquee = dynamic(() => import("@/utils/BentoMarquee"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -99,6 +100,10 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 if (domNode.name === "stackprojects") {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <StackProjects data={Array.isArray(children) ? children : [children]} />
+                }
+                if (domNode.name === "bentomarquee") {
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <BentoMarquee data={Array.isArray(children) ? children : [children]} />;
                 }
                 if (domNode.name === "rotatingslider") {
                     const children = domToReact(domNode.children as DOMNode[]);

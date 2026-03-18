@@ -1684,7 +1684,7 @@
     &__list {
         @include flexbox;
         @include align-items(center);
-        @include justify-content(space-between);
+        gap: 40px;
 
         &-item {
             &:hover {

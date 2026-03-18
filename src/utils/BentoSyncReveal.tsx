@@ -11,12 +11,12 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
     const SLIDE_DATA = [
         {
             id: 1,
-            mainImg: "https://picsum.photos/1920/1080?random=0",
+            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card.png",
             title: "Structured Safety Monitoring",
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
-            gallery: ["https://picsum.photos/1920/1080?random=1", "https://picsum.photos/1920/1080?random=2", "https://picsum.photos/1920/1080?random=3"]
+            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png", "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card.png", "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png"]
         },
         {
             id: 2,
@@ -29,30 +29,30 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
         },
         {
             id: 3,
-            mainImg: "https://picsum.photos/1920/1080?random=8",
+            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card1.png",
             title: "Structured Safety Monitoring",
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
-            gallery: ["https://picsum.photos/1920/1080?random=9", "https://picsum.photos/1920/1080?random=10", "https://picsum.photos/1920/1080?random=11"]
+            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card1.png", "https://picsum.photos/1920/1080?random=10", "https://picsum.photos/1920/1080?random=11"]
         },
         {
             id: 4,
-            mainImg: "https://picsum.photos/1920/1080?random=12",
+            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png",
             title: "Structured Safety Monitoring",
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
-            gallery: ["https://picsum.photos/1920/1080?random=13", "https://picsum.photos/1920/1080?random=14", "https://picsum.photos/1920/1080?random=15"]
+            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png", "https://picsum.photos/1920/1080?random=14", "https://picsum.photos/1920/1080?random=15"]
         },
         {
             id: 5,
-            mainImg: "https://picsum.photos/1920/1080?random=16",
+            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png",
             title: "Structured Safety Monitoring",
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
-            gallery: ["https://picsum.photos/1920/1080?random=17", "https://picsum.photos/1920/1080?random=18", "https://picsum.photos/1920/1080?random=19"]
+            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png", "https://picsum.photos/1920/1080?random=18", "https://picsum.photos/1920/1080?random=19"]
         },
     ];
     const container = useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
                 {SLIDE_DATA.map((slide, index) => (
                     <div
                         key={slide.id}
-                        className={`slide-wrapper slide-${index}`}
+                        className={`slide-wrapper c-bentoSlider slide-${index}`}
                         style={{ zIndex: SLIDE_DATA.length - index }}
                     >
                         <div className="bento-grid">

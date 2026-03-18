@@ -2900,3 +2900,79 @@ ul {
         }
     }
 }
+
+.ourStrength {
+    @include flexbox;
+    @include flex-direction(column, Vertical);
+    gap: 20px;
+
+    @include mq(tablet-max) {
+        @include flex-direction(row, horizontal);
+    }
+
+    &__item {
+        @include border-radius(8px);
+
+        &-info {
+            padding: 10px 0px;
+
+            .c-content-20 {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        &.v2 {
+            @include flexbox;
+            @include flex-direction(column, Vertical);
+            gap: 20px;
+            flex-wrap: wrap;
+
+            @include mq(tablet) {
+                @include flex-direction(row, horizontal);
+            }
+
+
+        }
+
+        &:nth-child(1) {
+            padding: 15px;
+            @include flexbox;
+            @include align-items(center);
+            @include justify-content(center);
+            @include flex-direction(column, Vertical);
+
+            @include mq(tablet-max) {
+                padding: 24px;
+                flex: 0 0 30%;
+            }
+
+            @include mq(desktop) {
+                padding: 32px;
+            }
+        }
+
+        &:nth-child(2) {
+            @include mq(tablet-max) {
+                flex: 0 0 70%;
+            }
+        }
+
+        &-list {
+            width: 100%;
+            padding: 15px;
+            @include flexbox;
+            gap: 20px;
+            @include align-items(center);
+
+            @include mq(tablet) {
+                width: calc(100% / 2 - 20px);
+                padding: 24px;
+            }
+
+            @include mq(desktop) {
+                padding: 32px;
+            }
+        }
+    }
+}

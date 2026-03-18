@@ -2849,3 +2849,54 @@ ul {
         }
     }
 }
+
+.c-tabWrapper {
+    .tabbing_wrap {
+        &.v1 {
+            ul {
+                @include justify-content(space-between);
+
+                li {
+                    flex: 1;
+
+                    button {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .tabbing_wrap_content {
+                .c-tab__content {
+                    .c-card {
+                        box-shadow: inherit;
+
+                        &__media {
+                            img {
+                                @include border-radius(8px);
+                            }
+                        }
+
+                        &__content {
+                            padding: 32px 0px;
+
+                            .location {
+                                @include flexbox;
+                                gap: 10px;
+                            }
+
+                            .title {
+                                color: var(--color-secondary);
+                                max-width: 320px;
+                                width: 100%;
+                                min-height: 70px;
+                            }
+
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
+}

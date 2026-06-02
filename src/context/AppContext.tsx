@@ -1,27 +1,30 @@
 "use client";
 
 import { serverRequest } from "@/services/getServerSideRender";
-import { GET_MENU_ENDPOINT } from "@/config/apiConfig";
+import { GET_ALL_PAGE_ENDPOINT, GET_MENU_ENDPOINT } from "@/config/apiConfig";
 import { ReactNode, createContext, useState, useEffect } from "react";
 import { CONSTANTS } from "@/config/constant";
 import AOS from "aos";
 
 type contextType = {
-    headerMenu: never[];
-    footerMenu: never[];
+    headerMenu: any[];
+    footerMenu: any[];
+    allPageData: any[];
     menuType: string;
 };
 
 export const AppContext = createContext<contextType>({
     headerMenu: [],
     footerMenu: [],
+    allPageData: [],
     menuType: "",
 });
 
 const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
-    const [headerMenu, setHeaderMenu] = useState([]);
-    const [footerMenu, setFooterMenu] = useState([]);
+    const [headerMenu, setHeaderMenu] = useState<any[]>([]);
+    const [footerMenu, setFooterMenu] = useState<any[]>([]);
+    const [allPageData, setAllPageData] = useState<any[]>([]);
     const [menuType, setMenuType] = useState("page");
 
 
@@ -52,14 +55,18 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
             } else {
                 setFooterMenu([]);
             }
+            const getAllPageData = await serverRequest({}, `${GET_ALL_PAGE_ENDPOINT}`, CONSTANTS.REQUEST_GET, 'client');
+            if (getAllPageData && getAllPageData.code == CONSTANTS.STATUS_SUCCESS) {
+                setAllPageData(getAllPageData.data);
+            } else {
+                setAllPageData([]);
+            }
             // const getProducts = await serverRequest({}, `${GET_POST_ENDPOINT}?slug=product`, CONSTANTS.REQUEST_GET);
             // setProductData(getProducts);
         };
         perRequiredRequest();
     }, []);
-
-
-    const values = { headerMenu, footerMenu, menuType, setMenuType, };
+    const values = { headerMenu, footerMenu, menuType, setMenuType, allPageData };
     return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };
 

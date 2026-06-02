@@ -3,7 +3,6 @@ import { PageResponse } from '@/types/pageResponse';
 import dynamic from 'next/dynamic';
 const PageTemplate = dynamic(() => import('./PageTemplate'), { ssr: false });
 const HomeBanner = dynamic(() => import('../Layout/HomeBanner'), { ssr: false });
-const TimeLineSection = dynamic(() => import('@/utils/TimeLineSection'), { ssr: false })
 const HomePage = ({ data }: { data: PageResponse }) => {
     return (
         <>

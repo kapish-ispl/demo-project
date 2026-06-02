@@ -333,16 +333,20 @@ $slide-duration: 8000ms;
         transform: translateY(100%);
         opacity: 0;
         text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-        @include mq(tablet-max){
+
+        @include mq(tablet-max) {
             @include font-size(90);
         }
-        @include mq(desktop){
+
+        @include mq(desktop) {
             @include font-size(110);
         }
-        @include mq(desktop-wide){
+
+        @include mq(desktop-wide) {
             @include font-size(130);
         }
-        @include mq(desktop-wide-max){
+
+        @include mq(desktop-wide-max) {
             @include font-size(140);
         }
     }
@@ -374,6 +378,7 @@ $slide-duration: 8000ms;
     }
 
     // --- THUMBS SECTION (Queue-based) ---
+
     &__thumbs {
         position: absolute;
         bottom: 17%;
@@ -473,7 +478,7 @@ $slide-duration: 8000ms;
 
     &__progress-bar {
         height: 100%;
-       background-color: var(--color-primary);
+        background-color: var(--color-primary);
         width: 0%;
         display: block;
     }
@@ -539,6 +544,51 @@ $slide-duration: 8000ms;
             border-width: 0 2.5px 2.5px 0;
             transform: rotate(-45deg);
             margin-right: 3px;
+        }
+    }
+}
+
+.slider-controls--hide-desktop {
+    @include mq('tablet') {
+        display: none !important;
+    }
+}
+
+.thumb-card {
+    border-radius: 5px;
+    overflow: hidden;
+    @include size(180px, 122.2px);
+
+    &-title {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        z-index: 2;
+    }
+
+    &-link-icon {
+        position: absolute;
+        bottom: 10px;
+        left: 20px;
+        z-index: 2;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-overly {
+        position: absolute;
+        inset: 0;
+        // background: rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 40%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+        .thumb-card-link-icon {
+            transform: translateX(10px);
         }
     }
 }

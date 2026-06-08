@@ -104,7 +104,7 @@ export default function CardStack({ data }: any) {
                 {data.filter((items: any, index: any) => items.props !== undefined).map((item:any, index:number) => {
                     return(
                         <div
-                        key={item.id}
+                        key={index}
                         className="stacked-card"
                         style={{ zIndex: index + 1 }}
                     >

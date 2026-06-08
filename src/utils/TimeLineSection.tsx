@@ -75,8 +75,6 @@ const TimeLineSection = ({ data, showScrollbar = true, customcls = '' }: { data:
                 onUpdate: (self) => {
                     // Update a css variable on the section for how much we have scrolled
                     section.style.setProperty('--scroll-progress', self.progress.toString())
-                    section.style.setProperty
-                    section.style.setProperty
                 }
             }
         })

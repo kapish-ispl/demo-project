@@ -73,7 +73,7 @@ export default async function Page({
           </div>
         </div>
       </div>
-      <PageTemplate data={pageData} />
+      <PageTemplate key={typeof slug === 'string' ? slug : 'default'} data={pageData} />
     </>
   );
 }

@@ -13,7 +13,7 @@ const HomePage = ({ data }: { data: PageResponse }) => {
                     </div>
                 </div>
             </div>
-            <PageTemplate data={data} />
+            <PageTemplate key={data?.slug || 'home'} data={data} />
         </>
     )
 }

@@ -56,6 +56,9 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     const customcls = domNode.attribs.customcls ?? '';
                     return <TimeLineSection {...props} showScrollbar={showScrollbar} customcls={customcls} data={Array.isArray(children) ? children : [children]} />
                 }
+                // if (domNode.name === "timelinesection") {
+                //     return <>hello</>
+                // }
                 if (domNode.name === "bentomarquee") {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <BentoMarquee data={Array.isArray(children) ? children : [children]} />;
@@ -115,6 +118,9 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
 
                     return <Tabs {...props} data={tabItems} />;
                 }
+                // if (domNode.name === "customtabs") {
+                //     return <>Tabs</>
+                // }
                 if (domNode.name === "cardstack") {
                     const props = attributesToProps(domNode.attribs);
                     const children = domToReact(domNode.children as DOMNode[]);
@@ -141,16 +147,10 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 }
 
             }
-
-            return null;
-        },
-        htmlparser2: {
-            lowerCaseTags: false,
-            xmlMode: true,
         },
     };
 
-    return <>{parse(data?.content, options)}</>;
+    return <div style={{ display: 'contents' }}>{parse(data?.content, options)}</div>;
 };
 
 export default PageTemplate;

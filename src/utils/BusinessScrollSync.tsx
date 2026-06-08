@@ -10,29 +10,33 @@ const contentData = [
         description: "Jindal Projects operates through an integrated engineering and execution framework that aligns design, planning, procurement, and site delivery under a unified project structure. This model reduces interface risks, improves coordination, and strengthens execution control across complex industrial programs."
     },
     {
-        title: "Data-Driven Planning",
-        description: "Leveraging advanced analytics and 3D modeling to anticipate challenges, optimize schedules, and ensure flawless execution across all construction phases. We optimize resources to deliver on-time, every time."
+        count: "1",
+        title: "Engineering Alignment",
+        description: "We integrate engineering decisions with execution realities to improve constructability and reduce downstream risk."
     },
     {
-        title: "Sustainable Construction",
-        description: "We pioneer sustainable practices across our projects, intentionally minimizing environmental impact while maximizing resource efficiency. Through advanced technologies, we build lasting infrastructure that responsibly supports the ecosystems of tomorrow."
+        count: "2",
+        title: "Structured Planning",
+        description: "Detailed scheduling, cost monitoring, and resource coordination frameworks guide disciplined project progression."
     },
     {
-        title: "Infrastructure Engineering",
-        description: "We conceptualize and build transformative civil infrastructure, ranging from high-capacity bridges to sprawling urban networks. Our robust engineering ensures longevity, safety, and seamless connectivity that empowers modern communities to thrive."
+        count: "3",
+        title: " Coordinated Procurement",
+        description: "Procurement and fabrication support are aligned with site execution timelines to maintain continuity and readiness."
     },
     {
-        title: "Rail Network Expansion",
-        description: "Connecting nations with precision-engineered transit corridors, our railway initiatives redefine modern transport logistics. We deploy state-of-the-art surveying and track-laying methodologies to guarantee efficient, high-speed rail mobility with uncompromising structural integrity."
-    }
+        count: "4",
+        title: "Controlled Site Delivery",
+        description: "Self-performed civil, structural, and mechanical execution ensures accountability, safety compliance, and operational control."
+    },
+
 ];
 
 const images = [
     'https://d2lptvt2jijg6f.cloudfront.net/document/137/1773490685_card-img.png',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1773636377_builders-checking-blueprints-site1.png',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1773480063_Rectangle661.webp',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1773480043_Rectangle663.webp/images/bridge.png',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1773475496_Screenshot641.webp'
+    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780899910_6f59041a4ef88fe91068968b3dea5aeeac6317e1.jpg',
+    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780899907_4b1fad4ca810384c5ccd49ff774f1b9b16735bff.png',
+    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780899908_039ae502a530b10d1b287adc5acbdee131c59f10.jpg',
 ];
 
 export default function BusinessScrollSync() {
@@ -48,42 +52,55 @@ export default function BusinessScrollSync() {
         const ctx = gsap.context(() => {
             const sections = gsap.utils.toArray('.business-scroll-card');
 
-            const getTranslateX = () => {
-                if (!sliderRef.current || !sectionRef.current) return 0;
-
-                const trackWidth = sliderRef.current.scrollWidth;
-                const containerWidth = window.innerWidth;
-
-                // Keep the offset multiplier in sync with CSS media queries (8vw desktop, 6vw tablet, 5vw mobile)
-                let offsetPercentage = 0.08;
-                if (window.innerWidth <= 767) offsetPercentage = 0.05;
-                else if (window.innerWidth <= 991) offsetPercentage = 0.06;
-
-                const leftOffset = window.innerWidth * offsetPercentage;
-
-                // We want to translate exactly enough so the last image sits on the right side
-                // leaving a matching margin on the right, with NO extra white space.
-                const maxTranslate = trackWidth - containerWidth + (leftOffset * 2);
-                return maxTranslate;
-            };
-
-            gsap.to(sliderRef.current, {
-                x: () => -getTranslateX(),
-                ease: "none",
+            // Since there are 5 content items and 4 images,
+            // index 0: First content, no image at left margin (first image is at 50vw).
+            // index 1: Second content, first image is at left margin (8vw).
+            // index 2: Third content, second image is at left margin.
+            // index 3: Fourth content, third image is at left margin.
+            // index 4: Fifth content, fourth image is at left margin.
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: () => `+=${sections.length * window.innerHeight * 1.5}`,
+                    end: () => `+=${contentData.length * window.innerHeight * 1.5}`, // Adjusted scroll distance multiplier
                     pin: true,
                     scrub: 1,
                     invalidateOnRefresh: true,
                     onUpdate: (self) => {
-                        const index = Math.round(self.progress * (sections.length - 1));
-                        const safeIndex = Math.max(0, Math.min(index, sections.length - 1));
+                        const index = Math.round(self.progress * (contentData.length - 1));
+                        const safeIndex = Math.max(0, Math.min(index, contentData.length - 1));
                         setActiveIndex(safeIndex);
                     }
                 }
             });
+
+            if (sections.length > 0) {
+                // We create a transition for each image to reach the left margin
+                for (let i = 1; i <= sections.length; i++) {
+                    tl.to(sliderRef.current, {
+                        x: () => {
+                            if (!sliderRef.current || !sectionRef.current) return 0;
+                            const firstCard = sections[0] as HTMLElement;
+                            const cardWidth = firstCard.offsetWidth;
+
+                            let gap = 30;
+                            if (window.innerWidth <= 767) gap = 15;
+                            else if (window.innerWidth <= 991) gap = 20;
+
+                            let offsetPercentage = 0.08;
+                            if (window.innerWidth <= 767) offsetPercentage = 0.05;
+                            else if (window.innerWidth <= 991) offsetPercentage = 0.06;
+
+                            const leftOffset = window.innerWidth * offsetPercentage;
+                            // First item starts at 50vw (half width). The extra distance to scroll is 50vw - leftOffset.
+                            const startOffset = (window.innerWidth * 0.5) - leftOffset;
+
+                            return -(startOffset + (i - 1) * (cardWidth + gap));
+                        },
+                        ease: "none"
+                    });
+                }
+            }
 
         }, sectionRef);
 
@@ -111,6 +128,20 @@ export default function BusinessScrollSync() {
                                 return (
                                     <div key={`title-${idx}`} className={className}>
                                         <div className="text-flip-content-y">
+                                            <h5 className='c-content-32 ft_medium lh_1-2 clr-peach'>
+                                                {data.count && data.count.split('-').map((word, wIdx) => {
+                                                    const delay = 0.1 + (wIdx * 0.15);
+                                                    return (
+                                                        <span
+                                                            key={wIdx}
+                                                            className="stagger-word"
+                                                            style={{ transitionDelay: isActive ? `${delay}s` : '0s' }}
+                                                        >
+                                                            {word}{' '}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </h5>
                                             <h2 className="c-heading-60 slide-title lh_1-2 ft_medium m-0">
                                                 {data.title.split(' ').map((word, wIdx) => {
                                                     const delay = 0.1 + (wIdx * 0.15);

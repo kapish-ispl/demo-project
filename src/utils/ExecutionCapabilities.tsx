@@ -81,28 +81,28 @@ const ExecutionCapabilities: React.FC = () => {
       id: '01',
       title: 'Civil & Structural Execution',
       description: 'Large-scale concreting, structural erection, and industrial foundation works executed within active plant environments.',
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=2069',
+      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial.png',
       alignment: 'is-right' // First image right aligned
     },
     {
       id: '02',
       title: 'Mechanical Installation',
       description: 'Erection and integration of heavy equipment, material handling systems, and plant infrastructure components.',
-      image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?q=80&w=2070',
+      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial1.png',
       alignment: 'is-left' // Second image left aligned
     },
     {
       id: '03',
       title: 'Electrical & Instrumentation',
       description: 'Installation and commissioning support across electrical, automation, and control systems.',
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=2069',
+      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial2.png',
       alignment: 'is-right'
     },
     {
       id: '04',
       title: 'Workforce & Equipment Mobilisation',
       description: 'Deployment of experienced teams and heavy equipment fleets to support high-value infrastructure programs.',
-      image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070',
+      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial3.png',
       alignment: 'is-left'
     }
   ];

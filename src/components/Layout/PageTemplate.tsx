@@ -46,6 +46,8 @@ const ProjectSlider = dynamic(() => import("@/utils/ProjectSlider"), { ssr: fals
 const BentoSyncReveal = dynamic(() => import("@/utils/BentoSyncReveal"), { ssr: false });
 const TimeLineSection = dynamic(() => import("@/utils/TimeLineSection"), { ssr: false });
 const BentoMarquee = dynamic(() => import("@/utils/BentoMarquee"), { ssr: false });
+const BusinessScrollSync = dynamic(() => import("@/utils/BusinessScrollSync"), { ssr: false });
+const ExecutionCapabilities = dynamic(() => import("@/utils/ExecutionCapabilities"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -80,10 +82,23 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 if (domNode.name === "projectslider") {
                     return <ProjectSlider />
                 }
+                if (domNode.name === "executioncapabilities") {
+                    return <ExecutionCapabilities />
+                }
+                if (domNode.name === "businessscrollsync") {
+                    return <BusinessScrollSync />
+                }
                 if (domNode.name === "timelinesection") {
                     const props = attributesToProps(domNode.attribs);
                     const children = domToReact(domNode.children as DOMNode[]);
-                    return <TimeLineSection {...props} data={Array.isArray(children) ? children : [children]} />
+                    // attributesToProps keeps attribute values as strings (e.g. "false" stays "false" which is truthy).
+                    // Explicitly convert showscrollbar to a real boolean.
+                    const showScrollbar = domNode.attribs.showscrollbar !== undefined
+                        ? domNode.attribs.showscrollbar !== 'false'
+                        : true;
+                    // Explicitly pass customcls from raw attribs so it is never dropped or transformed.
+                    const customcls = domNode.attribs.customcls ?? '';
+                    return <TimeLineSection {...props} showScrollbar={showScrollbar} customcls={customcls} data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "customcarouselslider") {
                     const children = domToReact(domNode.children as DOMNode[]);
@@ -131,8 +146,9 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     return <StackSlider {...props} data={Array.isArray(children) ? children : [children]} />;
                 }
                 if (domNode.name === "bentosyncreveal") {
+                    const props = attributesToProps(domNode.attribs);
                     const children = domToReact(domNode.children as DOMNode[]);
-                    return <BentoSyncReveal data={Array.isArray(children) ? children : [children]} />;
+                    return <BentoSyncReveal props={props} data={Array.isArray(children) ? children : [children]} />;
                 }
                 if (domNode.name === "customzoomeffect") {
                     const props = attributesToProps(domNode.attribs);

@@ -2705,14 +2705,54 @@ ul {
     }
 }
 
+.timeline__container {
+    .c-timeline {
+        &__item {
+            &-img {
+                height: auto;
+
+                img {
+                    aspect-ratio: 1;
+                    height: auto !important;
+                }
+            }
+
+            &-text {
+                max-width: 278px;
+            }
+        }
+    }
+
+    &.timeLine__wrapper {
+        height: 900px !important;
+        max-height: 900px !important;
+    }
+}
+
 .c-timeline {
     @include flexbox;
     gap: 50px;
+    padding-top: 100px;
+
+    @include mq(desktop-wide) {
+        padding-top: 60px;
+    }
+
+    @include mq(big-screen) {
+        padding-top: 120px;
+    }
+
 
     &__item {
         @include flexbox;
         flex-direction: column;
-        gap: 40px;
+        gap: 15px;
+        padding-bottom: 60px;
+        flex: 0 0 auto;
+
+        @include mq(desktop-wide-max) {
+            gap: 50px;
+        }
 
         &-text {
             max-width: 424px;
@@ -2720,11 +2760,27 @@ ul {
 
         &-img {
             position: relative;
+            overflow: hidden;
 
             img {
                 filter: grayscale(1);
+                aspect-ratio: 1.8;
+                width: 100%;
+                max-width: 424px;
+                height: 100% !important;
+
+                @include mq(big-screen) {
+                    aspect-ratio: 1.3;
+                }
             }
 
+            // &.height-200 {
+            //     height: 250px;
+
+            //     img {
+            //         width: 100% !important;
+            //     }
+            // }
         }
 
         &:nth-child(odd) {
@@ -2735,10 +2791,25 @@ ul {
 
 .timeline-scrollbar-wrapper {
     position: absolute;
-    bottom: 50px;
+    bottom: 250px;
     left: 0;
     width: 100%;
-    z-index: 100;
+
+    // @media screen and (min-width: 1460px) and (max-width: 1535px) {
+    //     bottom: 250px;
+    // }
+
+    @media screen and (min-width: 1536px) and (max-width: 1750px) {
+        bottom: 200px;
+    }
+
+    @media screen and (min-width: 1751px) {
+        bottom: 90px;
+    }
+
+    @include mq(big-screen) {
+        bottom: 10px;
+    }
 }
 
 .timeline-track-bg {
@@ -2823,6 +2894,19 @@ ul {
     background-color: var(--color-primary);
     transform: scale(1.3);
     box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+.timeLine__wrapper {
+    // .hw {
+    //     padding-top: 100px;
+
+    //     @include mq(big-screen) {
+    //         padding-top: 150px;
+    //     }
+    // }
+
+    height: 1050px !important;
+    max-height: 1050px !important;
 }
 
 .keyFeature {
@@ -2974,5 +3058,190 @@ ul {
                 padding: 32px;
             }
         }
+    }
+}
+
+// .execution-section {
+//     background-color: #929292; // Matching the grey background in your screenshot
+//     padding: 100px 0;
+//     color: #fff;
+
+//     .capabilities-grid {
+//         display: grid;
+//         grid-template-columns: 1fr 1fr;
+//         gap: 120px 60px;
+//         margin-top: 80px;
+
+//         @media (max-width: 768px) {
+//             grid-template-columns: 1fr;
+//         }
+//     }
+// }
+
+// .step_wrapper {
+//     display: flex;
+//     flex-direction: column;
+//     max-width: 480px;
+
+//     &.is-normal {
+//         justify-self: end;
+//     }
+
+//     &.is-left {
+//         justify-self: start;
+//         margin-top: 60px;
+//     }
+// }
+
+// .step_image-wrap {
+//     position: relative;
+//     width: 100%;
+//     aspect-ratio: 4 / 3.5;
+//     overflow: hidden;
+//     border-radius: 8px;
+
+//     // This handles the reveal animation
+//     clip-path: inset(100% 0% 0% 0%);
+
+//     .parallax-image {
+//         width: 100%;
+//         height: 130%; // Extra height for the parallax movement
+//         object-fit: cover;
+//         position: absolute;
+//         top: -15%;
+//     }
+
+//     .step_image-overlay {
+//         position: absolute;
+//         inset: 0;
+//         background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+//     }
+// }
+
+// .step_description {
+//     margin-top: 20px;
+//     display: flex;
+//     flex-direction: column;
+//     gap: 10px;
+
+//     .step_number {
+//         font-size: 0.9rem;
+//         opacity: 0.7;
+//     }
+
+//     .step_text-title {
+//         font-size: 2.2rem;
+//         line-height: 1.1;
+//         font-weight: 500;
+//     }
+// }
+
+// .step_desc-wrap {
+//     margin-top: 15px;
+//     max-width: 350px;
+
+//     .step_text {
+//         font-size: 1rem;
+//         line-height: 1.6;
+//         opacity: 0.8;
+//     }
+// }
+
+.capabilities-section {
+    background-color: #8c8c8c;
+    padding: 100px 0;
+    overflow: hidden;
+
+    .flex-layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        // Vertical spacing between items
+
+    }
+}
+
+.step_wrapper {
+    display: flex;
+    width: 100%;
+    margin-top: -200px;
+
+    &:nth-child(1) {
+        margin-top: 0px;
+    }
+
+    // Alignment Logic
+    &.is-right {
+        justify-content: flex-end; // Align first image to right
+
+    }
+
+    &.is-left {
+        justify-content: flex-start; // Align second image to left
+
+    }
+
+    .step_content {
+        width: 100%;
+        max-width: 575px; // Image width from reference
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+}
+
+.step_image-wrap {
+    position: relative;
+    width: 100%;
+    height: 490px;
+    max-width: 575px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #777;
+    clip-path: inset(100% 0% 0% 0%);
+
+    .parallax-image {
+        width: 100%;
+        height: 140%;
+        object-fit: cover;
+        position: absolute;
+        top: -20%;
+        will-change: transform;
+    }
+}
+
+.step_info {
+    margin-top: 24px;
+    color: #fff;
+
+    &__float {
+        position: absolute;
+        top: 50%;
+        left: -50px;
+    }
+
+    .step_number {
+        display: block;
+        opacity: 0.6;
+    }
+
+    .step_title {
+        max-width: 456px;
+
+    }
+
+    .step_description {
+        opacity: 0.8;
+        max-width: 520px;
+    }
+}
+
+@media (max-width: 768px) {
+    // .capabilities-section .flex-layout {
+    //     gap: 80px;
+    // }
+
+    .step_wrapper {
+        justify-content: center !important;
     }
 }

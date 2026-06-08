@@ -2,12 +2,13 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { useDeviceType } from '@/hooks/useDeviceType';
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-const BentoSyncReveal = ({ data }: { data: any }) => {
+const BentoSyncReveal = ({ data, props }: { data: any, props: any }) => {
     const SLIDE_DATA = [
         {
             id: 1,
@@ -16,6 +17,7 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
+            statIcon: "/images/icons/labour-icon.svg",
             gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png", "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card.png", "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png"]
         },
         {
@@ -25,6 +27,7 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
+            statIcon: "/images/icons/labour-icon.svg",
             gallery: ["https://picsum.photos/1920/1080?random=5", "https://picsum.photos/1920/1080?random=6", "https://picsum.photos/1920/1080?random=7"]
         },
         {
@@ -34,6 +37,7 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
+            statIcon: "/images/icons/labour-icon.svg",
             gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card1.png", "https://picsum.photos/1920/1080?random=10", "https://picsum.photos/1920/1080?random=11"]
         },
         {
@@ -43,6 +47,7 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
+            statIcon: "/images/icons/labour-icon.svg",
             gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png", "https://picsum.photos/1920/1080?random=14", "https://picsum.photos/1920/1080?random=15"]
         },
         {
@@ -52,12 +57,14 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
             desc: "Defined reporting and review systems across sites.",
             stat: "11 Million",
             statDesc: "Safe Man-hours Achieved",
+            statIcon: "/images/icons/labour-icon.svg",
             gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png", "https://picsum.photos/1920/1080?random=18", "https://picsum.photos/1920/1080?random=19"]
         },
     ];
     const container = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
+        ScrollTrigger.normalizeScroll(true);
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: container.current,
@@ -65,6 +72,9 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
                 end: `+=${SLIDE_DATA.length * 100}%`, // Scroll length
                 scrub: true,
                 pin: true,
+                invalidateOnRefresh: true,
+                refreshPriority: 0,
+
             }
         });
 
@@ -96,45 +106,69 @@ const BentoSyncReveal = ({ data }: { data: any }) => {
 
     }, { scope: container });
 
+    const device = useDeviceType();
+
     return (
         <>
-            <div className="bento-comparator" ref={container}>
-                {SLIDE_DATA.map((slide, index) => (
-                    <div
-                        key={slide.id}
-                        className={`slide-wrapper c-bentoSlider slide-${index}`}
-                        style={{ zIndex: SLIDE_DATA.length - index }}
-                    >
-                        <div className="bento-grid">
-                            {/* LARGE FEATURE */}
-                            <div className="grid-item feature" style={{ backgroundImage: `url(${slide.mainImg})` }}>
-                                <div className="overlay">
-                                    <h3 className="reveal-text">{slide.title}</h3>
-                                    <p className="reveal-text">{slide.desc}</p>
-                                </div>
+            <div className="commonSection-md v2 d-none d-lg-block" ref={container}>
+                <div className="container cus-container">
+                    <div className="row">
+                        <div className="col-12 col-lg-9">
+                            <div className="hw mb-40">
+                                <div className="c-heading-60 ft_regular clr-gray lh_1-1 mb-40">{props.sectitle}</div>
+                                <p className="c-content-24 ft_light lh_1-6 clr-gray">{props.secdesc}</p>
                             </div>
+                        </div>
+                        <div className="col-12">
+                            <div className="bento-comparator" >
+                                {SLIDE_DATA.map((slide, index) => (
+                                    <div
+                                        key={slide.id}
+                                        className={`slide-wrapper slide-${index}`}
+                                        style={{ zIndex: SLIDE_DATA.length - index }}
+                                    >
+                                        <div className="bento-grid">
+                                            {/* LARGE FEATURE */}
+                                            <div className="grid-item feature" style={{ backgroundImage: `url(${slide.mainImg})` }}>
+                                                <div className="overlay">
+                                                    <h3 className="reveal-text">{slide.title}</h3>
+                                                    <p className="reveal-text">{slide.desc}</p>
+                                                </div>
+                                            </div>
 
-                            {/* STAT BOX */}
-                            <div className="grid-item stat-box">
-                                <div className="stat-content">
-                                    <h4 className="reveal-text">{slide.stat}</h4>
-                                    <p className="reveal-text">{slide.statDesc}</p>
-                                </div>
+                                            {/* STAT BOX */}
+                                            <div className="grid-item stat-box">
+                                                <div className="stat-content">
+                                                    <div className="stat-icon-wrap reveal-text">
+                                                        <img src={slide.statIcon} alt="stat icon" className="img-fluid" />
+                                                    </div>
+                                                    <h4 className="reveal-text">{slide.stat}</h4>
+                                                    <p className="reveal-text">{slide.statDesc}</p>
+                                                </div>
+                                            </div>
+
+                                            {
+                                                device === "desktop" && (
+                                                    <>
+                                                        {/* GALLERY ITEMS */}
+                                                        {slide.gallery.map((img, i) => (
+                                                            <div
+                                                                key={i}
+                                                                className={`grid-item thumb thumb-${i}`}
+                                                                style={{ backgroundImage: `url(${img})` }}
+                                                            />
+                                                        ))}
+                                                    </>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-
-                            {/* GALLERY ITEMS */}
-                            {slide.gallery.map((img, i) => (
-                                <div
-                                    key={i}
-                                    className={`grid-item thumb thumb-${i}`}
-                                    style={{ backgroundImage: `url(${img})` }}
-                                />
-                            ))}
                         </div>
                     </div>
-                ))}
+                </div>
             </div>
-
         </>
     );
 };

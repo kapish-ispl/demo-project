@@ -296,6 +296,8 @@ $slide-duration: 8000ms;
             overflow: hidden;
             // Transform origin for scale-up effect from bottom-right (thumbnail position)
             transform-origin: 90% 90%;
+
+
         }
     }
 
@@ -560,6 +562,16 @@ $slide-duration: 8000ms;
     overflow: hidden;
     @include size(180px, 122.2px);
 
+    @include mq(tablet-max) {
+        @include size(200px, 122.2px);
+
+    }
+
+    @include mq(desktop-wide) {
+        @include size(225px, 122.2px);
+
+    }
+
     &-title {
         position: absolute;
         top: 10px;
@@ -590,6 +602,25 @@ $slide-duration: 8000ms;
     &:hover {
         .thumb-card-link-icon {
             transform: translateX(10px);
+        }
+    }
+}
+
+.hero-slider {
+    .hero-slider__ui-right {
+        .swiper-slide {
+            max-width: 180px !important;
+            width: 180px !important;
+
+            @include mq(tablet-max) {
+                max-width: 200px !important;
+                width: 200px !important;
+            }
+
+            @include mq(desktop-wide) {
+                max-width: 225px !important;
+                width: 225px !important;
+            }
         }
     }
 }

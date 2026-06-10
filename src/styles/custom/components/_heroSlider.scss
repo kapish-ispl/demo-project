@@ -606,21 +606,24 @@ $slide-duration: 8000ms;
     }
 }
 
-.hero-slider {
-    .hero-slider__ui-right {
-        .swiper-slide {
-            max-width: 180px !important;
-            width: 180px !important;
+.hero-slider__ui-right {
+    position: absolute;
+    right: 2%;
+    bottom: 10%;
+    z-index: 10;
 
-            @include mq(tablet-max) {
-                max-width: 200px !important;
-                width: 200px !important;
-            }
+    .swiper-slide {
+        max-width: 180px !important;
+        width: 180px !important;
 
-            @include mq(desktop-wide) {
-                max-width: 225px !important;
-                width: 225px !important;
-            }
+        @include mq(tablet-max) {
+            max-width: 200px !important;
+            width: 200px !important;
+        }
+
+        @include mq(desktop-wide) {
+            max-width: 225px !important;
+            width: 225px !important;
         }
     }
 }

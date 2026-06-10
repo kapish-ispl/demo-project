@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 const PageTemplate = dynamic(() => import('./PageTemplate'), { ssr: false });
 const HomeBanner = dynamic(() => import('../Layout/HomeBanner'), { ssr: false });
 const HomePage = ({ data }: { data: PageResponse }) => {
+    console.log(data)
     return (
         <>
             <div className="container-fluid">

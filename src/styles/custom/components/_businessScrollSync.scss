@@ -34,8 +34,9 @@
     transform: translateY(30px);
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     display: flex;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
 }
 
 .text-flip-item.active .text-flip-content-y {
@@ -54,6 +55,23 @@
 
 .text-flip-item.active .slide-title {
     opacity: 1;
+}
+
+// Layout: number "01" sits inline at top-left of the heading block
+.slide-title-wrapper {
+    position: relative;
+    display: block;
+}
+
+.slide-count-label {
+    display: inline-block;
+    font-weight: 500;
+    line-height: 1;
+    vertical-align: sub;
+    margin-right: 6px;
+    letter-spacing: 0.03em;
+    position: relative;
+    bottom: 15px;
 }
 
 .stagger-sentence {
@@ -77,14 +95,14 @@
 }
 
 .title-flip-wrapper {
-    height: 200px;
+    height: 160px;
 
     @media (max-width: 991px) {
-        height: 120px;
+        height: 110px;
     }
 
     @media (max-width: 767px) {
-        height: 90px;
+        height: 80px;
     }
 }
 
@@ -160,6 +178,14 @@
     border-radius: 0px;
     overflow: hidden;
     position: relative;
+
+    @include mq(desktop-wide) {
+        max-height: 478px;
+        min-height: 478px;
+        max-width: 575px;
+        width: 575px;
+        overflow: visible;
+    }
 
     &::before {
         content: "";

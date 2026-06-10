@@ -1186,7 +1186,7 @@
     height: calc(100% - 30px);
 
     &__content {
-        padding: 18px 23px;
+        padding: 24px 32px;
         @include flexbox;
         @include align-items(center);
         @include justify-content(space-between);
@@ -1268,6 +1268,10 @@
 
         &_media {
             @include border-radius(8px);
+
+            @include mq(desktop-wide) {
+                height: 95vh;
+            }
 
             .u-img {
                 width: 100%;
@@ -1517,7 +1521,7 @@
 
 .card__wrapper {
     background-color: var(--color-white);
-    padding: 20px;
+    padding: 24px;
     border: 1px solid rgba(99, 100, 102, 0.2);
     @include border-radius(8px);
     margin: 0px 10px;
@@ -1680,35 +1684,20 @@
     }
 }
 
-.c-logoloop {
-    &__list {
-        @include flexbox;
-        @include align-items(center);
-        gap: 40px;
-
-        &-item {
-            &:hover {
-                .c-logoloop__link {
-                    .c-logoloop__node {
-                        img {
-                            filter: grayscale(0);
-                        }
-                    }
-                }
-            }
+.logoloop {
+    &__item {
+        img {
+            filter: grayscale(1);
         }
 
-    }
-
-
-    &__link {
-        .c-logoloop__node {
+        &:hover {
             img {
-                transition: all 0.3s ease-in-out;
-                filter: grayscale(1);
+                filter: grayscale(0);
             }
         }
+
     }
+
 }
 
 .masonry-grid {
@@ -1816,5 +1805,11 @@
             }
         }
 
+    }
+}
+
+.c-rotating-slider {
+    @media screen and (min-width: 2200px) {
+        overflow: hidden !important;
     }
 }

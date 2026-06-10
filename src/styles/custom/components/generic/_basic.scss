@@ -618,6 +618,10 @@ body {
     }
 }
 
+.c-gy-40 {
+    --bs-gutter-y: 40px
+}
+
 // .listView {
 //     &__item {
 //         @include flexbox;
@@ -2810,7 +2814,7 @@ ul {
     }
 
     @media screen and (min-width: 1751px) {
-        bottom: 90px;
+        bottom: 120px;
     }
 
     @include mq(big-screen) {
@@ -3213,6 +3217,16 @@ ul {
         position: absolute;
         top: -20%;
         will-change: transform;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(360deg, rgba(38, 38, 38, 0.4) 35%, rgba(71, 70, 70, 0) 100%);
+        z-index: 1;
+        pointer-events: none;
+        border-radius: 8px;
     }
 }
 

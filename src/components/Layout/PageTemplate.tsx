@@ -21,6 +21,7 @@ const TimeLineSection = dynamic(() => import("@/utils/TimeLineSection"), { ssr: 
 const BentoMarquee = dynamic(() => import("@/utils/BentoMarquee"), { ssr: false });
 const BusinessScrollSync = dynamic(() => import("@/utils/BusinessScrollSync"), { ssr: false });
 const ExecutionCapabilities = dynamic(() => import("@/utils/ExecutionCapabilities"), { ssr: false });
+const LogoLoopContainer = dynamic(() => import("@/utils/LogoLoopContainer"), { ssr: false });
 
 
 const PageTemplate = ({ data }: { data: PageResponse }) => {
@@ -62,6 +63,10 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 if (domNode.name === "bentomarquee") {
                     const children = domToReact(domNode.children as DOMNode[]);
                     return <BentoMarquee data={Array.isArray(children) ? children : [children]} />;
+                }
+                if (domNode.name === "logoloopcontainer") {
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <LogoLoopContainer data={Array.isArray(children) ? children : [children]} />;
                 }
                 if (domNode.name === "rotatingslider") {
                     const children = domToReact(domNode.children as DOMNode[]);

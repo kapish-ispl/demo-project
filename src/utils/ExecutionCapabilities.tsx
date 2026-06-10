@@ -108,8 +108,12 @@ const ExecutionCapabilities: React.FC = () => {
   ];
 
   return (
-    <section className="capabilities-section bg-secondry" ref={sectionRef}>
+    <section className="capabilities-section bg-secondry-a-50" ref={sectionRef}>
       <div className="container cus-container">
+        <div className="col-12 col-md-6">
+          <div className="c-content-20 clr-text mb-4 ls-1-2 text-uppercase ft_medium clr-white">Execution Capabilities</div>
+          <h2 className="c-heading-60 lh_1-2 ft_medium clr-white">Built for Large-Scale Delivery</h2>
+        </div>
         <div className="flex-layout">
           {data.map((item) => (
             <div key={item.id} className={`step_wrapper ${item.alignment}`}>

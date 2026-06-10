@@ -32,6 +32,7 @@ const RotatingSlider = ({ data }: { data: any }) => {
             <Swiper
                 modules={[EffectCreative, Navigation]}
                 effect={'creative'}
+                className='c-rotating-slider'
                 slidesPerView={1.2}
                 speed={600}
                 watchSlidesProgress={true}
@@ -55,9 +56,9 @@ const RotatingSlider = ({ data }: { data: any }) => {
                     },
                 }}
                 breakpoints={{
-                    768: { slidesPerView: 2.2 },
-                    1024: { slidesPerView: 2.5 },
-                    1600: { slidesPerView: 2.1 },
+                    768: { slidesPerView: 1.2 },
+                    1024: { slidesPerView: 2.1 }
+                    // 1600: { slidesPerView: 2.1 },
                 }}
                 style={{ overflow: 'visible' }}
             >

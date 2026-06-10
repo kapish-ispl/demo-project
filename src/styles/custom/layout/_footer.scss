@@ -6,9 +6,11 @@
 
   &__info {
     margin-top: 20px;
-     @include mq(tablet-max) {
+
+    @include mq(tablet-max) {
       margin-top: 0px;
     }
+
     &-logo {
       margin-bottom: 20px;
     }
@@ -62,6 +64,7 @@
     // Unified content block
     &-content {
       margin-bottom: 20px;
+
       @include mq('desktop-min') {
         @include flexbox;
         @include flex-direction(column, vertical);
@@ -88,6 +91,10 @@
         line-height: 1.6;
       }
 
+      .u-link {
+        color: var(--color-secondary);
+      }
+
       p {
         .u-link {
           &:hover {
@@ -111,9 +118,11 @@
         &__item {
           list-style: none;
           margin: 5px 0;
-           @include mq(tablet-max) {
+
+          @include mq(tablet-max) {
             padding: 5px 0px;
           }
+
           svg {
             margin-right: 10px;
           }
@@ -151,8 +160,7 @@
       }
 
       // Text and links
-      p,
-      .u-link {
+      p {
         color: var(--color-black2);
       }
 

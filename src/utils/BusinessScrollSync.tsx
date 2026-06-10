@@ -128,23 +128,16 @@ export default function BusinessScrollSync() {
                                 return (
                                     <div key={`title-${idx}`} className={className}>
                                         <div className="text-flip-content-y">
-                                            <h5 className='c-content-32 ft_medium lh_1-2 clr-peach'>
-                                                {data.count && data.count.split('-').map((word, wIdx) => {
-                                                    const delay = 0.1 + (wIdx * 0.15);
-                                                    return (
-                                                        <span
-                                                            key={wIdx}
-                                                            className="stagger-word"
-                                                            style={{ transitionDelay: isActive ? `${delay}s` : '0s' }}
-                                                        >
-                                                            {word}{' '}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </h5>
-                                            <h2 className="c-heading-60 slide-title lh_1-2 ft_medium m-0">
+                                            <h2 className="c-heading-60 slide-title lh_1-2 ft_medium m-0 slide-title-wrapper">
+                                                {data.count && (
+                                                    <span className="slide-count-label clr-peach stagger-word c-content-32"
+                                                        style={{ transitionDelay: isActive ? '0.05s' : '0s' }}
+                                                    >
+                                                        {String(data.count).padStart(2, '0')}
+                                                    </span>
+                                                )}
                                                 {data.title.split(' ').map((word, wIdx) => {
-                                                    const delay = 0.1 + (wIdx * 0.15);
+                                                    const delay = 0.15 + (wIdx * 0.15);
                                                     return (
                                                         <span
                                                             key={wIdx}

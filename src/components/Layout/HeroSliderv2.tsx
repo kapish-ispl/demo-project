@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import parse from 'html-react-parser';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -62,12 +63,20 @@ const HeroSlider: React.FC<{ slides: BannerMedia[] }> = ({ slides }) => {
         <div className="hero-slider">
 
             {/* --- STATIC BACKGROUND --- */}
-            <div className="hero-slider__static-bg" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+            <div className="hero-slider__static-bg">
                 {staticBackground.type === 'video' ? (
-                    <video src={staticBackground.cdnPath} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }} />
+                    <video src={staticBackground.cdnPath} autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                    <img src={staticBackground.cdnPath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }} />
+                    <img src={staticBackground.cdnPath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 )}
+            </div>
+            <div className="container cus-container">
+                <div className="row">
+                    <div className="col-12">
+                        <div className="hero-slider__content c-heading-80 ft_semiBold text-uppar lh_1-1 clr-white">{parse(staticBackground.caption || "")}</div>
+
+                    </div>
+                </div>
             </div>
 
             {/* --- THUMBNAIL UI (Aligned to Right) --- */}

@@ -46,5 +46,21 @@
         &__media {
             background-color: #2A2A2A;
         }
+
+        &__content {
+            .c-content-20 {
+                @include mq(desktop) {
+                    @include font-size(14);
+                }
+
+                @include mq(desktop-wide) {
+                    @include font-size(18);
+                }
+
+                @include mq(desktop-wide-max) {
+                    @include font-size(20)
+                }
+            }
+        }
     }
 }

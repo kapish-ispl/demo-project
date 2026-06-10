@@ -1,149 +1,148 @@
 'use client'
 
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState, useCallback } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const TimeLineSection = ({ data, showScrollbar = true, customcls = '' }: { data: any; showScrollbar?: boolean | string; customcls?: string }) => {
+interface DotPosition {
+    /** initial left offset from section left, in px */
+    left: number
+    threshold: number
+}
+
+const TimeLineSection = ({
+    data,
+    showScrollbar = true,
+    customcls = '',
+}: {
+    data: any
+    showScrollbar?: boolean | string
+    customcls?: string
+}) => {
     const sectionRef = useRef<HTMLDivElement>(null)
     const timelineRef = useRef<HTMLDivElement>(null)
-    const scrollContainerRef = useRef<HTMLDivElement>(null)
-    const trackBgRef = useRef<HTMLDivElement>(null)
-    const [tWidth, setTWidth] = useState<number>(0)
     const progressBarRef = useRef<HTMLDivElement>(null)
-    const [totalItems, setTotalItems] = useState([0]) // This will be dynamically updated
-    const isScrollbarVisible =
-        showScrollbar === true || showScrollbar === 'true'
-    const slides = useMemo(() => {
-        if (!data) return [];
+    const [dotPositions, setDotPositions] = useState<DotPosition[]>([])
 
+    // Refs for the rendered dot DOM elements and their initial left values
+    const dotElementsRef = useRef<(HTMLDivElement | null)[]>([])
+    const dotInitialLefts = useRef<number[]>([])
+
+    const isScrollbarVisible = showScrollbar === true || showScrollbar === 'true'
+
+    const slides = useMemo(() => {
+        if (!data) return []
         return React.Children.toArray(data)
             .filter(
                 (child): child is React.ReactElement<any> =>
-                    React.isValidElement(child) &&
-                    typeof (child.props) !== "undefined"
+                    React.isValidElement(child) && typeof child.props !== 'undefined'
             )
             .map((child, index) => ({
                 id: index + 1,
                 className: child.props.className,
                 children: child.props.children,
-            }));
-    }, [data]);
+            }))
+    }, [data])
+
+    /**
+     * Measure each card's horizontal centre (relative to the section left edge)
+     * and set dotPositions so React renders the dots in their initial positions.
+     * Also caches those values in dotInitialLefts so onUpdate can shift them.
+     */
+    const computeDotPositions = useCallback(() => {
+        const section = sectionRef.current
+        const timeline = timelineRef.current
+        if (!section || !timeline) return
+
+        const items = gsap.utils.toArray<HTMLElement>('.c-timeline__item', timeline)
+        const total = items.length
+        const sectionLeft = section.getBoundingClientRect().left
+
+        const positions: DotPosition[] = items.map((item, i) => {
+            const rect = item.getBoundingClientRect()
+            const left = rect.left + rect.width / 2 - sectionLeft
+            const threshold = total > 1 ? Math.min(0.99, i / (total - 1)) : 0
+            return { left, threshold }
+        })
+
+        dotInitialLefts.current = positions.map(p => p.left)
+        setDotPositions(positions)
+    }, [])
+
     useGSAP(() => {
         const section = sectionRef.current
         const timeline = timelineRef.current
         const progressBar = progressBarRef.current
-        const trackBg = trackBgRef.current
         if (!section || !timeline) return
 
         const items = gsap.utils.toArray<HTMLElement>('.c-timeline__item', timeline)
-        const images = gsap.utils.toArray<HTMLElement>('.c-timeline__item-img img', timeline)
+        const oddItems = items.filter((_, i) => i % 2 === 0)
+        const evenItems = items.filter((_, i) => i % 2 !== 0)
 
-        // Update dots count to match timeline items
-        if (items.length !== totalItems.length) {
-            setTotalItems(new Array(items.length).fill(0))
-        }
+        // Measure initial positions before any GSAP transform is applied
+        computeDotPositions()
 
-        // Separate odd (1st, 3rd, …) and even (2nd, 4th, …) items
-        const oddItems = items.filter((_, i) => i % 2 === 0)   // index 0, 2, 4 → odd cards
-        const evenItems = items.filter((_, i) => i % 2 !== 0)  // index 1, 3, 5 → even cards
-
-        // Calculate how far to scroll horizontally
-        const getScrollAmount = () => {
-            const timelineWidth = timeline.scrollWidth
-            const windowWidth = window.innerWidth
-            // Adding a little extra padding at the end for visual breathing room
-            return -(timelineWidth - windowWidth + 200)
-        }
-
-        setTWidth(timeline.scrollWidth)
+        const getScrollAmount = () => -(timeline.scrollWidth - window.innerWidth + 200)
 
         const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: sectionRef.current,
+                trigger: section,
                 start: 'center center',
-                // scroll duration tied to how long the horizontal content is
                 end: () => `+=${timeline.scrollWidth}`,
                 scrub: 1,
                 pin: true,
                 anticipatePin: 1,
                 pinSpacing: true,
-                invalidateOnRefresh: true, // recalculate on resize
+                invalidateOnRefresh: true,
+                onRefresh: () => {
+                    // Re-measure card positions after layout recalculates
+                    computeDotPositions()
+                },
                 onUpdate: (self) => {
-                    // Update a css variable on the section for how much we have scrolled
                     section.style.setProperty('--scroll-progress', self.progress.toString())
-                }
-            }
+
+                    // Slide each dot left in sync with the timeline pan
+                    const shift = self.progress * Math.abs(getScrollAmount())
+                    dotElementsRef.current.forEach((el, i) => {
+                        if (!el) return
+                        el.style.left = `${dotInitialLefts.current[i] - shift}px`
+                    })
+                },
+            },
         })
 
-        // 1. Horizontal scroll
-        tl.to(timeline, {
-            x: getScrollAmount,
-            ease: "none"
-        }, 0)
+        // 1. Horizontal pan
+        tl.to(timeline, { x: getScrollAmount, ease: 'none' }, 0)
 
-        // 2. Odd cards move UPWARD
-        tl.to(oddItems, {
-            y: -100,
-            ease: "none"
-        }, 0)
+        // 2. Odd cards float up, even cards float down — dots are NOT in this list
+        tl.to(oddItems, { y: -100, ease: 'none' }, 0)
+        tl.to(evenItems, { y: 100, ease: 'none' }, 0)
 
-        // 3. Even cards move DOWNWARD
-        tl.to(evenItems, {
-            y: 100,
-            ease: "none"
-        }, 0)
-
-        // 4. Parallax images
-        // tl.fromTo(images,
-        //     { y: -30 },
-        //     { y: 30, ease: "none" },
-        //     0)
-
-        // 5. Scrollbar sync
+        // 3. Progress bar fill
         if (progressBar) {
-            tl.to(progressBar, {
-                width: '100%',
-                ease: "none"
-            }, 0)
+            tl.to(progressBar, { width: '100%', ease: 'none' }, 0)
         }
-
-        // 6. Dot sync
-        // Using CSS variables via onUpdate is much more accurate than a linear staggered animation 
-        // to sync the dots directly with the progress bar's exact location.
-
-        // 7. Track background scroll
-        if (trackBg) {
-            const getTrackScrollAmount = () => {
-                const trackWidth = trackBg.scrollWidth
-                const windowWidth = window.innerWidth
-                const offset = trackWidth - windowWidth + 100 // Extra 100px so it scrolls slightly past the edge
-                return offset > 0 ? -offset : 0
-            }
-            tl.to(trackBg, {
-                x: getTrackScrollAmount,
-                ease: "none"
-            }, 0)
-        }
-
     }, { scope: sectionRef })
-
 
     return (
         <>
-
-            <div className={`commonSection-lg timeLine__wrapper overflow-hidden pb-0 ${customcls}`} ref={sectionRef}>
+            <div
+                className={`commonSection-lg timeLine__wrapper overflow-hidden pb-0 ${customcls}`}
+                ref={sectionRef}
+            >
                 <div className="container cus-container">
                     <div className="row">
                         <div className="col-12">
-
-
-                            <div className="c-timeline" ref={timelineRef} style={{ flexWrap: 'nowrap', width: 'max-content', paddingRight: '20vw' }}>
+                            <div
+                                className="c-timeline"
+                                ref={timelineRef}
+                                style={{ flexWrap: 'nowrap', width: 'max-content', paddingRight: '20vw' }}
+                            >
                                 {slides.map((slide) => (
-                                    <div key={slide.id} className={slide.className} >
+                                    <div key={slide.id} className={slide.className}>
                                         {slide.children}
                                     </div>
                                 ))}
@@ -151,18 +150,26 @@ const TimeLineSection = ({ data, showScrollbar = true, customcls = '' }: { data:
                         </div>
                     </div>
                 </div>
+
+                {/* Progress bar — dots are pinned to the line, slide on X only */}
                 {isScrollbarVisible && (
                     <div className="timeline-scrollbar-wrapper">
-                        <div className="timeline-track-bg" ref={trackBgRef} style={{ width: 'max-content', minWidth: '100%', paddingRight: '50px' }}>
-                            <div ref={progressBarRef} className="timeline-progress-fill"></div>
+                        <div className="timeline-track-bg">
+                            <div ref={progressBarRef} className="timeline-progress-fill" />
 
-                            <div className="timeline-nodes-container d-flex" style={{ justifyContent: 'space-between' }}>
-                                {totalItems.map((_, i) => (
-                                    <div key={i} className="dot-wrapper" style={{ zIndex: 2, minWidth: '200px', '--threshold': (totalItems.length > 1 ? Math.min(0.99, i / (totalItems.length - 1)) : 0) } as React.CSSProperties}>
-                                        <div className="timeline-dot-inner"></div>
-                                    </div>
-                                ))}
-                            </div>
+                            {dotPositions.map((dot, i) => (
+                                <div
+                                    key={i}
+                                    ref={el => { dotElementsRef.current[i] = el }}
+                                    className="timeline-dot-anchor"
+                                    style={{
+                                        left: dot.left,
+                                        '--threshold': dot.threshold,
+                                    } as React.CSSProperties}
+                                >
+                                    <div className="timeline-dot-inner" />
+                                </div>
+                            ))}
                         </div>
                     </div>
                 )}

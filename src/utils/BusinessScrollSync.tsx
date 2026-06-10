@@ -108,7 +108,7 @@ export default function BusinessScrollSync() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="commonSection bg-white relative overflow-hidden timeline-section pt-0">
+        <section ref={sectionRef} className="commonSection bg-white relative overflow-hidden timeline-section p-0">
             <div className="container cus-container pt-5 mt-4">
                 {/* TOP HALF: SPLIT TEXT (Left Title, Right Description) */}
                 <div className="row mb-3 pb-2">

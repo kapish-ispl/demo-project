@@ -80,10 +80,9 @@ const InnerBanner = ({ label, tagline, slug, currentPage, innerBanner }: Props) 
 
     // Track swiper state to disable arrows at boundaries (non-loop mode)
     const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-    const isLooping = filterData.length >= 5;
-    const isPrevDisabled = !isLooping && (swiperInstance?.isBeginning ?? true);
-    const isNextDisabled = !isLooping && (swiperInstance?.isEnd ?? false);
-
+    const isPrevDisabled = swiperInstance?.isBeginning ?? true;
+    const isNextDisabled = swiperInstance?.isEnd ?? false;
+ 
     const arrowStyle = (disabled: boolean): React.CSSProperties => ({
         cursor: disabled ? 'not-allowed' : 'pointer',
         display: 'flex',
@@ -93,7 +92,7 @@ const InnerBanner = ({ label, tagline, slug, currentPage, innerBanner }: Props) 
         pointerEvents: disabled ? 'none' : 'auto',
         transition: 'opacity 0.3s ease',
     });
-
+ 
     return (
         <div className={`c-inner-banner ${innerBanner.length > 0 ? "" : "without-banner"}`}>
             {innerBanner.length > 0 && (
@@ -115,7 +114,7 @@ const InnerBanner = ({ label, tagline, slug, currentPage, innerBanner }: Props) 
                     </div>
                 </div>
             )}
-
+ 
             {/* --- THUMBNAIL UI --- */}
             {filterData.length > 0 && (
                 <div className="hero-slider__ui-right" style={{
@@ -146,14 +145,14 @@ const InnerBanner = ({ label, tagline, slug, currentPage, innerBanner }: Props) 
                             </span>
                         </div>
                     </div>
-
+ 
                     {/* THUMBNAIL SLIDER */}
                     <Swiper
                         modules={[Navigation]}
                         speed={1000}
                         spaceBetween={20}
-                        slidesPerView={2}
-                        loop={isLooping}
+                        slidesPerView={'auto'}
+                        loop={true}
                         navigation={{
                             prevEl: prevRef.current,
                             nextEl: nextRef.current,

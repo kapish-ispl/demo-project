@@ -174,6 +174,20 @@ body {
     }
 }
 
+.pr-115 {
+    @include mq(tablet-max) {
+        padding-right: 50px;
+    }
+
+    @include mq(desktop-wide) {
+        padding-right: 70px;
+    }
+
+    @include mq(desktop-wide-max) {
+        padding-right: 115px;
+    }
+}
+
 .pb-40 {
     padding-bottom: 20px;
 
@@ -2743,6 +2757,7 @@ ul {
     @include flexbox;
     gap: 50px;
     padding-top: 100px;
+    position: relative; // Required so .c-timeline__dot-anchor can be absolutely positioned
 
     @include mq(desktop-wide) {
         padding-top: 60px;
@@ -2824,9 +2839,10 @@ ul {
 
 .timeline-track-bg {
     position: relative;
-    height: 2px;
+    height: 1px;
     width: 100%;
     background-color: rgba(99, 100, 102, 1);
+    overflow: visible; // dots extend above/below the 2px line
 }
 
 .timeline-progress-fill {
@@ -2834,49 +2850,19 @@ ul {
     top: 0;
     left: 0;
     height: 100%;
-    background-color: var(--color-primary);
+    background-color: #D78E5E;
     width: 0%;
 }
 
-.timeline-nodes-container {
-    // position: absolute;
-    // top: 50%;
-    // left: 0;
-    // width: 100%;
-    transform: translateY(-50%);
-}
-
-.dot-wrapper {
-    position: relative;
+// Dot anchor — sits on the progress bar, positioned by JS at each card's horizontal centre.
+// It does NOT move — zero GSAP animations target it.
+.timeline-dot-anchor {
+    position: absolute;
+    top: 50%;
+    // `left` is set via inline style by JS (card centre x)
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 5;
     --threshold: 0;
-
-    &:nth-child(1) {
-        --threshold: 0;
-    }
-
-    &:nth-child(2) {
-        --threshold: 0.25;
-    }
-
-    &:nth-child(3) {
-        --threshold: 0.50;
-    }
-
-    &:nth-child(4) {
-        --threshold: 0.75;
-    }
-
-    &:nth-child(5) {
-        --threshold: 1.00;
-    }
-
-    &:nth-child(6) {
-        --threshold: 1.0;
-    }
-
-    &:nth-child(7) {
-        --threshold: 1.0;
-    }
 }
 
 .timeline-dot-inner {
@@ -2885,21 +2871,29 @@ ul {
     background-color: rgba(99, 100, 102, 1);
     position: relative;
     border-radius: 50%;
-    border: 2px solid #ffffff;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
 
+    // Fill sweeps in from the left as --scroll-progress passes --threshold
     &::after {
         content: '';
         position: absolute;
         inset: 0;
-        background-color: var(--color-primary);
-        opacity: clamp(0, (var(--scroll-progress, 0) - var(--threshold)) * 10000, 1);
-        transition: opacity 0.3s ease;
+        background-color: #D78E5E;
+        border-radius: 50%;
+        opacity: clamp(0,
+                (var(--scroll-progress, 0) - var(--threshold, 0)) * 10000,
+                1);
+        transition: opacity 0.2s ease;
     }
 }
 
-/* Active class applied by GSAP */
+// Scale up when dot is active (progress has reached its threshold)
+.timeline-dot-anchor .timeline-dot-inner {
+    transform: scale(clamp(1, 1 + (var(--scroll-progress, 0) - var(--threshold, 0)) * 1000, 1.3));
+}
+
+/* Active class kept for optional external use */
 .timeline-dot-inner.active {
     background-color: var(--color-primary);
     transform: scale(1.3);

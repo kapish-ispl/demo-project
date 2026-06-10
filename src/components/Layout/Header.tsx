@@ -43,20 +43,26 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      let direction: "up" | "down" | "" = "";
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        direction = "down";
+      let direction: "up" | "down" | null = null;
+      if (currentScrollY > 50) {
+        if (currentScrollY > lastScrollY) {
+          direction = "down";
+        } else {
+          direction = "up";
+        }
       } else {
-        direction = "up";
+        direction = null;
       }
 
-      if (direction && direction !== scrollDirection) {
+      if (direction !== scrollDirection) {
         setScrollDirection(direction);
 
         document.body.classList.remove("header_scroll_up", "header_scroll_down");
-        document.body.classList.add(
-          direction === "down" ? "header_scroll_down" : "header_scroll_up"
-        );
+        if (direction) {
+          document.body.classList.add(
+            direction === "down" ? "header_scroll_down" : "header_scroll_up"
+          );
+        }
       }
 
       setLastScrollY(currentScrollY);
@@ -112,9 +118,10 @@ const Header = () => {
     <>
       {HEADER_MAIN_MENU && HEADER_MAIN_MENU.length > 0 && (
         <header ref={menuRef}
-          className={`c-header ${isMegaActive ? "mega-menu--active" : ""} ${stickyHeader ? "header-sticky" : ""
+          className={`c-header ${
+            isMegaActive || scrollDirection === "up" || scrollDirection === "down" ? "mega-menu--active" : ""
+          } ${stickyHeader ? "header-sticky" : ""
             } ${scrollDirection === "down" ? "hide" : "show"}`}
-            onMouseEnter={() => setIsMegaActive(true)}
             onMouseLeave={() => {
                 setActiveMenu(null);
                 setIsMegaActive(false);
@@ -171,7 +178,12 @@ const Header = () => {
                   {/* Desktop Menu */}
                   <div className="c-header__nav desktop-menu">
                     <nav className="c-header__menu" role="navigation" aria-label="Main menu">
-                      <ul className="flex menu_wrap" role="menubar">
+                      <ul className="flex menu_wrap" role="menubar"
+                        onMouseLeave={() => {
+                          setActiveMenu(null);
+                          setIsMegaActive(false);
+                        }}
+                      >
                         {HEADER_MAIN_MENU.map((menuItem: menuItemsProps) => {
                           const aa = descriptionLoop.filter((i) => i.name.toLowerCase() === menuItem.name.toLowerCase());
                           const dataItem = menuItem.name.split(" ").join("_");

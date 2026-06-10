@@ -12,21 +12,21 @@ import React, {
 
 type LogoItem =
     | {
-          node: React.ReactNode;
-          href?: string;
-          title?: string;
-          ariaLabel?: string;
-      }
+        node: React.ReactNode;
+        href?: string;
+        title?: string;
+        ariaLabel?: string;
+    }
     | {
-          src: string;
-          alt?: string;
-          href?: string;
-          title?: string;
-          srcSet?: string;
-          sizes?: string;
-          width?: number;
-          height?: number;
-      };
+        src: string;
+        alt?: string;
+        href?: string;
+        title?: string;
+        srcSet?: string;
+        sizes?: string;
+        width?: number;
+        height?: number;
+    };
 
 interface LogoLoopProps {
     logos: LogoItem[];

@@ -13,6 +13,8 @@ const Footer = () => {
 
     const FOOTER_MAIN_MENU: any = contextInfo.footerMenu;
     const [open, setOpen] = useState<boolean>(false);
+
+    console.log(FOOTER_MAIN_MENU)
     return (
         <>
             <footer className='bg-gray'>
@@ -68,50 +70,56 @@ const Footer = () => {
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="col-12 col-md-6 col-lg-3 offset-lg-1">
+                                            <div className="col-12 col-md-6 col-lg-2">
                                                 <div className="c-footer__info-content">
-                                                    <div className="head">{FOOTER_MAIN_MENU[2]?.name}</div>
-                                                    {FOOTER_MAIN_MENU[2]?.children.length > 0 && (
-                                                        <ul className="footerMenu">
-                                                            {FOOTER_MAIN_MENU[2]?.children.map((item: any) => (
-                                                                <li key={item.id} className="footerMenu__item">
-                                                                    <svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.500031L5.34236 4.10009C5.6395 4.32099 5.6395 4.67907 5.34236 4.89998L0.500001 8.50003" stroke="#A1A1A1" strokeLinecap="round"></path></svg>
-                                                                    <Link href={item.link} target={item.type === "external" ? "_blank" : "_self"} className="footerMenu__item-link">{item.name}</Link>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
+                                                    {FOOTER_MAIN_MENU[2]?.children.length > 0 ? (
+                                                        <>
+                                                            <div className="head">{FOOTER_MAIN_MENU[2]?.name}</div>
+                                                            <ul className="footerMenu">
+                                                                {FOOTER_MAIN_MENU[2]?.children.map((item: any) => (
+                                                                    <li key={item.id} className="footerMenu__item">
+                                                                        <svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.500031L5.34236 4.10009C5.6395 4.32099 5.6395 4.67907 5.34236 4.89998L0.500001 8.50003" stroke="#A1A1A1" strokeLinecap="round"></path></svg>
+                                                                        <Link href={item.link} target={item.type === "external" ? "_blank" : "_self"} className="footerMenu__item-link">{item.name}</Link>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </>
+                                                    ) : (
+                                                        <Link href={FOOTER_MAIN_MENU[2]?.link || '#!'} target={FOOTER_MAIN_MENU[2]?.type === "external" ? "_blank" : "_self"} className="head text-decoration-none">{FOOTER_MAIN_MENU[2]?.name}</Link>
                                                     )}
                                                 </div>
                                                 <div className="c-footer__info-content">
-                                                    <div className="head">{FOOTER_MAIN_MENU[3]?.name}</div>
-                                                    {FOOTER_MAIN_MENU[3]?.children.length > 0 && (
-                                                        <ul className="footerMenu">
-                                                            {FOOTER_MAIN_MENU[3]?.children.map((item: any) => (
-                                                                <li key={item.id} className="footerMenu__item">
-                                                                    <svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.500031L5.34236 4.10009C5.6395 4.32099 5.6395 4.67907 5.34236 4.89998L0.500001 8.50003" stroke="#A1A1A1" strokeLinecap="round"></path></svg>
-                                                                    <Link href={item.link} target={item.type === "external" ? "_blank" : "_self"} className="footerMenu__item-link">{item.name}</Link>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
+                                                    {FOOTER_MAIN_MENU[2]?.children.length > 0 ? (
+                                                        <>
+                                                            <div className="head">{FOOTER_MAIN_MENU[3]?.name}</div>
+                                                            <ul className="footerMenu">
+                                                                {FOOTER_MAIN_MENU[2]?.children.map((item: any) => (
+                                                                    <li key={item.id} className="footerMenu__item">
+                                                                        <svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.500031L5.34236 4.10009C5.6395 4.32099 5.6395 4.67907 5.34236 4.89998L0.500001 8.50003" stroke="#A1A1A1" strokeLinecap="round"></path></svg>
+                                                                        <Link href={item.link} target={item.type === "external" ? "_blank" : "_self"} className="footerMenu__item-link">{item.name}</Link>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </>
+                                                    ) : (
+                                                        <Link href={FOOTER_MAIN_MENU[3]?.link || "#!"} target={FOOTER_MAIN_MENU[3]?.type === "external" ? "_blank" : "_self"} className="head text-decoration-none">{FOOTER_MAIN_MENU[3]?.name}</Link>
                                                     )}
                                                 </div>
                                             </div>
-                                            {/* <div className="col-12 col-md-6 col-lg-2">
+                                            <div className="col-12 col-md-6 col-lg-3 offset-lg-1">
                                                 <div className="c-footer__info-content">
-                                                    <div className="head">{FOOTER_MAIN_MENU[4]?.name}</div>
-                                                    {FOOTER_MAIN_MENU[4]?.children.length > 0 && (
-                                                        <ul className="footerMenu">
-                                                            {FOOTER_MAIN_MENU[4]?.children.map((item: any) => (
-                                                                <li key={item.id} className="footerMenu__item">
-                                                                    <svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.500031L5.34236 4.10009C5.6395 4.32099 5.6395 4.67907 5.34236 4.89998L0.500001 8.50003" stroke="#A1A1A1" strokeLinecap="round"></path></svg>
-                                                                    <Link href={item.link} target={item.type === "external" ? "_blank" : "_self"} className="footerMenu__item-link">{item.name}</Link>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    )}
+                                                    <div>
+                                                        <span className="c-content-16 mt-1 ft_light">
+                                                            Have questions or need assistance? Our team is here to help.
+                                                        </span>
+                                                    </div>
+                                                    <div className="c-footer__info-content  mt-2">
+                                                        <div className="head">
+                                                            <Link href="/contact-us" className="u-link c-content-16 ft_semiBold">Contact us</Link>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div> */}
-                                            <div className="col-12 col-md-6 col-lg-2"><div className="c-footer__info-content"><div><span className="c-content-16 mt-1 ft_light">Have questions or need assistance? Our team is here to help.</span></div><div className="c-footer__info-content  mt-2"><div className="head"><Link href="/contact-us" className="u-link c-content-16 ft_semiBold">Contact us</Link></div></div></div></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

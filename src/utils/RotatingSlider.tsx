@@ -56,7 +56,7 @@ const RotatingSlider = ({ data }: { data: any }) => {
                     },
                 }}
                 breakpoints={{
-                    768: { slidesPerView: 1.2 },
+                    768: { slidesPerView: 1 },
                     1024: { slidesPerView: 2.1 }
                     // 1600: { slidesPerView: 2.1 },
                 }}

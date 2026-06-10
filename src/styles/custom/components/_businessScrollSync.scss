@@ -71,7 +71,11 @@
     margin-right: 6px;
     letter-spacing: 0.03em;
     position: relative;
-    bottom: 15px;
+    bottom: 5px;
+
+    @include mq(tablet-max) {
+        bottom: 15px;
+    }
 }
 
 .stagger-sentence {

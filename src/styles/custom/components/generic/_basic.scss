@@ -226,6 +226,27 @@ body {
 
 }
 
+.pt-80 {
+    padding-top: 30px;
+
+    @include mq(tablet) {
+        padding-top: 40px;
+    }
+
+    @include mq(tablet-max) {
+        padding-top: 50px;
+    }
+
+    @include mq(desktop) {
+        padding-top: 70px;
+    }
+
+    @include mq(desktop-wide) {
+        padding-top: 80px;
+    }
+
+}
+
 .mb-35 {
     margin-bottom: 20px;
 
@@ -2775,6 +2796,12 @@ ul {
         padding-bottom: 60px;
         flex: 0 0 auto;
 
+        &.is-active {
+            .c-timeline__item-img img {
+                filter: grayscale(0);
+            }
+        }
+
         @include mq(desktop-wide-max) {
             gap: 50px;
         }
@@ -2789,6 +2816,7 @@ ul {
 
             img {
                 filter: grayscale(1);
+                transition: filter 0.5s ease-in-out;
                 aspect-ratio: 1.8;
                 width: 100%;
                 max-width: 424px;

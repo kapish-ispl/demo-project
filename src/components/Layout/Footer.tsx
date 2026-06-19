@@ -14,7 +14,6 @@ const Footer = () => {
     const FOOTER_MAIN_MENU: any = contextInfo.footerMenu;
     const [open, setOpen] = useState<boolean>(false);
 
-    console.log(FOOTER_MAIN_MENU)
     return (
         <>
             <footer className='bg-gray'>

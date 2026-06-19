@@ -39,13 +39,19 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                 }
 
                 if (domNode.name === "projectslider") {
-                    return <ProjectSlider />
+                    const props = attributesToProps(domNode.attribs);
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <ProjectSlider props={props} data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "executioncapabilities") {
-                    return <ExecutionCapabilities />
+                    const props = attributesToProps(domNode.attribs);
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <ExecutionCapabilities props={props} data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "businessscrollsync") {
-                    return <BusinessScrollSync />
+                    const props = attributesToProps(domNode.attribs);
+                    const children = domToReact(domNode.children as DOMNode[]);
+                    return <BusinessScrollSync props={props} data={Array.isArray(children) ? children : [children]} />
                 }
                 if (domNode.name === "timelinesection") {
                     const props = attributesToProps(domNode.attribs);
@@ -53,9 +59,12 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     const showScrollbar = domNode.attribs.showscrollbar !== undefined
                         ? domNode.attribs.showscrollbar !== 'false'
                         : true;
+                    const removeGrayscaleOnActive = domNode.attribs.removeGrayscaleOnActive !== undefined
+                        ? domNode.attribs.removeGrayscaleOnActive !== 'false'
+                        : true;
                     // Explicitly pass customcls from raw attribs so it is never dropped or transformed.
                     const customcls = domNode.attribs.customcls ?? '';
-                    return <TimeLineSection {...props} showScrollbar={showScrollbar} customcls={customcls} data={Array.isArray(children) ? children : [children]} />
+                    return <TimeLineSection props={props} showScrollbar={showScrollbar} removeGrayscaleOnActive={removeGrayscaleOnActive} customcls={customcls} data={Array.isArray(children) ? children : [children]} />
                 }
                 // if (domNode.name === "timelinesection") {
                 //     return <>hello</>

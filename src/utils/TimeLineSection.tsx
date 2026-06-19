@@ -17,10 +17,14 @@ const TimeLineSection = ({
     data,
     showScrollbar = true,
     customcls = '',
+    removeGrayscaleOnActive = 'false',
+    props
 }: {
     data: any
     showScrollbar?: boolean | string
     customcls?: string
+    removeGrayscaleOnActive?: boolean | string
+    props: any
 }) => {
     const sectionRef = useRef<HTMLDivElement>(null)
     const timelineRef = useRef<HTMLDivElement>(null)
@@ -47,11 +51,6 @@ const TimeLineSection = ({
             }))
     }, [data])
 
-    /**
-     * Measure each card's horizontal centre (relative to the section left edge)
-     * and set dotPositions so React renders the dots in their initial positions.
-     * Also caches those values in dotInitialLefts so onUpdate can shift them.
-     */
     const computeDotPositions = useCallback(() => {
         const section = sectionRef.current
         const timeline = timelineRef.current
@@ -72,6 +71,8 @@ const TimeLineSection = ({
         setDotPositions(positions)
     }, [])
 
+    const shouldRemoveGrayscale = removeGrayscaleOnActive === true || removeGrayscaleOnActive === 'true';
+
     useGSAP(() => {
         const section = sectionRef.current
         const timeline = timelineRef.current
@@ -87,6 +88,24 @@ const TimeLineSection = ({
 
         const getScrollAmount = () => -(timeline.scrollWidth - window.innerWidth + 200)
 
+        const updateActiveSlide = (progress: number) => {
+            if (!shouldRemoveGrayscale) return
+            const total = items.length
+            if (total === 0) return
+
+            items.forEach((item, idx) => {
+                const threshold = total > 1 ? Math.min(0.99, idx / (total - 1)) : 0
+                if (progress >= threshold) {
+                    item.classList.add('is-active')
+                } else {
+                    item.classList.remove('is-active')
+                }
+            })
+        }
+
+        // Initialize active slide class
+        updateActiveSlide(0)
+
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
@@ -97,9 +116,10 @@ const TimeLineSection = ({
                 anticipatePin: 1,
                 pinSpacing: true,
                 invalidateOnRefresh: true,
-                onRefresh: () => {
+                onRefresh: (self) => {
                     // Re-measure card positions after layout recalculates
                     computeDotPositions()
+                    updateActiveSlide(self.progress)
                 },
                 onUpdate: (self) => {
                     section.style.setProperty('--scroll-progress', self.progress.toString())
@@ -110,6 +130,8 @@ const TimeLineSection = ({
                         if (!el) return
                         el.style.left = `${dotInitialLefts.current[i] - shift}px`
                     })
+
+                    updateActiveSlide(self.progress)
                 },
             },
         })
@@ -125,12 +147,32 @@ const TimeLineSection = ({
         if (progressBar) {
             tl.to(progressBar, { width: '100%', ease: 'none' }, 0)
         }
-    }, { scope: sectionRef })
+    }, { scope: sectionRef, dependencies: [shouldRemoveGrayscale] })
 
     return (
         <>
+            {props?.title && props?.subtitle && (
+                <div className={`commonSection-lg pb-0 ${customcls}`}>
+                    <div className="container cus-container">
+                        <div className="row">
+                            <div className="col-12 col-lg-9">
+                                {props.title && (
+                                    <div className="hw mb-40">
+                                        <h1 className="c-heading-60 ft_medium lh_1-2 clr-blue">{props?.title}</h1>
+                                    </div>
+                                )}
+                                {props.subtitle && (
+                                    <div className="genric__content">
+                                        <p className="c-content-20 ft_light lh_1-6 clr-gray mb-0">{props?.subtitle}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div
-                className={`commonSection-lg timeLine__wrapper overflow-hidden pb-0 ${customcls}`}
+                className={`${props?.title && props?.subtitle ? 'pt-80' : 'commonSection-lg'} timeLine__wrapper overflow-hidden pb-0 ${customcls}`}
                 ref={sectionRef}
             >
                 <div className="container cus-container">

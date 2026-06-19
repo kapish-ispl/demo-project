@@ -1,48 +1,38 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const contentData = [
-    {
-        title: "Integrated Project Delivery",
-        description: "Jindal Projects operates through an integrated engineering and execution framework that aligns design, planning, procurement, and site delivery under a unified project structure. This model reduces interface risks, improves coordination, and strengthens execution control across complex industrial programs."
-    },
-    {
-        count: "1",
-        title: "Engineering Alignment",
-        description: "We integrate engineering decisions with execution realities to improve constructability and reduce downstream risk."
-    },
-    {
-        count: "2",
-        title: "Structured Planning",
-        description: "Detailed scheduling, cost monitoring, and resource coordination frameworks guide disciplined project progression."
-    },
-    {
-        count: "3",
-        title: " Coordinated Procurement",
-        description: "Procurement and fabrication support are aligned with site execution timelines to maintain continuity and readiness."
-    },
-    {
-        count: "4",
-        title: "Controlled Site Delivery",
-        description: "Self-performed civil, structural, and mechanical execution ensures accountability, safety compliance, and operational control."
-    },
+interface SlideProps {
+    title?: string;
+    children?: React.ReactNode;
+    count?: string;
+    imgsrc?: string;
+}
+export default function BusinessScrollSync({ data, props }: any) {
 
-];
-
-const images = [
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1773490685_card-img.png',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780899910_6f59041a4ef88fe91068968b3dea5aeeac6317e1.jpg',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780899907_4b1fad4ca810384c5ccd49ff774f1b9b16735bff.png',
-    'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780899908_039ae502a530b10d1b287adc5acbdee131c59f10.jpg',
-];
-
-export default function BusinessScrollSync() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
+
+
+    const slides = useMemo(() => {
+        if (!data) return [];
+
+        return React.Children.toArray(data)
+            .filter(
+                (child): child is React.ReactElement<SlideProps> =>
+                    React.isValidElement(child) &&
+                    typeof (child.props) !== "undefined"
+            )
+            .map((child) => ({
+                imgsrc: child.props.imgsrc || "",
+                title: child.props.title || "",
+                description: child.props.children || "",
+                count: child.props.count || "",
+            }));
+    }, [data]);
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
@@ -52,23 +42,17 @@ export default function BusinessScrollSync() {
         const ctx = gsap.context(() => {
             const sections = gsap.utils.toArray('.business-scroll-card');
 
-            // Since there are 5 content items and 4 images,
-            // index 0: First content, no image at left margin (first image is at 50vw).
-            // index 1: Second content, first image is at left margin (8vw).
-            // index 2: Third content, second image is at left margin.
-            // index 3: Fourth content, third image is at left margin.
-            // index 4: Fifth content, fourth image is at left margin.
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: () => `+=${contentData.length * window.innerHeight * 1.5}`, // Adjusted scroll distance multiplier
+                    end: () => `+=${slides.length * window.innerHeight * 1.5}`, // Adjusted scroll distance multiplier
                     pin: true,
                     scrub: 1,
                     invalidateOnRefresh: true,
                     onUpdate: (self) => {
-                        const index = Math.round(self.progress * (contentData.length - 1));
-                        const safeIndex = Math.max(0, Math.min(index, contentData.length - 1));
+                        const index = Math.round(self.progress * (slides.length - 1));
+                        const safeIndex = Math.max(0, Math.min(index, slides.length - 1));
                         setActiveIndex(safeIndex);
                     }
                 }
@@ -105,7 +89,7 @@ export default function BusinessScrollSync() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [slides]);
 
     return (
         <section ref={sectionRef} className="commonSection bg-white relative overflow-hidden timeline-section p-0">
@@ -114,12 +98,12 @@ export default function BusinessScrollSync() {
                 <div className="row mb-3 pb-2">
                     <div className="col-12">
                         <div className="c-content-20 clr-text mb-4 ls-1-2 text-uppercase ft_medium">
-                            HOW WE OPERATE
+                            {props?.subtitle}
                         </div>
                     </div>
                     <div className="col-lg-5">
                         <div className="text-flip-container title-flip-wrapper">
-                            {contentData.map((data, idx) => {
+                            {slides.map((data, idx) => {
                                 let className = 'text-flip-item';
                                 const isActive = (idx === activeIndex);
                                 if (isActive) className += ' active';
@@ -157,14 +141,14 @@ export default function BusinessScrollSync() {
                     </div>
                     <div className="col-lg-6 offset-lg-1 d-flex align-items-start">
                         <div className="text-flip-container desc-flip-wrapper">
-                            {contentData.map((data, idx) => {
+                            {slides.map((data, idx) => {
                                 let className = 'text-flip-item';
                                 const isActive = (idx === activeIndex);
                                 if (isActive) className += ' active';
                                 else if (idx < activeIndex) className += ' previous';
 
                                 // Safely split paragraph into sequences separated by punctuation
-                                const sentences = data.description.match(/[^.!?]+[.!?]+/g) || [data.description];
+                                const sentences = [data.description];
 
                                 return (
                                     <div key={`desc-${idx}`} className={className}>
@@ -195,15 +179,17 @@ export default function BusinessScrollSync() {
             {/* BOTTOM HALF: CARD TRACK (Not Full Viewport) */}
             <div className="slider-outer-wrapper">
                 <div ref={sliderRef} className="slider-inner-track">
-                    {images.map((src, i) => (
-                        <div key={i} className="business-scroll-card">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                src={src}
-                                alt={`Business Operation ${i + 1}`}
-                                className="business-scroll-image"
-                            />
-                        </div>
+                    {slides.map((item, i) => (
+                        item.imgsrc ? (
+                            <div key={i} className="business-scroll-card">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={item.imgsrc}
+                                    alt={`Business Operation ${i + 1}`}
+                                    className="business-scroll-image"
+                                />
+                            </div>
+                        ) : null
                     ))}
                 </div>
             </div>

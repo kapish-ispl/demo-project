@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, EffectCreative } from 'swiper/modules';
 
@@ -38,8 +38,26 @@ const slideData = [
         bg: "https://d2lptvt2jijg6f.cloudfront.net/document/126/1773294998_cement-people-banner.webp",
     }
 ];
+interface SlideProps {
+    children: React.ReactNode;
+}
+export default function ProjectSlider({ data }: any) {
+    const slides = useMemo(() => {
+        if (!data) return [];
 
-export default function ProjectSlider() {
+        return React.Children.toArray(data)
+            .filter(
+                (child): child is React.ReactElement<SlideProps> =>
+                    React.isValidElement(child) &&
+                    typeof (child.props) !== "undefined"
+            )
+            .map((child, index) => ({
+                id: index + 1,
+                children: child.props.children,
+            }));
+    }, [data]);
+
+    console.log(slides, "slideData")
     return (
         <div className="customerCarousel">
             <Swiper
@@ -75,19 +93,9 @@ export default function ProjectSlider() {
                 }}
                 className="cmp-customer-carousel"
             >
-                {slideData.map((slide) => (
+                {slides && slides.length > 0 && slides.map((slide) => (
                     <SwiperSlide key={slide.id} className="cmp-customer-carousel__item">
-                        <img className="cmp-customer-carousel__item-bg" src={slide.bg} alt="Project" />
-
-                        <div className="cmp-customer-carousel__item-content">
-                            <div className="cmp-customer-carousel__item-quote">
-                                <p className='c-content-18 lh_1-6 clr-gray ft_medium mb-2'>{slide.quote}</p>
-                            </div>
-                            <p className="cmp-customer-carousel__item-job ft_light lh_1_2 clr-gray mb-2">{slide.location}</p>
-                            <p className="cmp-customer-carousel__item-name c-content-16 clr-gray ft_medium lh_1_2 mb-0 d-flex">
-                                <span className='icon-map-pin px-1'></span>{slide.name}
-                            </p>
-                        </div>
+                        {slide.children}
                     </SwiperSlide>
                 ))}
 

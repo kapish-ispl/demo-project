@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
@@ -7,13 +7,35 @@ gsap.registerPlugin(ScrollTrigger);
 interface Capability {
   id: string;
   title: string;
-  description: string;
-  image: string;
+  children: React.ReactNode;
+  imgsrc: string;
   alignment: 'is-right' | 'is-left';
 }
 
-const ExecutionCapabilities: React.FC = () => {
+interface ExecutionCapabilitiesProps { data?: any; props?: any; }
+
+const ExecutionCapabilities: React.FC<ExecutionCapabilitiesProps> = ({ data: dataProp, props }) => {
+
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  const slides = useMemo(() => {
+    if (!dataProp) return [];
+
+    return React.Children.toArray(dataProp)
+      .filter(
+        (child): child is React.ReactElement<Capability> =>
+          React.isValidElement(child) &&
+          typeof (child.props) !== "undefined"
+      )
+      .map((child, index) => ({
+        id: index + 1,
+        imgsrc: child.props.imgsrc,
+        title: child.props.title,
+        description: child.props.children,
+        alignment: child.props.alignment,
+      }));
+  }, [dataProp]);
+
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -76,54 +98,23 @@ const ExecutionCapabilities: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
-  const data: Capability[] = [
-    {
-      id: '01',
-      title: 'Civil & Structural Execution',
-      description: 'Large-scale concreting, structural erection, and industrial foundation works executed within active plant environments.',
-      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial.png',
-      alignment: 'is-right' // First image right aligned
-    },
-    {
-      id: '02',
-      title: 'Mechanical Installation',
-      description: 'Erection and integration of heavy equipment, material handling systems, and plant infrastructure components.',
-      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial1.png',
-      alignment: 'is-left' // Second image left aligned
-    },
-    {
-      id: '03',
-      title: 'Electrical & Instrumentation',
-      description: 'Installation and commissioning support across electrical, automation, and control systems.',
-      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial2.png',
-      alignment: 'is-right'
-    },
-    {
-      id: '04',
-      title: 'Workforce & Equipment Mobilisation',
-      description: 'Deployment of experienced teams and heavy equipment fleets to support high-value infrastructure programs.',
-      image: 'https://d2lptvt2jijg6f.cloudfront.net/document/137/1780900453_minimal-industrial3.png',
-      alignment: 'is-left'
-    }
-  ];
-
   return (
     <section className="capabilities-section bg-secondry-a-50" ref={sectionRef}>
       <div className="container cus-container">
         <div className="col-12 col-md-6">
-          <div className="c-content-20 clr-text mb-4 ls-1-2 text-uppercase ft_medium clr-white">Execution Capabilities</div>
-          <h2 className="c-heading-60 lh_1-2 ft_medium clr-white">Built for Large-Scale Delivery</h2>
+          <div className="c-content-20 clr-text mb-4 ls-1-2 text-uppercase ft_medium clr-white">{props?.subtitle}</div>
+          <h2 className="c-heading-60 lh_1-2 ft_medium clr-white">{props?.title}</h2>
         </div>
         <div className="flex-layout">
-          {data.map((item) => (
+          {slides && slides.length > 0 && slides.map((item) => (
             <div key={item.id} className={`step_wrapper ${item.alignment}`}>
               <div className="step_content">
                 <div className="step_image-wrap">
-                  <img src={item.image} alt={item.title} className="parallax-image" />
+                  <img src={item.imgsrc} alt={item.title} className="parallax-image" />
                 </div>
                 <div className="step_info">
                   <div className="step_info__float">
-                    <span className="step_number c-content-24 ft_light clr-white fade-move">{item.id}</span>
+                    <span className="step_number c-content-24 ft_light clr-white fade-move" style={{ marginBottom: "12px" }}>0{item.id}</span>
                     <h3 className="step_title c-heading-48 lh_1-1 clr-white ft_regular fade-move">{item.title}</h3>
 
                   </div>

@@ -74,8 +74,9 @@ const PageTemplate = ({ data }: { data: PageResponse }) => {
                     return <BentoMarquee data={Array.isArray(children) ? children : [children]} />;
                 }
                 if (domNode.name === "logoloopcontainer") {
+                    const props = attributesToProps(domNode.attribs);
                     const children = domToReact(domNode.children as DOMNode[]);
-                    return <LogoLoopContainer data={Array.isArray(children) ? children : [children]} />;
+                    return <LogoLoopContainer props={props} data={Array.isArray(children) ? children : [children]} />;
                 }
                 if (domNode.name === "rotatingslider") {
                     const children = domToReact(domNode.children as DOMNode[]);

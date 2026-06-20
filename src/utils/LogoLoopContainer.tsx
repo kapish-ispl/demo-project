@@ -40,6 +40,8 @@ interface LogoLoopProps {
     fadeOut?: boolean;
     fadeOutColor?: string;
     scaleOnHover?: boolean;
+    /** Scale multiplier applied on hover when scaleOnHover is true. Default: 1.2 */
+    hoverScale?: number;
     renderItem?: (item: LogoItem, key: React.Key) => React.ReactNode;
     ariaLabel?: string;
     className?: string;
@@ -206,6 +208,7 @@ const LogoLoop = React.memo<LogoLoopProps>(
         fadeOut = false,
         fadeOutColor,
         scaleOnHover = false,
+        hoverScale = 1.2,
         renderItem,
         ariaLabel = 'Partner logos',
         className,
@@ -280,9 +283,10 @@ const LogoLoop = React.memo<LogoLoopProps>(
                 ({
                     '--logoloop-gap': `${gap}px`,
                     '--logoloop-logoHeight': `${logoHeight}px`,
+                    '--logoloop-hoverScale': String(hoverScale),
                     ...(fadeOutColor && { '--logoloop-fadeColor': fadeOutColor }),
                 }) as React.CSSProperties,
-            [gap, logoHeight, fadeOutColor]
+            [gap, logoHeight, fadeOutColor, hoverScale]
         );
 
         const rootClassName = useMemo(
@@ -416,38 +420,83 @@ LogoLoop.displayName = 'LogoLoop';
 
 // ─── LogoLoopContainer (public entry point) ───────────────────────────────────
 
-const LogoLoopContainer = ({ data }: { data: React.ReactNode[] }) => {
-    const logos = useMemo<LogoItem[]>(() => {
+interface LogoLoopContainerProps {
+    data: React.ReactNode[];
+    props?: BentoLoopConfig
+}
+interface BentoLoopConfig {
+    scaleonhover?: boolean;
+    /** Scale multiplier on hover, e.g. hoverscale="1.5" */
+    hoverscale?: string;
+    width?: string;
+    speed?: string;
+    direction?: 'left' | 'right';
+    logoheight?: string;
+    gap?: string;
+    fadeout?: boolean;
+    fadeoutcolor?: string;
+    className?: string;
+    style?: React.CSSProperties;
+    arialabel?: string;
+    hoverspeed?: string;
+    renderitem?: (item: LogoItem, key: React.Key) => React.ReactNode;
+}
+const LogoLoopContainer = ({ data, props }: LogoLoopContainerProps) => {
+    // const logos = useMemo<LogoItem[]>(() => {
+    //     if (!data) return [];
+
+    //     return React.Children.toArray(data)
+    //         .filter(
+    //             (child): child is React.ReactElement<any> =>
+    //                 React.isValidElement(child) && typeof child.props !== 'undefined'
+    //         )
+    //         .map((child) => {
+    //             const innerChild = React.Children.toArray(child.props.children).find(
+    //                 React.isValidElement
+    //             ) as React.ReactElement<any> | undefined;
+
+    //             return {
+    //                 src: innerChild?.props?.src ?? '',
+    //                 alt: innerChild?.props?.alt ?? '',
+    //                 node: innerChild?.props?.children ?? '',
+    //             } satisfies LogoItem;
+    //         });
+    // }, [data]);
+
+    const logos = useMemo(() => {
         if (!data) return [];
 
         return React.Children.toArray(data)
             .filter(
                 (child): child is React.ReactElement<any> =>
-                    React.isValidElement(child) && typeof child.props !== 'undefined'
+                    React.isValidElement(child) &&
+                    typeof (child.props) !== "undefined"
             )
-            .map((child) => {
-                const innerChild = React.Children.toArray(child.props.children).find(
-                    React.isValidElement
-                ) as React.ReactElement<any> | undefined;
-
-                return {
-                    src: innerChild?.props?.src ?? '',
-                    alt: innerChild?.props?.alt ?? '',
-                } satisfies LogoItem;
-            });
+            .map((child, index) => ({
+                id: index + 1,
+                src: child?.props?.src ?? '',
+                alt: child?.props?.alt ?? '',
+                node: child?.props?.children ?? '',
+            }));
     }, [data]);
 
     return (
         <div className="overflow-hidden">
             <LogoLoop
                 logos={logos}
-                speed={90}
-                direction="left"
-                logoHeight={90}
-                gap={120}
-                hoverSpeed={0}
-                scaleOnHover
-                ariaLabel="Technology partners"
+                speed={props?.speed !== undefined ? Number(props.speed) : 90}
+                direction={(props?.direction as 'left' | 'right') ?? "left"}
+                logoHeight={props?.logoheight !== undefined ? Number(props.logoheight) : 120}
+                gap={props?.gap !== undefined ? Number(props.gap) : 120}
+                hoverSpeed={props?.hoverspeed !== undefined ? Number(props.hoverspeed) : 0}
+                scaleOnHover={String(props?.scaleonhover) === 'true'}
+                hoverScale={props?.hoverscale !== undefined ? Number(props.hoverscale) : 1.1}
+                ariaLabel={props?.arialabel ?? "Technology partners"}
+                fadeOut={String(props?.fadeout) === 'true'}
+                fadeOutColor={props?.fadeoutcolor}
+                className={props?.className}
+                style={props?.style}
+                renderItem={props?.renderitem}
             />
         </div>
     );

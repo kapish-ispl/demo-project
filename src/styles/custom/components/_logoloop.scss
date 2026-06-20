@@ -89,7 +89,7 @@
 
 .logoloop--scale-hover .logoloop__item:hover img,
 .logoloop--scale-hover .logoloop__item:hover .logoloop__node {
-    transform: scale(1.2);
+    transform: scale(var(--logoloop-hoverScale, 1.2));
     transform-origin: center center;
 }
 
@@ -171,5 +171,11 @@
     .logoloop__item img,
     .logoloop__node {
         transition: none !important;
+    }
+}
+
+.people-bento {
+    .logoloop__node {
+        gap: 20px;
     }
 }

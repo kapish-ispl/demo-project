@@ -1700,6 +1700,16 @@
 
 }
 
+.people-bento {
+    .logoloop {
+        &__item {
+            img {
+                filter: grayscale(0);
+            }
+        }
+    }
+}
+
 .masonry-grid {
     margin-top: 30px;
 

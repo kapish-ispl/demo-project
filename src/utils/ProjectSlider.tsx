@@ -57,7 +57,6 @@ export default function ProjectSlider({ data }: any) {
             }));
     }, [data]);
 
-    console.log(slides, "slideData")
     return (
         <div className="customerCarousel">
             <Swiper

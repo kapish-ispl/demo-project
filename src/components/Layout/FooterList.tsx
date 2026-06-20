@@ -10,7 +10,7 @@ type menuTypo = {
 };
 
 const FooterList: FC<{ data: any; cls?: string }> = ({ data, cls }) => {
-    console.log(data);
+    ;
     return (
         <>
             {data &&

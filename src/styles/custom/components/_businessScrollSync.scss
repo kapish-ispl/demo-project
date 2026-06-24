@@ -196,19 +196,37 @@
 }
 
 .business-scroll-card {
-    width: 45vw;
-    height: 100%;
+    @include size(490px, 195px);
     flex-shrink: 0;
-    border-radius: 0px;
     overflow: hidden;
     position: relative;
 
+    @media screen and (min-width: 1383px) {
+        height: 215px;
+    }
+
+    @media screen and (min-width: 1521px) {
+        height: 250px;
+    }
+
     @include mq(desktop-wide) {
-        // max-height: 478px;
-        // min-height: 478px;
-        // max-width: 575px;
-        // width: 575px;
         overflow: visible;
+    }
+
+    @media screen and (min-width: 1690px) {
+        @include size(575px, 308px);
+    }
+
+    @media screen and (min-width: 1901px) and (max-width: 1919px) {
+        height: 347px;
+    }
+
+    @include mq(desktop-wide-max) {
+        height: 370px;
+    }
+
+    @include mq(big-screen) {
+        height: 478px;
     }
 
     &::before {
@@ -220,6 +238,7 @@
         top: 0;
         background: #00000033;
         z-index: 1;
+        border-radius: 8px;
     }
 
     @media (max-width: 991px) {
@@ -237,4 +256,5 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
 }

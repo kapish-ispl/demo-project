@@ -1570,12 +1570,16 @@
     &__item {
         position: relative;
 
+        img {
+            @include border-radius(8px);
+        }
+
         &_overlay {
             .overlayMedia_top {
                 position: relative;
                 margin: 10px 0px;
                 overflow: hidden;
-                @include border-radius(18px);
+                @include border-radius(8px);
 
                 @include mq(tablet-max) {
                     position: absolute;
@@ -1593,11 +1597,11 @@
                     left: 0;
                     top: 0;
                     z-index: 1;
-                    @include border-radius(18px);
+                    @include border-radius(8px);
                 }
 
                 .u-img {
-                    @include border-radius(18px);
+                    @include border-radius(8px);
                     width: 100%;
 
                     -webkit-transform: scale(1);
@@ -1615,7 +1619,7 @@
                 position: relative;
                 margin: 10px 0px;
                 overflow: hidden;
-                @include border-radius(18px);
+                @include border-radius(8px);
 
                 @include mq(tablet-max) {
                     position: absolute;
@@ -1634,11 +1638,11 @@
                     left: 0;
                     top: 0;
                     z-index: 1;
-                    @include border-radius(18px);
+                    @include border-radius(8px);
                 }
 
                 .u-img {
-                    @include border-radius(18px);
+                    @include border-radius(8px);
                     width: 100%;
 
                     -webkit-transform: scale(1);

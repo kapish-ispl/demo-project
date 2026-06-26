@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -8,59 +8,58 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-const BentoSyncReveal = ({ data, props }: { data: any, props: any }) => {
-    const SLIDE_DATA = [
-        {
-            id: 1,
-            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card.png",
-            title: "Structured Safety Monitoring",
-            desc: "Defined reporting and review systems across sites.",
-            stat: "11 Million",
-            statDesc: "Safe Man-hours Achieved",
-            statIcon: "/images/icons/labour-icon.svg",
-            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png", "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card.png", "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png"]
-        },
-        {
-            id: 2,
-            mainImg: "https://picsum.photos/1920/1080?random=4",
-            title: "Structured Safety Monitoring",
-            desc: "Defined reporting and review systems across sites.",
-            stat: "11 Million",
-            statDesc: "Safe Man-hours Achieved",
-            statIcon: "/images/icons/labour-icon.svg",
-            gallery: ["https://picsum.photos/1920/1080?random=5", "https://picsum.photos/1920/1080?random=6", "https://picsum.photos/1920/1080?random=7"]
-        },
-        {
-            id: 3,
-            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card1.png",
-            title: "Structured Safety Monitoring",
-            desc: "Defined reporting and review systems across sites.",
-            stat: "11 Million",
-            statDesc: "Safe Man-hours Achieved",
-            statIcon: "/images/icons/labour-icon.svg",
-            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card1.png", "https://picsum.photos/1920/1080?random=10", "https://picsum.photos/1920/1080?random=11"]
-        },
-        {
-            id: 4,
-            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png",
-            title: "Structured Safety Monitoring",
-            desc: "Defined reporting and review systems across sites.",
-            stat: "11 Million",
-            statDesc: "Safe Man-hours Achieved",
-            statIcon: "/images/icons/labour-icon.svg",
-            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818914_new-card2.png", "https://picsum.photos/1920/1080?random=14", "https://picsum.photos/1920/1080?random=15"]
-        },
-        {
-            id: 5,
-            mainImg: "https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png",
-            title: "Structured Safety Monitoring",
-            desc: "Defined reporting and review systems across sites.",
-            stat: "11 Million",
-            statDesc: "Safe Man-hours Achieved",
-            statIcon: "/images/icons/labour-icon.svg",
-            gallery: ["https://d2lptvt2jijg6f.cloudfront.net/document/137/1773818833_new-card3.png", "https://picsum.photos/1920/1080?random=18", "https://picsum.photos/1920/1080?random=19"]
-        },
-    ];
+interface SlideItem {
+    id: number;
+    mainImg: string;
+    title: string;
+    desc: string | React.ReactNode;
+    gallery: string[];
+}
+
+interface BentoSyncRevealProps {
+    data: React.ReactNode;
+    props: {
+        sectitle?: string;
+        secdesc?: string;
+        [key: string]: any;
+    };
+}
+
+const BentoSyncReveal = ({ data, props }: BentoSyncRevealProps) => {
+    const SLIDE_DATA = useMemo<SlideItem[]>(() => {
+        if (!data || React.Children.count(data) === 0) return [];
+
+        const parsed = React.Children.toArray(data)
+            .filter(
+                (child): child is React.ReactElement<any> =>
+                    React.isValidElement(child) && typeof child.props !== 'undefined'
+            )
+            .map((child, index) => {
+                const { mainimg, mainImg, title, desc, description, gallery, galleryitems } = child.props;
+
+                const slideDesc = desc || description || child.props.children || '';
+
+                let galleryArray: string[] = [];
+                if (Array.isArray(gallery)) {
+                    galleryArray = gallery;
+                } else if (typeof gallery === 'string') {
+                    galleryArray = gallery.split(',').map((url: string) => url.trim());
+                } else if (typeof galleryitems === 'string') {
+                    galleryArray = galleryitems.split(',').map((url: string) => url.trim());
+                }
+
+                return {
+                    id: index + 1,
+                    mainImg: mainimg || mainImg || '',
+                    title: title || '',
+                    desc: slideDesc,
+                    gallery: galleryArray,
+                };
+            });
+
+        return parsed.length > 0 ? parsed : [];
+    }, [data]);
+
     const container = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
@@ -83,7 +82,7 @@ const BentoSyncReveal = ({ data, props }: { data: any, props: any }) => {
         slides.forEach((slide, index) => {
             // We only peel the slides that are on top of others
             if (index < slides.length - 1) {
-                const items = slide.querySelectorAll(".grid-item");
+                const items = slide.querySelectorAll(".grid-item:not(.stat-box)");
                 const currentTexts = slide.querySelectorAll(".reveal-text");
 
                 // Sync 1: All grid items peel together
@@ -139,11 +138,11 @@ const BentoSyncReveal = ({ data, props }: { data: any, props: any }) => {
                                             {/* STAT BOX */}
                                             <div className="grid-item stat-box">
                                                 <div className="stat-content">
-                                                    <div className="stat-icon-wrap reveal-text">
-                                                        <img src={slide.statIcon} alt="stat icon" className="img-fluid" />
+                                                    <div className="stat-icon-wrap">
+                                                        <img src="/images/icons/labour-icon.svg" alt="stat icon" className="img-fluid" />
                                                     </div>
-                                                    <h4 className="reveal-text">{slide.stat}</h4>
-                                                    <p className="reveal-text">{slide.statDesc}</p>
+                                                    <h4>11 Million</h4>
+                                                    <p>Safe Man-hours Achieved</p>
                                                 </div>
                                             </div>
 

@@ -1656,16 +1656,19 @@
                 }
             }
 
-            &:hover {
+            // &:hover {
 
-                .overlayMedia_top,
-                .overlayMedia_bottom {
+            .overlayMedia_top,
+            .overlayMedia_bottom {
+                &:hover {
                     .u-img {
                         -webkit-transform: scale(1.3);
                         transform: scale(1.3);
                     }
                 }
             }
+
+            // }
         }
     }
 

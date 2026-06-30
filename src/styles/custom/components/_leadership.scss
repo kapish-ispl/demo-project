@@ -44,7 +44,9 @@
 .leaderNewCard {
     .c-card {
         &__media {
-            background-color: #2A2A2A;
+            img {
+                object-fit: cover;
+            }
         }
 
         &__content {

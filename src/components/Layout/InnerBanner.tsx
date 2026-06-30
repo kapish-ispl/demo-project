@@ -125,7 +125,7 @@ const InnerBanner = ({ label, tagline, slug, currentPage, innerBanner }: Props) 
             </div>
 
             {/* --- THUMBNAIL UI --- */}
-            <SliderThumbnailUI slides={filterData} />
+            {/* <SliderThumbnailUI slides={filterData} /> */}
         </div>
     );
 };

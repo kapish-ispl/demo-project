@@ -56,7 +56,7 @@ const HeroSlider: React.FC<{ slides: BannerMedia[] }> = ({ slides }) => {
             </div>
 
             {/* --- THUMBNAIL UI --- */}
-            <SliderThumbnailUI slides={filterData} />
+            {/* <SliderThumbnailUI slides={filterData} /> */}
 
         </div>
     );

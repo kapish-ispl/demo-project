@@ -7,6 +7,7 @@ import { CONSTANTS } from "@/config/constant";
 import { GET_POST_ENDPOINT } from "@/config/apiConfig";
 import dynamic from "next/dynamic";
 import { PageResponse } from "@/types/pageResponse";
+import LeadershipCardV2 from "./LeadershipCardV2";
 
 /* ---------------------------------------------------
    TYPES
@@ -34,6 +35,7 @@ const componentMap: Record<string, DynamicComponent> = {
     ProductSlider: dynamic<PostComponentProps>(() => import("./ProductSlider")),
     OurOfficesLisitng: dynamic<PostComponentProps>(() => import("./OurOfficesLisitng")),
     LeadershipCard: dynamic<PostComponentProps>(() => import("./LeadershipCard")),
+    LeadershipCardV2: dynamic<PostComponentProps>(() => import("./LeadershipCardV2")),
     NotFound: dynamic<PostComponentProps>(() => import("@/app/not-found"))
 };
 

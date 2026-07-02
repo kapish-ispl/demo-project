@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { FC } from "react";
-import Slider from "react-slick";
 import HeroSlider from "./HeroSliderv2";
 
 interface BannerMedia {
     type: string;
     cdnPath: string;
+    caption?: string | null;
+    deviceType?: string | null;
 }
 
 interface Props {
@@ -17,17 +18,6 @@ interface Props {
 }
 
 const HomeBanner: FC<Props> = ({ bannerMedia, tagline, pageTitle }) => {
-    const settings = {
-        dots: false,
-        arrows: true,
-        infinite: true,
-        fade: true,
-        speed: 500,
-        autoplay: true,
-        autoplaySpeed: 4000,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
 
     return (
         <>

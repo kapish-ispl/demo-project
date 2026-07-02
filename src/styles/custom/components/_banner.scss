@@ -242,20 +242,20 @@
     }
 
     video {
-        height: 600px;
-        width: auto;
+        min-height: 600px;
+        height: 100dvh;
+        width: 100%;
         object-fit: cover;
         object-position: center center;
 
         @include mq('tablet') {
-            height: 100dvh;
             width: 100%;
         }
     }
 
-    @include mq('tablet') {
-        min-height: 100dvh !important;
-    }
+    // @include mq('tablet') {
+    //     min-height: 100dvh !important;
+    // }
 
     &__wrapper {
         @include mq('tablet') {

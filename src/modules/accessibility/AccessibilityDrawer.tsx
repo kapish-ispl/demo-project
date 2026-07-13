@@ -1,4 +1,3 @@
-// components/AccessibilityDrawer.tsx
 import React from 'react';
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 const AccessibilityDrawer: React.FC<Props> = ({ isOpen, onClose, children }) => {
     return (
         <>
-            <div className={`accessibility-drawer ${isOpen ? 'open' : ''}`}>
+            <div className={`accessibility-drawer ${isOpen ? 'open' : ''}`} data-lenis-ignore>
                 <div className='accessibilityHead'>
                     <div className="panel-title mb-0 ">Accessibility Settings</div>
                     <button className="closeBtn" onClick={onClose}>✕</button>
@@ -22,4 +21,3 @@ const AccessibilityDrawer: React.FC<Props> = ({ isOpen, onClose, children }) => 
 };
 
 export default AccessibilityDrawer;
-

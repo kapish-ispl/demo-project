@@ -27,6 +27,7 @@ export interface MediaItem {
   type: string;
   cdnPath: string;
   caption?: string | null;
+  deviceType?: string;
 }
 export interface ParentPageDetail {
   id: number;

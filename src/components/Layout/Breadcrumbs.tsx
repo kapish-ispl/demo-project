@@ -36,7 +36,7 @@ export interface BreadcrumbItem {
     url: string;
 }
 
-interface BreadcrumbsProps<T extends BreadcrumbItem> {
+interface BreadcrumbsProps {
     slug: string;
     currentPage: CurrentPage;
 }
@@ -46,10 +46,10 @@ const initialState: BreadcrumbItem[] = [
     { id: 1, label: "Home", url: "/" }
 ];
 
-const Breadcrumbs = <T extends BreadcrumbItem>({
+const Breadcrumbs = ({
     slug,
     currentPage
-}: BreadcrumbsProps<T>) => {
+}: BreadcrumbsProps) => {
     const { headerMenu } = useContext(AppContext);
     const [breadcrumbMenu, setBreadcrumbMenu] = useState<BreadcrumbItem[]>(initialState);
 
@@ -60,7 +60,7 @@ const Breadcrumbs = <T extends BreadcrumbItem>({
             if (menuItem.link === `/${slug}`) {
                 return newTrail;
             }
-            if (!currentPage.taxonomy_id && currentPage.parentPageDetails) {
+            if (currentPage.parentPageDetails) {
                 if (menuItem.link === `/${currentPage.parentPageDetails.slug}`) {
                     return [
                         ...trail,

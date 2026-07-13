@@ -1,0 +1,63 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { KEYS } from '@/config/key';
+
+// Server-only secrets — no NEXT_PUBLIC_ prefix, never bundled into client JS
+const EXTERNAL_API_BASE = (process.env.API_PROXY_URL || 'https://api.jindalsteelpower.com').replace(/\/$/, '');
+const API_TOKEN = process.env.API_TOKEN || '';
+const API_NETWORK_GUID = process.env.API_NETWORK_GUID || '';
+
+function buildSecureHeaders(): Record<string, string> {
+  return {
+    [KEYS.CONTENT_TYPE]: 'application/json',
+    [KEYS.ACCEPT_TYPE]: 'application/json',
+    [KEYS.ACCEPT_LANGUAGE]: 'en',
+    [KEYS.X_AUTHORIZATION_TOKEN]: `${KEYS.BEARER}${API_TOKEN}`,
+    [KEYS.X_NETWORK_GUID]: API_NETWORK_GUID,
+  };
+}
+
+async function handleRequest(
+  req: NextRequest,
+  params: Promise<{ path: string[] }>,
+  method: string
+): Promise<NextResponse> {
+  try {
+    const { path } = await params;
+
+    // Reconstruct external URL: base + path segments + original query string
+    const pathStr = path.join('/');
+    const searchParams = req.nextUrl.search; // includes leading "?" if present
+    const externalUrl = `${EXTERNAL_API_BASE}/${pathStr}${searchParams}`;
+
+    const fetchOptions: RequestInit = {
+      method,
+      headers: buildSecureHeaders(),
+      cache: 'no-store',
+    };
+
+    // Forward request body for non-GET requests
+    if (method !== 'GET') {
+      const body = await req.text();
+      if (body) fetchOptions.body = body;
+    }
+
+    const externalResponse = await fetch(externalUrl, fetchOptions);
+    const data = await externalResponse.json();
+
+    return NextResponse.json(data, { status: externalResponse.status });
+  } catch (error) {
+    console.error('[Proxy Error]', error);
+    return NextResponse.json(
+      { error: true, message: 'Proxy request failed.' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  return handleRequest(req, params, 'GET');
+}
+
+export async function POST(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  return handleRequest(req, params, 'POST');
+}

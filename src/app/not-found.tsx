@@ -1,25 +1,54 @@
-import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
-
-export const metadata: Metadata = {
-  title: '404 - Page Not Found',
-  description: 'The page you are looking for does not exist.',
-  robots: 'noindex, nofollow',
+const APPIMAGES = {
+  BG1: "/images/bg/bg_1.jpg",
+  BG1_MOB: "/images/bg/bg_1_mob.jpg",
 };
 
 export default function NotFound() {
   return (
-    <div className="notfound-container">
-      <h1 className="notfound-title">404</h1>
-      <h2 className="notfound-subtitle">Page Not Found</h2>
-      <p className="notfound-text">
-        Sorry, the page you&apos;re looking for does not exist or has been moved.
-      </p>
+    <main className="not-found">
+      <div className="not-found__banner">
+        {/* Mobile & Tablet Image */}
+        <Image
+          src={APPIMAGES.BG1_MOB}
+          alt="Page Not Found"
+          fill
+          priority
+          className="not-found__image not-found__image--mobile"
+        />
 
-      <Link href="/" className="notfound-button">
-        Go Back Home
-      </Link>
-    </div>
+        {/* Desktop Image */}
+        <Image
+          src={APPIMAGES.BG1}
+          alt="Page Not Found"
+          fill
+          priority
+          className="not-found__image not-found__image--desktop"
+        />
+
+        <div className="not-found__overlay">
+          <div className="container h-100">
+            <div className="row h-100">
+              <div className="col-12 h-100">
+                <div className="not-found__content">
+                  <h1 className="not-found__title">
+                    Page Not Found
+                  </h1>
+
+                  <Link
+                    href="/"
+                    className="not-found__button"
+                  >
+                    Back to Home
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

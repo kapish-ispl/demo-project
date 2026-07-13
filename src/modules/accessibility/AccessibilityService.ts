@@ -172,7 +172,6 @@ const createAccessibilityService = (
   const applySettings = () => {
     const body = document.body;
 
-    // Clear all classes first
     body.classList.remove(
       'font_increase_1',
       'font_increase_2',
@@ -196,21 +195,17 @@ const createAccessibilityService = (
       'large-cursor'
     );
 
-    // Apply font size
     const fontClass = getFontSizeClass(settings.fontSize);
     if (fontClass) body.classList.add(fontClass);
 
-    // Apply letter spacing
     if (settings.letterSpacing > 0) {
       body.classList.add(`letterspacing_increase_${settings.letterSpacing}`);
     }
 
-    // Apply line height
     if (settings.lineHeight > 0) {
       body.classList.add(`lineheight_increase_${settings.lineHeight}`);
     }
 
-    // Apply toggle settings
     if (settings.dyslexiaFont) body.classList.add('dyslexia_font');
     if (settings.highlightLinks) body.classList.add('highlight-links');
     if (settings.darkMode) body.classList.add('dark-mode');
@@ -227,10 +222,6 @@ const createAccessibilityService = (
     setupScreenReaderListeners,
   };
 };
-
-// ---------------------------------------------------
-// Export singleton service
-// ---------------------------------------------------
 
 export const accessibilityService = createAccessibilityService({
   fontSize: 0,

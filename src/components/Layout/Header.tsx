@@ -30,7 +30,8 @@ const Header = () => {
   const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(
     null
   );
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
+  const scrollDirectionRef = useRef<"up" | "down" | null>(null);
 
   // mobile state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,39 +44,34 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      let direction: "up" | "down" | null = null;
-      if (currentScrollY > 50) {
-        if (currentScrollY > lastScrollY) {
-          direction = "down";
-        } else {
-          direction = "up";
-        }
+
+      // Handle sticky header state updates
+      const isSticky = currentScrollY > 50;
+      setStickyHeader((prev) => (prev !== isSticky ? isSticky : prev));
+
+      // Handle scroll direction state updates
+      let direction: "up" | "down" | "" = "";
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        direction = "down";
       } else {
-        direction = null;
+        direction = "up";
       }
 
-      if (direction !== scrollDirection) {
+      if (direction && direction !== scrollDirectionRef.current) {
+        scrollDirectionRef.current = direction;
         setScrollDirection(direction);
 
         document.body.classList.remove("header_scroll_up", "header_scroll_down");
-        if (direction) {
-          document.body.classList.add(
-            direction === "down" ? "header_scroll_down" : "header_scroll_up"
-          );
-        }
+        document.body.classList.add(
+          direction === "down" ? "header_scroll_down" : "header_scroll_up"
+        );
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, scrollDirection]);
-
-  useEffect(() => {
-    const handleSticky = () => setStickyHeader(window.scrollY > 50);
-    window.addEventListener("scroll", handleSticky);
-    return () => window.removeEventListener("scroll", handleSticky);
   }, []);
 
   const menuTrigger = () => {
@@ -86,46 +82,38 @@ const Header = () => {
 
   const descriptionLoop = [
     {
-      name: "Our Story",
-      desc: "Rooted in steel and evolving across sectors, the Naveen Jindal Group continues to shape sustainable and inclusive growth."
+      name: "About Us",
+      desc: "Jindal Projects’ development legacy, operational scale, and engineering-led approach."
     },
     {
-      name: "Businesses",
-      desc: "The Naveen Jindal Group's businesses comprise a global portfolio of operating companies across geographies and sectors."
+      name: "Business",
+      desc: "Integrated operations, capacity, and execution across domestic and international markets."
     },
     {
-      name: "Sectors",
-      desc: "The Naveen Jindal Group's sectors form the pillars of its progress, spanning steel, energy, resources, and infrastructure."
-    },
-    {
-      name: "Investor & Media",
-      desc: "Jindal Steel upholds a steadfast commitment to delivering sustainable value for all stakeholders. Its remarkable track record of financial discipline attests to its continuous pursuit of excellence as a world-class organisation."
+      name: "Products",
+      desc: "High-performance solutions designed for residential, commercial, and infrastructure construction."
     },
     {
       name: "Sustainability",
-      desc: "Sustainability at the Naveen Jindal Group is rooted in purpose, integrating environmental responsibility, social impact, and robust governance."
-    },
-    {
-      name: "Community",
-      desc: "Our commitment lies in giving back to society through programs that empower the underprivileged and socially vulnerable segments of the community."
+      desc: "Circular manufacturing and responsible material practices for long-term environmental performance."
     },
     {
       name: "People",
-      desc: "At the Naveen Jindal Group, people are at the heart of progress, bringing skill, purpose, and leadership across geographies."
+      desc: "Workforce strength, engineering expertise, and safety-driven operations supporting consistent execution."
     },
+
   ];
   return (
     <>
       {HEADER_MAIN_MENU && HEADER_MAIN_MENU.length > 0 && (
         <header ref={menuRef}
-          className={`c-header ${
-            isMegaActive || scrollDirection === "up" || scrollDirection === "down" ? "mega-menu--active" : ""
-          } ${stickyHeader ? "header-sticky" : ""
+          className={`c-header ${isMegaActive ? "mega-menu--active" : ""} ${stickyHeader ? "header-sticky" : ""
             } ${scrollDirection === "down" ? "hide" : "show"}`}
-            onMouseLeave={() => {
-                setActiveMenu(null);
-                setIsMegaActive(false);
-            }}
+        // onMouseEnter={() => setIsMegaActive(true)}
+        // onMouseLeave={() => {
+        //   setActiveMenu(null);
+        //   setIsMegaActive(false);
+        // }}
         >
           <div className="container cus-container">
             <div className="row">
@@ -145,23 +133,23 @@ const Header = () => {
                         />
                       ) : (
                         isMegaActive ?
-                        <Image
-                          src={IMAGE_PATH.LOGO}
-                          alt="Jindal Steel"
-                          className="img-fluid"
-                          priority
-                          width={190}
-                          height={86}
-                        />
-                        :
-                        <Image
-                          src={IMAGE_PATH.LOGO_LIGHT}
-                          alt="Jindal Steel"
-                          className="img-fluid"
-                          width={190}
-                          height={86}
-                          priority
-                        />
+                          <Image
+                            src={IMAGE_PATH.LOGO}
+                            alt="Jindal Steel"
+                            className="img-fluid"
+                            priority
+                            width={190}
+                            height={86}
+                          />
+                          :
+                          <Image
+                            src={IMAGE_PATH.LOGO_LIGHT}
+                            alt="Jindal Steel"
+                            className="img-fluid"
+                            width={190}
+                            height={86}
+                            priority
+                          />
                       )}
                     </Link>
                   </div>
@@ -178,12 +166,7 @@ const Header = () => {
                   {/* Desktop Menu */}
                   <div className="c-header__nav desktop-menu">
                     <nav className="c-header__menu" role="navigation" aria-label="Main menu">
-                      <ul className="flex menu_wrap" role="menubar"
-                        onMouseLeave={() => {
-                          setActiveMenu(null);
-                          setIsMegaActive(false);
-                        }}
-                      >
+                      <ul className="flex menu_wrap" role="menubar">
                         {HEADER_MAIN_MENU.map((menuItem: menuItemsProps) => {
                           const aa = descriptionLoop.filter((i) => i.name.toLowerCase() === menuItem.name.toLowerCase());
                           const dataItem = menuItem.name.split(" ").join("_");
@@ -202,12 +185,12 @@ const Header = () => {
                               onMouseEnter={() => {
                                 setActiveMenu(menuItem.id);
                                 setThirdLevelMenu(null);
-                                setIsMegaActive(true)
+                                setIsMegaActive(menuItem.children.length > 0)
                               }}
-                              // onMouseLeave={() => {
-                              //   setActiveMenu(null);
-                              //   setIsMegaActive(false);
-                              // }}
+                              onMouseLeave={() => {
+                                setActiveMenu(null);
+                                setIsMegaActive(false);
+                              }}
                             >
                               <Link
                                 href={menuItem.link}
@@ -261,34 +244,34 @@ const Header = () => {
 
                                             <div className="col-6 ps-5">
                                               {fixedItems.length > 0 &&
-                                                fixedItems[0].children && fixedItems[0].children.length > 0 ? 
-                                                  <div className="mega-menu">
-                                                    <h3 className="mega-menu-itemMenu">
-                                                      {fixedItems[0].name}
-                                                    </h3>
-                                                    <ul className="mega-menu__list">
-                                                      {fixedItems[0].children.map((item: any) => (
-                                                        <li key={item.id}>
-                                                          <span className="left_icon">
-                                                            <svg
-                                                              width="7"
-                                                              height="9"
-                                                              viewBox="0 0 7 9"
-                                                              fill="none"
-                                                            >
-                                                              <path
-                                                                d="M0.5 0.5L5.34 4.1C5.64 4.32 5.64 4.68 5.34 4.9L0.5 8.5"
-                                                                stroke="#4FB848"
-                                                                strokeLinecap="round"
-                                                              />
-                                                            </svg>
-                                                          </span>
-                                                          <Link prefetch={false} onClick={() => setIsMegaActive(false)} href={item.link}>{item.name}</Link>
-                                                        </li>
-                                                      ))}
-                                                    </ul>
-                                                  </div>
-                                                
+                                                fixedItems[0].children && fixedItems[0].children.length > 0 ?
+                                                <div className="mega-menu">
+                                                  <h3 className="mega-menu-itemMenu">
+                                                    {fixedItems[0].name}
+                                                  </h3>
+                                                  <ul className="mega-menu__list">
+                                                    {fixedItems[0].children.map((item: any) => (
+                                                      <li key={item.id}>
+                                                        <span className="left_icon">
+                                                          <svg
+                                                            width="7"
+                                                            height="9"
+                                                            viewBox="0 0 7 9"
+                                                            fill="none"
+                                                          >
+                                                            <path
+                                                              d="M0.5 0.5L5.34 4.1C5.64 4.32 5.64 4.68 5.34 4.9L0.5 8.5"
+                                                              stroke="#4FB848"
+                                                              strokeLinecap="round"
+                                                            />
+                                                          </svg>
+                                                        </span>
+                                                        <Link prefetch={false} onClick={() => setIsMegaActive(false)} href={item.link}>{item.name}</Link>
+                                                      </li>
+                                                    ))}
+                                                  </ul>
+                                                </div>
+
                                                 :
 
                                                 fixedItems.length > 0 && (

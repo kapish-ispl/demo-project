@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {
     createContext,
     useCallback,
@@ -7,12 +8,12 @@ import React, {
     useState,
 } from "react";
 
-type FontSize = "level0" | "level1" | "level2" | "level3" | "level4";
+type FontSize = "level0" | "level1" | "level2" | "level3" | "level4" | "level-1" | "level-2" | "level-3" | "level-4";
 
 type AccessibilityState = {
     fontSize: FontSize;
-    lineHeight: FontSize;
-    letterSpacing: FontSize;
+    lineHeight: "level0" | "level1" | "level2" | "level3";
+    letterSpacing: "level0" | "level1" | "level2" | "level3";
     highlightLinks: boolean;
     dyslexiaFont: boolean;
     darkMode: boolean;
@@ -25,7 +26,7 @@ type AccessibilityState = {
 type AccessibilitySettings = AccessibilityState & {
     toggleSetting: (key: keyof AccessibilityState, value: boolean | string) => void;
     speakText: (text: string) => void;
-    toggleResetSetting: () => void,
+    toggleResetSetting: () => void;
 };
 
 const AccessibilityContext = createContext<AccessibilitySettings | undefined>(undefined);
@@ -76,7 +77,6 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     const isFocusable = (element: HTMLElement): boolean => {
-        // Check if element is disabled or aria-disabled
         if (element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true') {
             return false;
         }
@@ -123,7 +123,6 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
             "a, button, [role='button'], input[type='button'], input[type='submit']"
         );
 
-        // Add both hover and focus events
         interactiveElements.forEach(el => {
             el.addEventListener("mouseenter", handleFocusOrHover);
             el.addEventListener("focus", handleFocusOrHover);
@@ -147,7 +146,7 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     const toggleSetting = (key: keyof AccessibilityState, value: boolean | string) => {
         setSettings(prev => ({
             ...prev,
-            [key]: value,
+            [key]: value as any,
         }));
     };
 
@@ -206,7 +205,6 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
             body.classList.add(`lineheight_increase_${lhLevel}`);
         }
 
-        // body.classList.toggle("dyslexia_font", settings.dyslexiaFont);
         html.classList.toggle("invert-colors", settings.invertColors);
 
         const toggles = {

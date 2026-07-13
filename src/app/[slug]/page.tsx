@@ -3,36 +3,23 @@ import { notFound, redirect } from "next/navigation";
 import { GET_SPECIFIC_PAGE_ENDPOINT } from "@/config/apiConfig";
 import { CONSTANTS } from "@/config/constant";
 import { serverRequest } from "@/services/getServerSideRender";
-import PageTemplate from "@/components/Layout/PageTemplate";
-import InnerBanner from "@/components/Layout/InnerBanner";
+import dynamic from "next/dynamic";
+
+import { getPageMetadata } from "@/lib/metadata";
+import { Metadata } from "next";
 
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
 
-  const fetchedInfo = await serverRequest(
-    {},
-    `${GET_SPECIFIC_PAGE_ENDPOINT}?slug=${slug}`,
-    CONSTANTS.REQUEST_GET
-  );
-
-  const pageData = fetchedInfo?.data;
-
-  if (!pageData || pageData.length === 0) {
-    return {
-      title: 'Page Not Found',
-      description: 'The requested page could not be found.',
-    };
-  }
-
-  return {
-    title: pageData.meta_title && pageData.meta_title !== "" ? `${pageData.meta_title} | Jindal Steel` : `${pageData.title} | Jindal Steel`,
-    description: pageData.meta_description || 'Jindal Steel',
-  };
+  return getPageMetadata({
+    slug: typeof slug === "string" ? slug : "",
+    endpoint: GET_SPECIFIC_PAGE_ENDPOINT,
+  });
 }
 
 export default async function Page({
@@ -41,6 +28,9 @@ export default async function Page({
   params: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { slug } = await params;
+
+  const PageTemplate = dynamic(() => import("@/components/Layout/PageTemplate"), { ssr: true });
+  const InnerBanner = dynamic(() => import("@/components/Layout/InnerBanner"), { ssr: true });
 
   if (slug === 'home-v2`') {
     redirect('/');
@@ -73,7 +63,7 @@ export default async function Page({
           </div>
         </div>
       </div>
-      <PageTemplate key={typeof slug === 'string' ? slug : 'default'} data={pageData} />
+      <PageTemplate data={pageData} />
     </>
   );
 }

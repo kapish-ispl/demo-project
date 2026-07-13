@@ -1,5 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_URL;
-const API_BASE = process.env.NODE_ENV !== 'production' ? `${API_URL}/backend` : API_URL;
+// All API endpoints point directly to the external API base.
+// - Server Components (page.tsx, generateMetadata, etc.) call these directly
+//   with auth headers added server-side in getServerSideRender.ts.
+// - Client Components (use client) call /api/proxy instead, which forwards
+//   the request to these URLs with auth headers injected server-side.
+const API_BASE = process.env.API_PROXY_URL || 'https://api.jindalsteelpower.com';
 
 export const GET_MENU_ENDPOINT = `${API_BASE}/v1/menu/get`;
 export const GET_SPECIFIC_PAGE_ENDPOINT = `${API_BASE}/v1/page/get`;

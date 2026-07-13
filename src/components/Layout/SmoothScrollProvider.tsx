@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,9 +12,11 @@ interface SmoothScrollProviderProps {
 }
 
 export default function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
+  const rafRef = useRef<number | null>(null);
+
   useEffect(() => {
     // Initialize Lenis
-    const lenis = new (Lenis as any)({
+    const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,  // mouse wheel smooth
@@ -29,17 +31,26 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
       },
     });
 
+    let isMounted = true;
+
     // RAF loop to update Lenis and GSAP ScrollTrigger
     function raf(time: number) {
+      if (!isMounted) return;
       lenis.raf(time);
       ScrollTrigger.update(); // keep ScrollTrigger in sync
-      requestAnimationFrame(raf);
+      rafRef.current = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafRef.current = requestAnimationFrame(raf);
 
     // Cleanup on unmount
-    return () => lenis.destroy();
+    return () => {
+      isMounted = false;
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      lenis.destroy();
+    };
   }, []);
 
   return <>{children}</>;

@@ -63,7 +63,6 @@ const BentoSyncReveal = ({ data, props }: BentoSyncRevealProps) => {
     const container = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        ScrollTrigger.normalizeScroll(true);
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: container.current,

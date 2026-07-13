@@ -24,9 +24,13 @@ const SliderThumbnailUI: React.FC<SliderThumbnailUIProps> = ({ slides }) => {
     const prevRef = useRef<HTMLSpanElement>(null);
     const nextRef = useRef<HTMLSpanElement>(null);
 
-    const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-    const isPrevDisabled = swiperInstance?.isBeginning ?? true;
-    const isNextDisabled = swiperInstance?.isEnd ?? false;
+    const [isPrevDisabled, setIsPrevDisabled] = useState(true);
+    const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+    const updateNavState = (swiper: SwiperType) => {
+        setIsPrevDisabled(swiper.isBeginning);
+        setIsNextDisabled(swiper.isEnd);
+    };
 
     const arrowStyle = (disabled: boolean): React.CSSProperties => ({
         cursor: disabled ? "not-allowed" : "pointer",
@@ -87,8 +91,12 @@ const SliderThumbnailUI: React.FC<SliderThumbnailUIProps> = ({ slides }) => {
                         swiper.params.navigation.nextEl = nextRef.current;
                     }
                 }}
-                onSwiper={(swiper) => setSwiperInstance(swiper)}
-                onSlideChange={(swiper) => setSwiperInstance({ ...swiper })}
+                onSwiper={(swiper) => {
+                    updateNavState(swiper);
+                }}
+                onSlideChange={(swiper) => {
+                    updateNavState(swiper);
+                }}
                 className="thumb-swiper"
             >
                 {slides.map((slide, index) => (

@@ -21,12 +21,12 @@ interface Props {
  * MediaItemComponent handles the conditional rendering of a video or image.
  * It also encapsulates common styling and ensures valid paths.
  */
-const MediaItemComponent: FC<{ data: MediaItem; isActive: boolean }> = ({ data, isActive }) => {
+const MediaItemComponent: FC<{ data: MediaItem; isActive: boolean; isMounted: boolean }> = ({ data, isActive, isMounted }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         if (data.type === "video" && videoRef.current) {
-            if (isActive) {
+            if (isActive && isMounted) {
                 videoRef.current.play().catch((err) => {
                     console.log("Autoplay prevented or failed:", err);
                 });
@@ -35,7 +35,7 @@ const MediaItemComponent: FC<{ data: MediaItem; isActive: boolean }> = ({ data, 
                 videoRef.current.currentTime = 0;
             }
         }
-    }, [isActive, data.type]);
+    }, [isActive, isMounted, data.type]);
 
     if (!data.cdnPath) return null;
 
@@ -47,7 +47,7 @@ const MediaItemComponent: FC<{ data: MediaItem; isActive: boolean }> = ({ data, 
                 muted
                 playsInline
                 className="c-banner__video"
-                preload={isActive ? "auto" : "none"}
+                preload={isMounted && isActive ? "auto" : "none"}
             >
                 <source src={data.cdnPath} type="video/mp4" />
             </video>
@@ -62,17 +62,15 @@ const MediaItemComponent: FC<{ data: MediaItem; isActive: boolean }> = ({ data, 
             height={1080}
             className="c-banner__image img-fluid"
             style={{ objectFit: "cover", objectPosition: "center" }}
-            priority={isActive}
+            priority={isMounted && isActive}
         />
     );
 };
 
-/**
- * BannerSliderSection encapsulates a Slider with its device-specific visibility classes.
- */
 const BannerSliderSection: FC<{
     media: MediaItem[];
-}> = ({ media }) => {
+    isMounted: boolean;
+}> = ({ media, isMounted }) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     // Filter by presence of cdnPath to avoid "undefined" URL issues
@@ -95,7 +93,7 @@ const BannerSliderSection: FC<{
         >
             {validMedia.map((item, idx) => (
                 <SwiperSlide key={`${item.cdnPath}-${idx}`}>
-                    <MediaItemComponent data={item} isActive={idx === activeIndex} />
+                    <MediaItemComponent data={item} isActive={idx === activeIndex} isMounted={isMounted} />
                 </SwiperSlide>
             ))}
         </Swiper>
@@ -134,6 +132,7 @@ const HomeBanner: FC<Props> = ({ bannerMedia, tagline, pageTitle }) => {
             <div className="c-banner__media">
                 <BannerSliderSection
                     media={activeMedia}
+                    isMounted={isMounted}
                 />
             </div>
         </div>);

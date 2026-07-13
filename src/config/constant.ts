@@ -20,3 +20,8 @@ export const IMAGE_PATH = {
   LOGO: '/images/logo/logo-dark.svg',
   LOGO_LIGHT: '/images/logo/logo-light.svg',
 };
+
+export const APPIMAGES = {
+  BG1: "/images/bg/bg_1.jpg",
+  BG1_MOB: "/images/bg/bg_1_mob.jpg",
+};

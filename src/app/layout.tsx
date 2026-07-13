@@ -36,7 +36,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { headerMenu, footerMenu } = await getMenuData();
+  const { headerMenu, footerMenu, allPageData } = await getMenuData();
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
@@ -45,7 +45,7 @@ export default async function RootLayout({
       >
         <Suspense fallback={null}>
           <AccessibilityProvider>
-            <AppContextProvider initialHeaderMenu={headerMenu} initialFooterMenu={footerMenu}>
+            <AppContextProvider initialHeaderMenu={headerMenu} initialFooterMenu={footerMenu} initialAllPageData={allPageData}>
               <ThemeProvider
                 attribute="class"
                 defaultTheme="system"

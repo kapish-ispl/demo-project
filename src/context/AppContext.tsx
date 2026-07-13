@@ -7,12 +7,14 @@ import AOS from "aos";
 type contextType = {
     headerMenu: any[];
     footerMenu: any[];
+    allPageData: any[];
     menuType: string;
 };
 
 export const AppContext = createContext<contextType>({
     headerMenu: [],
     footerMenu: [],
+    allPageData: [],
     menuType: "",
 });
 
@@ -20,16 +22,19 @@ type AppContextProviderProps = {
     children: ReactNode;
     initialHeaderMenu?: any[];
     initialFooterMenu?: any[];
+    initialAllPageData?: any[];
 };
 
 const AppContextProvider = ({
     children,
     initialHeaderMenu = [],
     initialFooterMenu = [],
+    initialAllPageData = [],
 }: AppContextProviderProps) => {
 
     const [headerMenu] = useState<any[]>(initialHeaderMenu);
     const [footerMenu] = useState<any[]>(initialFooterMenu);
+    const [allPageData] = useState<any[]>(initialAllPageData);
     const [menuType, setMenuType] = useState("page");
 
 
@@ -41,7 +46,7 @@ const AppContextProvider = ({
     }, []);
 
 
-    const values = { headerMenu, footerMenu, menuType, setMenuType, };
+    const values = { headerMenu, footerMenu, allPageData, menuType, setMenuType, };
     return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };
 

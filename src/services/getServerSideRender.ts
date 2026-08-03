@@ -11,12 +11,7 @@ import { KEYS } from '@/config/key';
  * - requestType = 'client': Called from "use client" components (AppContext, etc.).
  *   Routes through /api/proxy — the browser never sees the auth token or API key.
  */
-export async function serverRequest(
-  request: any,
-  url: string,
-  methodName: string,
-  requestType: 'client' | 'server' = 'client'
-): Promise<any> {
+export async function serverRequest(request: any, url: string, methodName: string, requestType: 'client' | 'server' = 'client'): Promise<any> {
   try {
     let response: Response;
 
@@ -87,14 +82,14 @@ export async function serverRequest(
 
 /**
  * Build secure headers for server-side requests only.
- * API_TOKEN and API_NETWORK_GUID are server-only env vars.
+ * NEXT_PUBLIC_API_TOKEN and NEXT_PUBLIC_API_NETWORK_GUID are server-only env vars.
  */
 export function buildServerHeaders(): Record<string, string> {
   return {
     [KEYS.CONTENT_TYPE]: CONSTANTS.FORMAT,
     [KEYS.ACCEPT_TYPE]: CONSTANTS.FORMAT,
     [KEYS.ACCEPT_LANGUAGE]: CONSTANTS.LANGUAGE_ENGLISH,
-    [KEYS.X_AUTHORIZATION_TOKEN]: `Bearer ${process.env.API_TOKEN || process.env.NEXT_PUBLIC_TOKEN || ''}`,
-    [KEYS.X_NETWORK_GUID]: process.env.API_NETWORK_GUID || process.env.NEXT_PUBLIC_NETWORK_GUID || '',
+    [KEYS.X_AUTHORIZATION_TOKEN]: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN || ''}`,
+    [KEYS.X_NETWORK_GUID]: process.env.NEXT_PUBLIC_API_NETWORK_GUID || '',
   };
 }

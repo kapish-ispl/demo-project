@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { KEYS } from '@/config/key';
 
 // Server-only secrets — no NEXT_PUBLIC_ prefix, never bundled into client JS
-const EXTERNAL_API_BASE = (process.env.API_PROXY_URL || 'https://api.jindalsteelpower.com').replace(/\/$/, '');
-const API_TOKEN = process.env.API_TOKEN || '';
-const API_NETWORK_GUID = process.env.API_NETWORK_GUID || '';
+const EXTERNAL_API_BASE = (process.env.NEXT_PUBLIC_API_PROXY_URL || 'https://api.jindalsteelpower.com').replace(/\/$/, '');
+const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN || '';
+const API_NETWORK_GUID = process.env.NEXT_PUBLIC_API_NETWORK_GUID || '';
 
 function buildSecureHeaders(): Record<string, string> {
   return {
@@ -16,11 +16,7 @@ function buildSecureHeaders(): Record<string, string> {
   };
 }
 
-async function handleRequest(
-  req: NextRequest,
-  params: Promise<{ path: string[] }>,
-  method: string
-): Promise<NextResponse> {
+async function handleRequest(req: NextRequest, params: Promise<{ path: string[] }>, method: string): Promise<NextResponse> {
   try {
     const { path } = await params;
 
@@ -47,10 +43,7 @@ async function handleRequest(
     return NextResponse.json(data, { status: externalResponse.status });
   } catch (error) {
     console.error('[Proxy Error]', error);
-    return NextResponse.json(
-      { error: true, message: 'Proxy request failed.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: true, message: 'Proxy request failed.' }, { status: 500 });
   }
 }
 

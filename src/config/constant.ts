@@ -12,6 +12,7 @@ export const CONSTANTS = {
   FOOTER_CONTENT_BLOCK_ENDPOINT: 'footerv2',
   STATUS_SUCCESS: 'SUC200',
   STATUS_FAILED: 'ERR004',
+  STATUS_NOT_FOUND: 'ERR003',
   X_AUTHORIZATION_TOKEN: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
   X_NETWORK_GUID: process.env.NEXT_PUBLIC_NETWORK_GUID,
 };
@@ -22,6 +23,6 @@ export const IMAGE_PATH = {
 };
 
 export const APPIMAGES = {
-  BG1: "/images/bg/bg_1.jpg",
-  BG1_MOB: "/images/bg/bg_1_mob.jpg",
+  BG1: '/images/bg/bg_1.jpg',
+  BG1_MOB: '/images/bg/bg_1_mob.jpg',
 };

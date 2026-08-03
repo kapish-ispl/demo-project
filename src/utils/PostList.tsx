@@ -86,7 +86,7 @@ export default function PostList(props: PropsType) {
 
             const taxonomyInfo = await serverRequest(
                 {},
-                `${GET_POST_ENDPOINT}?slug=${slugInfo}&limit=${limit}&offset=${offset}`,
+                `${GET_POST_ENDPOINT}?slug=${slugInfo}&limit=${limit}&offset=${offset}&excludeUrl=1`,
                 CONSTANTS.REQUEST_GET
             );
 

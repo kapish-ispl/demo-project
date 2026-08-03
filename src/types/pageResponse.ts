@@ -1,4 +1,5 @@
 export interface PageResponse {
+  code?: string;
   category: string;
   id: number;
   guid: string;

@@ -26,13 +26,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   const fetchedInfo = (await serverRequest(
     {},
-    `${GET_SPECIFIC_PAGE_ENDPOINT}?slug=${CONSTANTS.LANDING_SLUG}`,
+    `${GET_SPECIFIC_PAGE_ENDPOINT}?slug=${CONSTANTS.LANDING_SLUG}&excludeUrl=1`,
     CONSTANTS.REQUEST_GET,
     'server'
   )) as ApiResponse<PageResponse>;
 
   const pageData = fetchedInfo?.data;
-  if (!pageData) return notFound();
+  if (pageData?.code === CONSTANTS.STATUS_NOT_FOUND || !pageData) return notFound();
 
   return (
     <>

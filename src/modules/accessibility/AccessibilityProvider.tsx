@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {
     createContext,
     useCallback,
@@ -8,12 +7,12 @@ import React, {
     useState,
 } from "react";
 
-type FontSize = "level0" | "level1" | "level2" | "level3" | "level4" | "level-1" | "level-2" | "level-3" | "level-4";
+type FontSize = "level0" | "level1" | "level2" | "level3" | "level4";
 
 type AccessibilityState = {
     fontSize: FontSize;
-    lineHeight: "level0" | "level1" | "level2" | "level3";
-    letterSpacing: "level0" | "level1" | "level2" | "level3";
+    lineHeight: FontSize;
+    letterSpacing: FontSize;
     highlightLinks: boolean;
     dyslexiaFont: boolean;
     darkMode: boolean;
@@ -24,15 +23,52 @@ type AccessibilityState = {
 };
 
 type AccessibilitySettings = AccessibilityState & {
+    ttsSupported: boolean;
     toggleSetting: (key: keyof AccessibilityState, value: boolean | string) => void;
     speakText: (text: string) => void;
-    toggleResetSetting: () => void;
+    toggleResetSetting: () => void,
+};
+
+const checkTtsSupport = (): boolean => {
+    if (typeof window === "undefined") return true;
+    const ua = navigator.userAgent || "";
+    const isAndroidWebView =
+        /Android/i.test(ua) &&
+        (/\bwv\b/i.test(ua) || /FBAN|FBAV|Instagram|LinkedInApp|Line\/|MicroMessenger/i.test(ua));
+    if (isAndroidWebView) return false;
+
+    return (
+        "speechSynthesis" in window &&
+        !!window.speechSynthesis &&
+        typeof SpeechSynthesisUtterance !== "undefined"
+    );
+};
+
+const normalizeTextForSpeech = (rawText: string): string => {
+    let text = rawText.replace(/\s+/g, " ").trim();
+    if (!text) return "";
+
+    // If the text is entirely uppercase (e.g. due to CSS text-transform: uppercase),
+    // convert to lowercase so TTS doesn't spell out short words like "US", "IT", "IN" as acronyms.
+    if (text === text.toUpperCase() && /[A-Z]/.test(text)) {
+        text = text.toLowerCase();
+    }
+
+    // Ensure "Us" / "US" when used as a pronoun (e.g. "About Us", "Contact Us", "Join Us")
+    // is lowercase "us" so TTS reads it as the word "us" instead of spelling "U S".
+    text = text.replace(
+        /\b(about|contact|join|reach|with|to|for|from|by|of|tell|ask|help|call|email|mail|write|visit|follow|find|locate|support|partner|connect|message|why|let|give|send|show|choose|trust)\s+us\b/gi,
+        (_, prefix: string) => `${prefix.toLowerCase()} us`
+    );
+
+    return text;
 };
 
 const AccessibilityContext = createContext<AccessibilitySettings | undefined>(undefined);
 
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedText, setSelectedText] = useState('');
+    const [ttsSupported, setTtsSupported] = useState<boolean>(true);
     const [settings, setSettings] = useState<AccessibilityState>({
         fontSize: "level0",
         lineHeight: "level0",
@@ -46,26 +82,43 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
         largeCursor: false,
     });
 
+    useEffect(() => {
+        setTtsSupported(checkTtsSupport());
+    }, []);
+
     const speakText = useCallback((text: string) => {
-        const speechSynthesis = window.speechSynthesis;
-        if (speechSynthesis.speaking) {
-            speechSynthesis.cancel();
+        const speechSynthesis = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
+        if (!speechSynthesis || typeof SpeechSynthesisUtterance === "undefined") return;
+
+        const normalizedText = normalizeTextForSpeech(text);
+        if (!normalizedText) return;
+
+        try {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+
+            const utterance = new SpeechSynthesisUtterance(normalizedText);
+            let voices = speechSynthesis.getVoices();
+
+            if (voices.length === 0) {
+                speechSynthesis.onvoiceschanged = () => {
+                    try {
+                        voices = speechSynthesis.getVoices();
+                        setPreferredVoice(utterance, voices);
+                        speechSynthesis.speak(utterance);
+                    } catch {
+                        // Ignore speech synthesis errors on unsupported browsers
+                    }
+                };
+                return;
+            }
+
+            setPreferredVoice(utterance, voices);
+            speechSynthesis.speak(utterance);
+        } catch {
+            // Ignore speech synthesis errors on unsupported browsers
         }
-
-        const utterance = new SpeechSynthesisUtterance(text);
-        let voices = speechSynthesis.getVoices();
-
-        if (voices.length === 0) {
-            speechSynthesis.onvoiceschanged = () => {
-                voices = speechSynthesis.getVoices();
-                setPreferredVoice(utterance, voices);
-                speechSynthesis.speak(utterance);
-            };
-            return;
-        }
-
-        setPreferredVoice(utterance, voices);
-        speechSynthesis.speak(utterance);
     }, []);
 
     const setPreferredVoice = (utterance: SpeechSynthesisUtterance, voices: SpeechSynthesisVoice[]) => {
@@ -144,9 +197,13 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     }, [settings.screenReader, selectedText, speakText]);
 
     const toggleSetting = (key: keyof AccessibilityState, value: boolean | string) => {
+        if (key === "screenReader" && value === true && !ttsSupported) {
+            return;
+        }
+
         setSettings(prev => ({
             ...prev,
-            [key]: value as any,
+            [key]: value,
         }));
     };
 
@@ -221,7 +278,7 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     }, [settings]);
 
     return (
-        <AccessibilityContext.Provider value={{ ...settings, toggleSetting, speakText, toggleResetSetting }}>
+        <AccessibilityContext.Provider value={{ ...settings, ttsSupported, toggleSetting, speakText, toggleResetSetting }}>
             {children}
         </AccessibilityContext.Provider>
     );

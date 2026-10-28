@@ -30,7 +30,7 @@
 @use 'custom/components/sector';
 @use 'custom/components/frammerslider';
 @use 'custom/components/hightlight';
-@use 'custom/components/accessibility';
+@use "../modules/accessibility/accessibility.scss";
 @use 'custom/components/notFound';
 @use 'custom/components/cardStack';
 @use 'custom/components/cardswipesider';

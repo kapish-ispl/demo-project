@@ -62,26 +62,55 @@ const createAccessibilityService = (
     notifyUpdate();
   };
 
+  const normalizeTextForSpeech = (rawText: string): string => {
+    let text = rawText.replace(/\s+/g, ' ').trim();
+    if (!text) return '';
+
+    if (text === text.toUpperCase() && /[A-Z]/.test(text)) {
+      text = text.toLowerCase();
+    }
+
+    text = text.replace(
+      /\b(about|contact|join|reach|with|to|for|from|by|of|tell|ask|help|call|email|mail|write|visit|follow|find|locate|support|partner|connect|message|why|let|give|send|show|choose|trust)\s+us\b/gi,
+      (_, prefix: string) => `${prefix.toLowerCase()} us`
+    );
+
+    return text;
+  };
+
   const speakText = (text: string) => {
-    const speechSynthesis = window.speechSynthesis;
-    if (speechSynthesis.speaking) {
-      speechSynthesis.cancel();
+    const speechSynthesis = typeof window !== 'undefined' && 'speechSynthesis' in window ? window.speechSynthesis : null;
+    if (!speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') return;
+
+    const normalizedText = normalizeTextForSpeech(text);
+    if (!normalizedText) return;
+
+    try {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+      }
+
+      const utterance = new SpeechSynthesisUtterance(normalizedText);
+      let voices = speechSynthesis.getVoices();
+
+      if (voices.length === 0) {
+        speechSynthesis.onvoiceschanged = () => {
+          try {
+            voices = speechSynthesis.getVoices();
+            setPreferredVoice(utterance, voices);
+            speechSynthesis.speak(utterance);
+          } catch {
+            // Ignore speech synthesis errors on unsupported browsers
+          }
+        };
+        return;
+      }
+
+      setPreferredVoice(utterance, voices);
+      speechSynthesis.speak(utterance);
+    } catch {
+      // Ignore speech synthesis errors on unsupported browsers
     }
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    let voices = speechSynthesis.getVoices();
-
-    if (voices.length === 0) {
-      speechSynthesis.onvoiceschanged = () => {
-        voices = speechSynthesis.getVoices();
-        setPreferredVoice(utterance, voices);
-        speechSynthesis.speak(utterance);
-      };
-      return;
-    }
-
-    setPreferredVoice(utterance, voices);
-    speechSynthesis.speak(utterance);
   };
 
   const setPreferredVoice = (
@@ -222,6 +251,10 @@ const createAccessibilityService = (
     setupScreenReaderListeners,
   };
 };
+
+// ---------------------------------------------------
+// Export singleton service
+// ---------------------------------------------------
 
 export const accessibilityService = createAccessibilityService({
   fontSize: 0,

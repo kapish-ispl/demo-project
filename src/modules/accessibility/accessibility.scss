@@ -1,6 +1,6 @@
-@use "../core/mixins" as *;
-@use "../core/variables" as *;
-@use "../components/generic/sizes" as *;
+@use "../../styles/custom/core/mixins" as *;
+@use "../../styles/custom/core/variables" as *;
+@use "../../styles/custom/components/generic/sizes" as *;
 
 // ─── Dark Mode Variable Overrides ───────────────────────────────────────────
 .dark-mode {
@@ -508,6 +508,24 @@ body.large-cursor {
       }
     }
   }
+}
+
+.accessibility-panel .accessibility__tts-note {
+  width: 100%;
+  margin-top: -25px;
+  margin-bottom: 50px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(245, 134, 52, 0.12);
+  border-left: 3px solid #f58634;
+  color: var(--black, #333);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.dark-mode .accessibility-panel .accessibility__tts-note {
+  background: rgba(245, 134, 52, 0.15);
+  color: #bbb6b6 !important;
 }
 
 // ─── Accessibility Head Bar ───────────────────────────────────────────────────
